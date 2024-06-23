@@ -1,0 +1,7 @@
+target/
+bin/
+obj/
+Cargo.lock
+/meta.json
+/files
+/packs/0.*
