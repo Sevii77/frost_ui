@@ -188,9 +188,11 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		(38, Roles::Ranged), // dnc
 		(39, Roles::Melee), // rpr
 		(40, Roles::Healer), // sge
-		(41, Roles::Other), // chocobo
-		(42, Roles::Other), // carbuncle
-		(43, Roles::Other), // free slot
+		(41, Roles::Melee), // vpr
+		(42, Roles::Caster), // pct
+		(43, Roles::Other), // chocobo
+		(44, Roles::Other), // carbuncle
+		(45, Roles::Other), // free slot
 	]);
 	
 	// load in extra assets

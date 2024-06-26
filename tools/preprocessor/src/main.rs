@@ -577,9 +577,9 @@ fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Da
 			std::fs::write(dir.join(format!("{i}.svg")), &layer)?
 		}
 		
-		{ // png
-			pixmap.save_png(dir.join(format!("{i}.png")))?
-		}
+		// { // png
+		// 	pixmap.save_png(dir.join(format!("{i}.png")))?
+		// }
 		
 		{ // tex
 			for pixel in pixmap.pixels_mut() {
@@ -634,6 +634,10 @@ pub fn save_tex(width: u16, height: u16, data: &[u8], path: &Path) -> Result<(),
 		f.write(&v[0].to_le_bytes())?;
 		f.write(&v[3].to_le_bytes())?;
 	}
+	
+	// png for debugging
+	let img = image::RgbaImage::from_vec(width as _, height as _, data.to_vec()).unwrap();
+	img.save(path.with_extension("png"))?;
 	
 	Ok(())
 }
