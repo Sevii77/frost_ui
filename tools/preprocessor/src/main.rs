@@ -19,11 +19,15 @@ fn main() -> Result<(), Error> {
 	let svg_root = Path::new(&args[1]);
 	let target_root = Path::new(&args[2]);
 	
-	fn walk_dir(path: &Path, target: &Path, files: &mut HashMap<Option<(String, String)>, HashMap<String, String>>) -> Result<(), Error> {
+	let mut font = resvg::usvg::fontdb::Database::new();
+	font.load_system_fonts();
+	font.load_font_data(include_bytes!("Axis Extrabold.otf").to_vec());
+	
+	fn walk_dir(path: &Path, target: &Path, files: &mut HashMap<Option<(String, String)>, HashMap<String, String>>, font: &resvg::usvg::fontdb::Database) -> Result<(), Error> {
 		for entry in std::fs::read_dir(path)? {
 			let entry_path = entry?.path();
 			if entry_path.is_dir() {
-				walk_dir(&entry_path, target, files)?;
+				walk_dir(&entry_path, target, files, font)?;
 			} else if entry_path.extension().map(|v| v.to_str()) == Some(Some("svg")) {
 				let svgs = split_svgs(&std::fs::read_to_string(entry_path)?)?;
 				for svg in svgs {
@@ -40,7 +44,7 @@ fn main() -> Result<(), Error> {
 						paths.insert(svg.path.clone(), format!("{local_dir}/0.tex"));
 					}
 					
-					render_svg(svg, target)?;
+					render_svg(svg, target, font)?;
 				}
 			}
 		}
@@ -48,7 +52,7 @@ fn main() -> Result<(), Error> {
 		Ok(())
 	}
 	
-	walk_dir(svg_root, &target_root.join("files"), &mut files)?;
+	walk_dir(svg_root, &target_root.join("files"), &mut files, &font)?;
 	
 	// icons
 	for ((o, so), f) in icons::job_icons(&target_root)? {
@@ -232,6 +236,8 @@ fn split_svgs(data: &str) -> Result<Vec<SvgResult>, Error> {
 				}
 				
 				xml::reader::XmlEvent::EndElement{..} => xml.push(e),
+				xml::reader::XmlEvent::CData(_) => xml.push(e),
+				xml::reader::XmlEvent::Characters(_) => xml.push(e),
 				
 				_ => {}
 			}
@@ -293,6 +299,13 @@ fn split_svgs(data: &str) -> Result<Vec<SvgResult>, Error> {
 				if layer == force_add_layer {
 					force_add = false;
 					is_use = None;
+				}
+			}
+			
+			xml::reader::XmlEvent::Characters(v) => {
+				if let Some(use_id) = &is_use {
+					let add = use_adds.entry(use_id.clone()).or_insert_with(|| Vec::new());
+					add.push(xml::writer::XmlEvent::Characters(v));
 				}
 			}
 			
@@ -467,6 +480,17 @@ fn split_svgs(data: &str) -> Result<Vec<SvgResult>, Error> {
 				}
 			}
 			
+			xml::reader::XmlEvent::Characters(v) => {
+				if layer >= 4 {
+					if let Some(a) = svgs.get_mut(&path) {
+						if let Some(layers) = a.get_mut(&option) {
+							let len = layers.len();
+							layers[len - 1].1.write(xml::writer::XmlEvent::Characters(v))?;
+						}
+					}
+				}
+			}
+			
 			_ => {}
 		}
 	}
@@ -503,7 +527,7 @@ fn split_svgs(data: &str) -> Result<Vec<SvgResult>, Error> {
 	}).collect())
 }
 
-fn render_svg(svg: SvgResult, target_root: &Path) -> Result<(), Error> {
+fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Database) -> Result<(), Error> {
 	let local_dir = if let Some((o1, o2)) = &svg.option {
 		format!("{}/{o1}/{o2}", svg.path)
 	} else {
@@ -542,7 +566,7 @@ fn render_svg(svg: SvgResult, target_root: &Path) -> Result<(), Error> {
 		// shape_rendering: resvg::usvg::ShapeRendering::CrispEdges,
 		..Default::default()
 	};
-	let font = resvg::usvg::fontdb::Database::new();
+	
 	for (i, (_color_option, layer)) in svg.layers.into_iter().enumerate() {
 		let tree = resvg::usvg::Tree::from_str(&layer, &opt, &font)?;
 		let size = tree.size().to_int_size();
