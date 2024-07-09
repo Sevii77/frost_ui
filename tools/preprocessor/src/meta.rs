@@ -15,6 +15,7 @@ pub struct MetaBase {
 	pub tags: Vec<String>,
 	pub dependencies: Vec<String>,
 	pub options: Vec<HashMap<String, OptionBase>>,
+	pub presets: Vec<HashMap<String, HashMap<String, ValueBase>>>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -29,6 +30,13 @@ pub enum OptionBase {
 	// },
 }
 
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum ValueBase {
+	Files(String),
+	Color(Vec<f32>),
+}
+
 // ----------
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -41,6 +49,7 @@ pub struct Meta {
 	pub tags: Vec<String>,
 	pub dependencies: Vec<String>,
 	pub options: Vec<Option>,
+	pub presets: Vec<Preset>,
 	
 	pub files: HashMap<String, String>,
 	pub file_swaps: HashMap<String, String>,
@@ -58,12 +67,33 @@ impl Default for Meta {
 			tags: Vec::new(),
 			dependencies: Vec::new(),
 			options: Vec::new(),
+			presets: Vec::new(),
 			
 			files: HashMap::new(),
 			file_swaps: HashMap::new(),
 			manipulations: Vec::new(),
 		}
 	}
+}
+
+// ----------
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct Preset {
+	pub name: String,
+	pub settings: HashMap<String, Value>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub enum Value {
+	SingleFiles(u32),
+	MultiFiles(u32),
+	Rgb([f32; 3]),
+	Rgba([f32; 4]),
+	Grayscale(f32),
+	Opacity(f32),
+	Mask(f32),
+	Path(u32),
 }
 
 // ----------

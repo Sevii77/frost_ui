@@ -1,6 +1,6 @@
 name: Frost UI
 description:
-version: 0.1.49
+version: 0.1.50
 author: Sevii
 website:
 tags:
@@ -28,10 +28,6 @@ options:
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Shape Style;Rounded:
-    - Rounded
-    - Square
-  
   - Window Style;Rounded Top Border:
     - Rounded
     - Rounded Top Border;Rounded
@@ -42,6 +38,10 @@ options:
     - Square Full Border;Square
     - Square Edge Border;Square
     - Sharp;Square Edge Border
+    
+  - Shape Style;Rounded:
+    - Rounded
+    - Square
   
   - Proc Color:
       default: [1.0, 0.68, 0.22]
@@ -136,3 +136,12 @@ options:
     - Rounded
     - Square
     - Circle
+presets:
+  - Frosted:
+  
+  - Material UI:
+      Background Color: [0.1294, 0.1294, 0.1294, 1.0]
+      Secondary Color: [0.188, 0.188, 0.188]
+      Window Style: Square Top Border
+      Shape Style: Square
+      Minimap: Square

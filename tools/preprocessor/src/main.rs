@@ -102,6 +102,71 @@ fn main() -> Result<(), Error> {
 	// meta file creation
 	if args.len() >= 4 {
 		let meta_base = serde_yaml::from_slice::<meta::MetaBase>(&std::fs::read(&args[3])?)?;
+		
+		let mut option_indexes = HashMap::new();
+		let options = meta_base.options.into_iter().map(|o| {
+			let mut key = o.keys().next().unwrap().split(";");
+			let name = key.next().unwrap();
+			let default = key.next();
+			let value = o.values().next().unwrap();
+			
+			meta::Option {
+				name: name.to_owned(),
+				description: String::new(),
+				settings: match value {
+					meta::OptionBase::Files(sub_options) => {
+						option_indexes.insert(name.to_owned(), sub_options.iter().enumerate().map(|(i, v)| (v.split(";").next().unwrap().to_owned(), i)).collect::<HashMap<_, _>>());
+						
+						meta::OptionSettings::SingleFiles(meta::ValueFiles {
+							default: default.map_or(0, |v| sub_options.iter().position(|v2| v2.split(";").next().unwrap() == v).map_or(0, |v| v as u32)),
+							options: sub_options.into_iter().map(|sub_option| {
+								let mut sub_option_segs = sub_option.split(";");
+								let sub_option = sub_option_segs.next().unwrap();
+								let inherit = sub_option_segs.next();
+								
+								let key = Some((name.to_owned(), sub_option.to_owned()));
+								if !files.contains_key(&key) {
+									println!("No files exist with option {name}:{sub_option}");
+									std::process::exit(0);
+								}
+								
+								meta::ValueFilesOption {
+									name: sub_option.to_owned(),
+									description: String::new(),
+									inherit: inherit.map(|v| v.to_owned()),
+									files: files[&key].clone(),
+									
+									..Default::default()
+								}
+							}).collect(),
+						})
+					}
+					
+					meta::OptionBase::Color(color) => {
+						let default = &color["default"];
+						let min = &color["min"];
+						let max = &color["max"];
+						
+						match default.len() {
+							4 => meta::OptionSettings::Rgba(meta::ValueRgba {
+								default: default[..].try_into().unwrap(),
+								min: min[..].try_into().unwrap(),
+								max: max[..].try_into().unwrap(),
+							}),
+							
+							3 => meta::OptionSettings::Rgb(meta::ValueRgb {
+								default: default[..].try_into().unwrap(),
+								min: min[..].try_into().unwrap(),
+								max: max[..].try_into().unwrap(),
+							}),
+							
+							_ => panic!("Unsupported color type")
+						}
+					}
+				}
+			}
+		}).collect();
+		
 		let meta = meta::Meta {
 			name: meta_base.name,
 			description: meta_base.description,
@@ -111,66 +176,22 @@ fn main() -> Result<(), Error> {
 			tags: meta_base.tags,
 			dependencies: meta_base.dependencies,
 			
-			options: meta_base.options.into_iter().map(|o| {
-				let mut key = o.keys().next().unwrap().split(";");
-				let name = key.next().unwrap();
-				let default = key.next();
-				let value = o.values().next().unwrap();
-				
-				meta::Option {
-					name: name.to_owned(),
-					description: String::new(),
-					settings: match value {
-						meta::OptionBase::Files(sub_options) => {
-							meta::OptionSettings::SingleFiles(meta::ValueFiles {
-								default: default.map_or(0, |v| sub_options.iter().position(|v2| v2.split(";").next().unwrap() == v).map_or(0, |v| v as u32)),
-								options: sub_options.into_iter().map(|sub_option| {
-									let mut sub_option_segs = sub_option.split(";");
-									let sub_option = sub_option_segs.next().unwrap();
-									let inherit = sub_option_segs.next();
-									
-									let key = Some((name.to_owned(), sub_option.to_owned()));
-									if !files.contains_key(&key) {
-										println!("No files exist with option {name}:{sub_option}");
-										std::process::exit(0);
-									}
-									
-									meta::ValueFilesOption {
-										name: sub_option.to_owned(),
-										description: String::new(),
-										inherit: inherit.map(|v| v.to_owned()),
-										files: files[&key].clone(),
-										
-										..Default::default()
-									}
-								}).collect(),
-							})
-						}
-						
-						meta::OptionBase::Color(color) => {
-							let default = &color["default"];
-							let min = &color["min"];
-							let max = &color["max"];
-							
-							match default.len() {
-								4 => meta::OptionSettings::Rgba(meta::ValueRgba {
-									default: default[..].try_into().unwrap(),
-									min: min[..].try_into().unwrap(),
-									max: max[..].try_into().unwrap(),
-								}),
-								
-								3 => meta::OptionSettings::Rgb(meta::ValueRgb {
-									default: default[..].try_into().unwrap(),
-									min: min[..].try_into().unwrap(),
-									max: max[..].try_into().unwrap(),
-								}),
-								
-								_ => panic!("Unsupported color type")
-							}
-						}
-					}
+			// presets: Vec::new(),
+			presets: meta_base.presets.into_iter().map(|p| {
+				meta::Preset {
+					name: p.keys().next().unwrap().to_owned(),
+					settings: p.values().next().unwrap().into_iter().map(|(o, v)| (o.to_owned(), match v {
+						meta::ValueBase::Files(v) => meta::Value::SingleFiles(option_indexes[o][v] as u32),
+						meta::ValueBase::Color(v) => match v.len() {
+							4 => meta::Value::Rgba(v[..].try_into().unwrap()),
+							3 => meta::Value::Rgb(v[..].try_into().unwrap()),
+							_ => panic!("Unsupported color type")
+						},
+					})).collect(),
 				}
 			}).collect(),
+			
+			options,
 			
 			files: files.get(&None).map_or_else(|| HashMap::new(), |v| v.clone()),
 			
