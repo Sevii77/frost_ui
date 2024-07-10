@@ -1,6 +1,6 @@
 use std::{collections::HashMap, io::Cursor, path::Path};
 
-use image::GenericImage;
+use image::{GenericImage, Rgba};
 
 fn extract(id: usize) -> Result<image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, crate::Error> {
 	// aetherment -e --out - --outformat png ui/icon/062000/062040_hr1.tex
@@ -223,6 +223,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		let content_id = 062000 + i;
 		let party_id   = 062100 + i;
 		let macro_id   = 062800 + i;
+		let plate_id   = 062225 + i;
 		let Ok(mut icon_56) = extract(content_id) else {break};
 		let color = icon_roles[&i].option();
 		
@@ -247,135 +248,205 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		}
 		
 		//// save em all
-		let mut icon_faded2_56 = icon_56.clone();
-		for pixel in icon_faded2_56.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
-		
-		let content_path = icon_path(content_id);
-		{ // content glow
-			let local_dir = format!("{}/Job Icons Content/Glow", content_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+		{
+			let mut icon_faded2_56 = icon_56.clone();
+			for pixel in icon_faded2_56.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
 			
-			crate::save_tex(56, 56, icon_glow_56.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(56, 56, icon_56.as_raw(), &dir.join("1.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), None])?;
-			files.entry(("Job Icons Content", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{content_path}.comp"), format!("{local_dir}/comp.tex.comp"));
-		}
-		
-		{ // content border
-			let local_dir = format!("{}/Job Icons Content/Border", content_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+			let content_path = icon_path(content_id);
+			{ // content glow
+				let local_dir = format!("{}/Job Icons Content/Glow", content_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(56, 56, icon_glow_56.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(56, 56, icon_56.as_raw(), &dir.join("1.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				files.entry(("Job Icons Content", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{content_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
 			
-			crate::save_tex(56, 56, icon_border_56.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(56, 56, icon_faded2_56.as_raw(), &dir.join("1.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), None])?;
-			files.entry(("Job Icons Content", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{content_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			{ // content border
+				let local_dir = format!("{}/Job Icons Content/Border", content_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(56, 56, icon_border_56.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(56, 56, icon_faded2_56.as_raw(), &dir.join("1.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				files.entry(("Job Icons Content", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{content_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
 		}
 		
 		// party list icons
-		let icon_64 = image::imageops::resize(&icon_56, 64, 64, image::imageops::FilterType::CatmullRom);
-		let icon_border_64 = image::imageops::resize(&icon_border_56, 64, 64, image::imageops::FilterType::CatmullRom);
-		let icon_glow_64 = image::imageops::resize(&icon_glow_56, 64, 64, image::imageops::FilterType::CatmullRom);
-		
-		let mut icon_faded_64 = icon_64.clone();
-		for pixel in icon_faded_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
-		let mut icon_faded2_64 = icon_64.clone();
-		for pixel in icon_faded2_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
-		
-		let party_path = icon_path(party_id);
-		{ // party glow
-			let local_dir = format!("{}/Job Icons Party List/Glow", party_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+		{
+			let icon_64 = image::imageops::resize(&icon_56, 64, 64, image::imageops::FilterType::CatmullRom);
+			let icon_border_64 = image::imageops::resize(&icon_border_56, 64, 64, image::imageops::FilterType::CatmullRom);
+			let icon_glow_64 = image::imageops::resize(&icon_glow_56, 64, 64, image::imageops::FilterType::CatmullRom);
 			
-			crate::save_tex(64, 64, icon_glow_64.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(64, 64, icon_64.as_raw(), &dir.join("1.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), None])?;
-			files.entry(("Job Icons Party List", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
-		}
-		
-		{ // party border
-			let local_dir = format!("{}/Job Icons Party List/Border", party_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+			let mut icon_faded_64 = icon_64.clone();
+			for pixel in icon_faded_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
+			let mut icon_faded2_64 = icon_64.clone();
+			for pixel in icon_faded2_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
 			
-			crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(64, 64, icon_faded2_64.as_raw(), &dir.join("1.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), None])?;
-			files.entry(("Job Icons Party List", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
-		}
-		
-		{ // party square
-			let local_dir = format!("{}/Job Icons Party List/Square", party_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+			let party_path = icon_path(party_id);
+			{ // party glow
+				let local_dir = format!("{}/Job Icons Party List/Glow", party_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(64, 64, icon_glow_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, icon_64.as_raw(), &dir.join("1.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				files.entry(("Job Icons Party List", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
 			
-			crate::save_tex(64, 64, square_64.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("1.tex"))?;
-			crate::save_tex(64, 64, icon_faded_64.as_raw(), &dir.join("2.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
-			files.entry(("Job Icons Party List", "Square")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
-		}
-		
-		{ // party square
-			let local_dir = format!("{}/Job Icons Party List/Rounded", party_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+			{ // party border
+				let local_dir = format!("{}/Job Icons Party List/Border", party_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, icon_faded2_64.as_raw(), &dir.join("1.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				files.entry(("Job Icons Party List", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
 			
-			crate::save_tex(64, 64, rounded_64.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("1.tex"))?;
-			crate::save_tex(64, 64, icon_faded_64.as_raw(), &dir.join("2.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
-			files.entry(("Job Icons Party List", "Rounded")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			{ // party square
+				let local_dir = format!("{}/Job Icons Party List/Square", party_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(64, 64, square_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("1.tex"))?;
+				crate::save_tex(64, 64, icon_faded_64.as_raw(), &dir.join("2.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
+				files.entry(("Job Icons Party List", "Square")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
+			
+			{ // party rounded
+				let local_dir = format!("{}/Job Icons Party List/Rounded", party_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(64, 64, rounded_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("1.tex"))?;
+				crate::save_tex(64, 64, icon_faded_64.as_raw(), &dir.join("2.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
+				files.entry(("Job Icons Party List", "Rounded")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
 		}
 		
 		// macro icons
-		let icon_80 = image::imageops::resize(&icon_56, 80, 80, image::imageops::FilterType::CatmullRom);
-		let icon_border_80 = image::imageops::resize(&icon_border_56, 80, 80, image::imageops::FilterType::CatmullRom);
-		let icon_glow_80 = image::imageops::resize(&icon_glow_56, 80, 80, image::imageops::FilterType::CatmullRom);
-		
-		let mut icon_faded_80 = icon_80.clone();
-		for pixel in icon_faded_80.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
-		let mut icon_faded2_80 = icon_80.clone();
-		for pixel in icon_faded2_80.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
-		
-		let macro_path = icon_path(macro_id);
-		{ // macro glow
-			let local_dir = format!("{}/Job Icons Macro/Glow", macro_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+		{
+			let icon_80 = image::imageops::resize(&icon_56, 80, 80, image::imageops::FilterType::CatmullRom);
+			let icon_border_80 = image::imageops::resize(&icon_border_56, 80, 80, image::imageops::FilterType::CatmullRom);
+			let icon_glow_80 = image::imageops::resize(&icon_glow_56, 80, 80, image::imageops::FilterType::CatmullRom);
 			
-			crate::save_tex(80, 80, icon_glow_80.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(80, 80, icon_80.as_raw(), &dir.join("1.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), None])?;
-			files.entry(("Job Icons Macro", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{macro_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			let mut icon_faded_80 = icon_80.clone();
+			for pixel in icon_faded_80.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
+			let mut icon_faded2_80 = icon_80.clone();
+			for pixel in icon_faded2_80.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
+			
+			let macro_path = icon_path(macro_id);
+			{ // macro glow
+				let local_dir = format!("{}/Job Icons Macro/Glow", macro_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(80, 80, icon_glow_80.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(80, 80, icon_80.as_raw(), &dir.join("1.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				files.entry(("Job Icons Macro", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{macro_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
+			
+			{ // macro border
+				let local_dir = format!("{}/Job Icons Macro/Border", macro_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(80, 80, icon_border_80.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(80, 80, icon_faded2_80.as_raw(), &dir.join("1.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				files.entry(("Job Icons Macro", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{macro_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
+			
+			{ // macro full
+				let local_dir = format!("{}/Job Icons Macro/Full", macro_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(80, 80, action_80.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(80, 80, icon_border_80.as_raw(), &dir.join("1.tex"))?;
+				crate::save_tex(80, 80, icon_faded_80.as_raw(), &dir.join("2.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
+				files.entry(("Job Icons Macro", "Full")).or_insert_with(|| HashMap::new()).insert(format!("{macro_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
 		}
 		
-		{ // macro border
-			let local_dir = format!("{}/Job Icons Macro/Border", macro_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+		// TODO: nameplate type 1 (use party)
+		{
+			// let icon_64 = image::imageops::resize(&icon_56, 64, 64, image::imageops::FilterType::CatmullRom);
+			// let icon_border_64 = image::imageops::resize(&icon_border_56, 64, 64, image::imageops::FilterType::CatmullRom);
+			// let icon_glow_64 = image::imageops::resize(&icon_glow_56, 64, 64, image::imageops::FilterType::CatmullRom);
+			let mut icon_64: image::ImageBuffer<Rgba<u8>, _> = image::ImageBuffer::new(64, 64);
+			let mut icon_border_64: image::ImageBuffer<Rgba<u8>, _> = image::ImageBuffer::new(64, 64);
+			let mut icon_glow_64: image::ImageBuffer<Rgba<u8>, _> = image::ImageBuffer::new(64, 64);
 			
-			crate::save_tex(80, 80, icon_border_80.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(80, 80, icon_faded2_80.as_raw(), &dir.join("1.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), None])?;
-			files.entry(("Job Icons Macro", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{macro_path}.comp"), format!("{local_dir}/comp.tex.comp"));
-		}
-		
-		{ // macro full
-			let local_dir = format!("{}/Job Icons Macro/Full", macro_path);
-			let dir = files_root.join(&local_dir);
-			_ = std::fs::create_dir_all(&dir);
+			image::imageops::overlay(&mut icon_64, &image::imageops::resize(&icon_56, 48, 48, image::imageops::FilterType::CatmullRom), 8, 8);
+			image::imageops::overlay(&mut icon_border_64, &image::imageops::resize(&icon_border_56, 48, 48, image::imageops::FilterType::CatmullRom), 8, 8);
+			image::imageops::overlay(&mut icon_glow_64, &image::imageops::resize(&icon_glow_56, 48, 48, image::imageops::FilterType::CatmullRom), 8, 8);
 			
-			crate::save_tex(80, 80, action_80.as_raw(), &dir.join("0.tex"))?;
-			crate::save_tex(80, 80, icon_border_80.as_raw(), &dir.join("1.tex"))?;
-			crate::save_tex(80, 80, icon_faded_80.as_raw(), &dir.join("2.tex"))?;
-			write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
-			files.entry(("Job Icons Macro", "Full")).or_insert_with(|| HashMap::new()).insert(format!("{macro_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			let mut icon_faded_64 = icon_64.clone();
+			for pixel in icon_faded_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
+			let mut icon_faded2_64 = icon_64.clone();
+			for pixel in icon_faded2_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
+			
+			let plate_path = icon_path(plate_id);
+			{ // party glow
+				let local_dir = format!("{}/Job Icons Party List/Glow", plate_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(64, 64, icon_glow_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, icon_64.as_raw(), &dir.join("1.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				files.entry(("Job Icons Party List", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{plate_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
+			
+			{ // party border
+				let local_dir = format!("{}/Job Icons Party List/Border", plate_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, icon_faded2_64.as_raw(), &dir.join("1.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				files.entry(("Job Icons Party List", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{plate_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
+			
+			{ // party square
+				let local_dir = format!("{}/Job Icons Party List/Square", plate_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(64, 64, square_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("1.tex"))?;
+				crate::save_tex(64, 64, icon_faded_64.as_raw(), &dir.join("2.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
+				files.entry(("Job Icons Party List", "Square")).or_insert_with(|| HashMap::new()).insert(format!("{plate_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
+			
+			{ // party rounded
+				let local_dir = format!("{}/Job Icons Party List/Rounded", plate_path);
+				let dir = files_root.join(&local_dir);
+				_ = std::fs::create_dir_all(&dir);
+				
+				crate::save_tex(64, 64, rounded_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("1.tex"))?;
+				crate::save_tex(64, 64, icon_faded_64.as_raw(), &dir.join("2.tex"))?;
+				write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
+				files.entry(("Job Icons Party List", "Rounded")).or_insert_with(|| HashMap::new()).insert(format!("{plate_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+			}
 		}
-		
-		// TODO: nameplate type 1
 	}
 	
 	Ok(files)

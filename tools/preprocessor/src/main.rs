@@ -22,6 +22,7 @@ fn main() -> Result<(), Error> {
 	let mut font = resvg::usvg::fontdb::Database::new();
 	font.load_system_fonts();
 	font.load_font_data(include_bytes!("Axis Extrabold.otf").to_vec());
+	font.load_font_data(include_bytes!("Miedinger Bold.otf").to_vec());
 	
 	fn walk_dir(path: &Path, target: &Path, files: &mut HashMap<Option<(String, String)>, HashMap<String, String>>, font: &resvg::usvg::fontdb::Database) -> Result<(), Error> {
 		for entry in std::fs::read_dir(path)? {
