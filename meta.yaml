@@ -1,6 +1,6 @@
 name: Frost UI
 description:
-version: 0.1.50
+version: 0.1.51
 author: Sevii
 website:
 tags:
@@ -144,4 +144,5 @@ presets:
       Secondary Color: [0.188, 0.188, 0.188]
       Window Style: Square Top Border
       Shape Style: Square
+      Gauge: Square
       Minimap: Square
