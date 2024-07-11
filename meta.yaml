@@ -1,12 +1,14 @@
 name: Frost UI
 description:
-version: 0.1.53
+version: 0.1.54
 author: Sevii
 website:
 tags:
   - Ui
 dependencies: []
 options:
+  - Generic: 0
+  
   - Accent:
       default: [0, 0.5, 1.0]
       min: [0.0, 0.0, 0.0]
@@ -43,6 +45,13 @@ options:
     - Rounded
     - Square
   
+  - Minimap;Rounded:
+    - Rounded
+    - Square
+    - Circle
+  
+  - Combat: 0
+  
   - Proc Color:
       default: [1.0, 0.68, 0.22]
       min: [0.0, 0.0, 0.0]
@@ -76,6 +85,13 @@ options:
   - Gauge;Rounded:
     - Rounded
     - Square
+  
+  - Gauge Saturation:
+      default: [0.8]
+      min: [0.0]
+      max: [1.0]
+  
+  - Job icons: 0
   
   - Job Icons Content;Glow:
     - Glow
@@ -131,11 +147,6 @@ options:
       default: [0.651, 0.537, 0.173]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
-  
-  - Minimap;Rounded:
-    - Rounded
-    - Square
-    - Circle
 presets:
   - Frosted:
   

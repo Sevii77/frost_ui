@@ -18,9 +18,17 @@ pub struct MetaBase {
 	pub presets: Vec<HashMap<String, HashMap<String, ValueBase>>>,
 }
 
+// #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+// #[serde(untagged)]
+// pub enum OptionBaseType {
+// 	Category(String),
+// 	Option(HashMap<String, OptionBase>),
+// }
+
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum OptionBase {
+	Category(i32),
 	Files(Vec<String>),
 	Color(HashMap<String, Vec<f32>>),
 	// Color {
@@ -48,7 +56,7 @@ pub struct Meta {
 	pub website: String,
 	pub tags: Vec<String>,
 	pub dependencies: Vec<String>,
-	pub options: Vec<Option>,
+	pub options: Vec<OptionType>,
 	pub presets: Vec<Preset>,
 	
 	pub files: HashMap<String, String>,
@@ -97,6 +105,13 @@ pub enum Value {
 }
 
 // ----------
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum OptionType {
+	Category(String),
+	Option(Option),
+}
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct Option {

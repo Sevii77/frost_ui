@@ -4,4 +4,5 @@ obj/
 Cargo.lock
 /meta.json
 /files
-/packs/0.*
+/packs
+pack.log

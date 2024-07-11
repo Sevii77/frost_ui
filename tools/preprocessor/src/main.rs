@@ -111,14 +111,16 @@ fn main() -> Result<(), Error> {
 			let default = key.next();
 			let value = o.values().next().unwrap();
 			
-			meta::Option {
-				name: name.to_owned(),
-				description: String::new(),
-				settings: match value {
-					meta::OptionBase::Files(sub_options) => {
-						option_indexes.insert(name.to_owned(), sub_options.iter().enumerate().map(|(i, v)| (v.split(";").next().unwrap().to_owned(), i)).collect::<HashMap<_, _>>());
-						
-						meta::OptionSettings::SingleFiles(meta::ValueFiles {
+			match value {
+				meta::OptionBase::Category(_) => meta::OptionType::Category(name.to_owned()),
+				
+				meta::OptionBase::Files(sub_options) => {
+					option_indexes.insert(name.to_owned(), sub_options.iter().enumerate().map(|(i, v)| (v.split(";").next().unwrap().to_owned(), i)).collect::<HashMap<_, _>>());
+					
+					meta::OptionType::Option(meta::Option {
+						name: name.to_owned(),
+						description: String::new(),
+						settings: meta::OptionSettings::SingleFiles(meta::ValueFiles {
 							default: default.map_or(0, |v| sub_options.iter().position(|v2| v2.split(";").next().unwrap() == v).map_or(0, |v| v as u32)),
 							options: sub_options.into_iter().map(|sub_option| {
 								let mut sub_option_segs = sub_option.split(";");
@@ -141,14 +143,18 @@ fn main() -> Result<(), Error> {
 								}
 							}).collect(),
 						})
-					}
+					})
+				}
+				
+				meta::OptionBase::Color(color) => {
+					let default = &color["default"];
+					let min = &color["min"];
+					let max = &color["max"];
 					
-					meta::OptionBase::Color(color) => {
-						let default = &color["default"];
-						let min = &color["min"];
-						let max = &color["max"];
-						
-						match default.len() {
+					meta::OptionType::Option(meta::Option {
+						name: name.to_owned(),
+						description: String::new(),
+						settings: match default.len() {
 							4 => meta::OptionSettings::Rgba(meta::ValueRgba {
 								default: default[..].try_into().unwrap(),
 								min: min[..].try_into().unwrap(),
@@ -161,9 +167,15 @@ fn main() -> Result<(), Error> {
 								max: max[..].try_into().unwrap(),
 							}),
 							
+							1 => meta::OptionSettings::Grayscale(meta::ValueSingle {
+								default: default[0],
+								min: min[0],
+								max: max[0],
+							}),
+							
 							_ => panic!("Unsupported color type")
 						}
-					}
+					})
 				}
 			}
 		}).collect();
@@ -201,7 +213,7 @@ fn main() -> Result<(), Error> {
 		
 		for (option, paths) in &files {
 			if let Some((main, sub)) = option {
-				let Some(opt) = meta.options.iter().find(|v| v.name == *main) else {
+				let Some(opt) = meta.options.iter().find(|v| if let meta::OptionType::Option(v) = v {v.name == *main} else {false}) else {
 					println!("No option exists with name {main}");
 					for (p, _) in paths {
 						println!("\t - {p}");
@@ -210,11 +222,13 @@ fn main() -> Result<(), Error> {
 					continue;
 				};
 				
-				if let meta::OptionSettings::SingleFiles(sub_opt) = &opt.settings {
-					if !sub_opt.options.iter().any(|v| v.name == *sub) {
-						println!("No sub option exists for {main} with name {sub}");
-						for (p, _) in paths {
-							println!("\t - {p}");
+				if let meta::OptionType::Option(opt) = opt {
+					if let meta::OptionSettings::SingleFiles(sub_opt) = &opt.settings {
+						if !sub_opt.options.iter().any(|v| v.name == *sub) {
+							println!("No sub option exists for {main} with name {sub}");
+							for (p, _) in paths {
+								println!("\t - {p}");
+							}
 						}
 					}
 				}
