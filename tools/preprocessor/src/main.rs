@@ -189,7 +189,6 @@ fn main() -> Result<(), Error> {
 			tags: meta_base.tags,
 			dependencies: meta_base.dependencies,
 			
-			// presets: Vec::new(),
 			presets: meta_base.presets.into_iter().map(|p| {
 				meta::Preset {
 					name: p.keys().next().unwrap().to_owned(),
@@ -207,6 +206,43 @@ fn main() -> Result<(), Error> {
 			options,
 			
 			files: files.get(&None).map_or_else(|| HashMap::new(), |v| v.clone()),
+			
+			plugin_settings: meta::PluginSettings {
+				dalamud: Some({
+					let s = meta_base.style.variables;
+					meta::dalamud::Style {
+						alpha: s.alpha.convert(),
+						window_padding: s.window_padding.convert(),
+						window_rounding: s.window_rounding.convert(),
+						window_border_size: s.window_border_size.convert(),
+						window_title_align: s.window_title_align.convert(),
+						window_menu_button_position: s.window_menu_button_position.convert(),
+						child_rounding: s.child_rounding.convert(),
+						child_border_size: s.child_border_size.convert(),
+						popup_rounding: s.popup_rounding.convert(),
+						popup_border_size: s.popup_border_size.convert(),
+						frame_padding: s.frame_padding.convert(),
+						frame_rounding: s.frame_rounding.convert(),
+						frame_border_size: s.frame_border_size.convert(),
+						item_spacing: s.item_spacing.convert(),
+						item_inner_spacing: s.item_inner_spacing.convert(),
+						cell_padding: s.cell_padding.convert(),
+						touch_extra_padding: s.touch_extra_padding.convert(),
+						indent_spacing: s.indent_spacing.convert(),
+						scrollbar_size: s.scrollbar_size.convert(),
+						scrollbar_rounding: s.scrollbar_rounding.convert(),
+						grab_min_size: s.grab_min_size.convert(),
+						grab_rounding: s.grab_rounding.convert(),
+						log_slider_deadzone: s.log_slider_deadzone.convert(),
+						tab_rounding: s.tab_rounding.convert(),
+						tab_border_size: s.tab_border_size.convert(),
+						button_text_align: s.button_text_align.convert(),
+						selectable_text_align: s.selectable_text_align.convert(),
+						display_safe_area_padding: s.display_safe_area_padding.convert(),
+						colors: meta_base.style.colors.into_iter().map(|(v, k)| (v, k.convert())).collect(),
+					}
+				})
+			},
 			
 			..Default::default()
 		};

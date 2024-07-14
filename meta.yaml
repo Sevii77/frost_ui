@@ -1,11 +1,12 @@
 name: Frost UI
 description:
-version: 0.1.54
+version: 0.1.55
 author: Sevii
 website:
 tags:
   - Ui
 dependencies: []
+
 options:
   - Generic: 0
   
@@ -147,6 +148,7 @@ options:
       default: [0.651, 0.537, 0.173]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
+
 presets:
   - Frosted:
   
@@ -157,3 +159,124 @@ presets:
       Shape Style: Square
       Gauge: Square
       Minimap: Square
+
+style:
+  variables:
+    WindowPadding: [10.0, 10.0]
+    FramePadding: [8.0, 2.0]
+    CellPadding: [4.0, 4.0]
+    ItemSpacing: [4.0, 4.0]
+    ItemInnerSpacing: [4.0, 4.0]
+    TouchExtraPadding: [2.0, 2.0]
+    IndentSpacing: 20.0
+    ScrollbarSize: 10.0
+    GrabMinSize: 16.0
+    
+    WindowBorderSize: 2.0
+    ChildBorderSize: 1.0
+    PopupBorderSize: 1.0
+    FrameBorderSize: 1.0
+    TabBorderSize: 1.0
+    
+    WindowRounding:
+      Window Style:
+        Rounded: 11.0
+        Square:  0.0
+    ChildRounding:
+      Shape Style:
+        Rounded: 5.0
+        Square:  0.0
+    FrameRounding:
+      Shape Style:
+        Rounded: 10.0
+        Square:  0.0
+    PopupRounding:
+      Shape Style:
+        Rounded: 11.0
+        Square:  0.0
+    ScrollbarRounding:
+      Shape Style:
+        Rounded: 10.0
+        Square:  0.0
+    GrabRounding:
+      Shape Style:
+        Rounded: 12.0
+        Square:  0.0
+    TabRounding:
+      Shape Style:
+        Rounded: 5.0
+        Square:  0.0
+  
+  colors:
+    Text: Foreground Color
+    TextDisabled: [Foreground Color, [0.7, 0.7, 0.7, 1.0]] # use Ternary Color when that gets implemented (maybe)
+    
+    WindowBg: Background Color
+    ChildBg: [0.0, 0.0, 0.0, 0.0]
+    PopupBg: Secondary Color
+    
+    Border: [Secondary Color, [0.7, 0.7, 0.7, 1.0]]
+    BorderShadow: [0.0, 0.0, 0.0, 0.0]
+    
+    FrameBg: Secondary Color
+    FrameBgHovered: [Secondary Color, [1.1, 1.1, 1.1, 1.0]]
+    FrameBgActive: [Secondary Color, [1.15, 1.15, 1.15, 1.0]]
+    
+    TitleBg: Background Color
+    TitleBgActive: Background Color
+    TitleBgCollapsed: Background Color
+    
+    MenuBarBg: [0.0, 0.0, 0.0, 0.0]
+    
+    ScrollbarBg: [0.0, 0.0, 0.0, 0.0]
+    ScrollbarGrab: Foreground Color # use Ternary Color when that gets implemented
+    ScrollbarGrabHovered: [Foreground Color, [1.1, 1.1, 1.1, 1.0]] # use Ternary Color when that gets implemented
+    ScrollbarGrabActive: [Foreground Color, [1.15, 1.15, 1.15, 1.0]] # use Ternary Color when that gets implemented
+    
+    CheckMark: Accent
+    SliderGrab: Foreground Color # use Ternary Color when that gets implemented
+    SliderGrabActive: Foreground Color # use Ternary Color when that gets implemented
+    
+    Button: Secondary Color
+    ButtonHovered: [Secondary Color, [1.1, 1.1, 1.1, 1.0]]
+    ButtonActive: [Secondary Color, [1.15, 1.15, 1.15, 1.0]]
+    
+    Header: Secondary Color
+    HeaderHovered: [Secondary Color, [1.1, 1.1, 1.1, 1.0]]
+    HeaderActive: [Secondary Color, [1.15, 1.15, 1.15, 1.0]]
+    
+    Separator: [0.0, 0.0, 0.0, 0.0]
+    SeparatorHovered: [Accent, [0.9, 0.9, 0.9, 1.0]]
+    SeparatorActive: Accent
+    
+    ResizeGrip: [0.0, 0.0, 0.0, 0.0]
+    ResizeGripHovered: [0.0, 0.0, 0.0, 0.0]
+    ResizeGripActive: [Accent, [1.0, 1.0, 1.0, 0.5]]
+    
+    Tab: Secondary Color
+    TabHovered: [Secondary Color, [1.1, 1.1, 1.1, 1.0]]
+    TabActive: Accent
+    TabUnfocused: Secondary Color
+    TabUnfocusedActive: Accent
+    
+    DockingPreview: Accent
+    DockingEmptyBg: Secondary Color
+    
+    PlotLines: Accent
+    PlotLinesHovered: [Accent, [0.9, 0.9, 0.9, 1.0]]
+    PlotHistogram: Accent
+    PlotHistogramHovered: [Accent, [0.9, 0.9, 0.9, 1.0]]
+    
+    TableHeaderBg: Secondary Color
+    TableBorderStrong: [Secondary Color, [0.7, 0.7, 0.7, 1.0]]
+    TableBorderLight: [Secondary Color, [0.8, 0.8, 0.8, 1.0]]
+    TableRowBg: [0.0, 0.0, 0.0, 0.0]
+    TableRowBgAlt: [0.0, 0.0, 0.0, 0.0]
+    
+    TextSelectedBg: Accent
+    DragDropTarget: Accent
+    
+    NavHighlight: Accent
+    NavWindowingHighlight: [1.0, 1.0, 1.0, 0.7]
+    NavWindowingDimBg: [0.8, 0.8, 0.8, 0.2]
+    ModalWindowDimBg: [0.8, 0.8, 0.8, 0.2]
