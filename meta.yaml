@@ -58,6 +58,11 @@ options:
   
   - Combat: 0
   
+  - Party List Background Color:
+      default: [0.0, 0.0, 0.0, 0.0]
+      min: [0.0, 0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0, 1.0]
+  
   - Proc Color:
       default: [1.0, 0.68, 0.22]
       min: [0.0, 0.0, 0.0]
@@ -91,6 +96,16 @@ options:
   - Gauge;Rounded:
     - Rounded
     - Square
+  
+  - Gauge Background Color:
+      default: [0.1, 0.1, 0.1, 0.6]
+      min: [0.0, 0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0, 1.0]
+  
+  - Gauge Border Color:
+      default: [0.15, 0.15, 0.16, 1.0]
+      min: [0.0, 0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0, 1.0]
   
   - Gauge Saturation:
       default: [0.8]
