@@ -1,6 +1,7 @@
 ## Requirements
 svg:
 - AXIS for font
+- Miedinger for gil font
 
 ## Guidelines
 Outlines:
@@ -44,4 +45,5 @@ Custom icons are also in order for them:
 - ui/uld/ToggleButton
 
 ## Todo
+- Convert all non background elements that use background color as outline to use secondary color for it instead
 - ULD composite support, that way we can easily mass edit colors with customisation support (closest color will need to be selected since there is a limited selection)

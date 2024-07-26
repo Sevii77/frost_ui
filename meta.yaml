@@ -1,6 +1,6 @@
 name: Frost UI
 description:
-version: 0.1.55
+version: 0.1.56
 author: Sevii
 website:
 tags:
@@ -28,6 +28,11 @@ options:
   - Secondary Color:
       # default: [0.6, 0.6, 0.61]
       default: [0.24, 0.24, 0.27]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Ternary Color:
+      default: [0.7, 0.7, 0.71]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
@@ -167,7 +172,8 @@ style:
     CellPadding: [4.0, 4.0]
     ItemSpacing: [4.0, 4.0]
     ItemInnerSpacing: [4.0, 4.0]
-    TouchExtraPadding: [2.0, 2.0]
+    # TouchExtraPadding: [2.0, 2.0]
+    TouchExtraPadding: [0.0, 0.0]
     IndentSpacing: 20.0
     ScrollbarSize: 10.0
     GrabMinSize: 16.0
@@ -229,13 +235,13 @@ style:
     MenuBarBg: [0.0, 0.0, 0.0, 0.0]
     
     ScrollbarBg: [0.0, 0.0, 0.0, 0.0]
-    ScrollbarGrab: Foreground Color # use Ternary Color when that gets implemented
-    ScrollbarGrabHovered: [Foreground Color, [1.1, 1.1, 1.1, 1.0]] # use Ternary Color when that gets implemented
-    ScrollbarGrabActive: [Foreground Color, [1.15, 1.15, 1.15, 1.0]] # use Ternary Color when that gets implemented
+    ScrollbarGrab: Ternary Color
+    ScrollbarGrabHovered: [Ternary Color, [1.1, 1.1, 1.1, 1.0]]
+    ScrollbarGrabActive: [Ternary Color, [1.15, 1.15, 1.15, 1.0]]
     
     CheckMark: Accent
-    SliderGrab: Foreground Color # use Ternary Color when that gets implemented
-    SliderGrabActive: Foreground Color # use Ternary Color when that gets implemented
+    SliderGrab: Ternary Color
+    SliderGrabActive: Ternary Color
     
     Button: Secondary Color
     ButtonHovered: [Secondary Color, [1.1, 1.1, 1.1, 1.0]]
@@ -254,7 +260,7 @@ style:
     ResizeGripActive: [Accent, [1.0, 1.0, 1.0, 0.5]]
     
     Tab: Secondary Color
-    TabHovered: [Secondary Color, [1.1, 1.1, 1.1, 1.0]]
+    TabHovered: [Accent, [0.7, 0.7, 0.7, 1.0]]
     TabActive: Accent
     TabUnfocused: Secondary Color
     TabUnfocusedActive: Accent

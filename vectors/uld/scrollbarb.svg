@@ -332,7 +332,7 @@
      inkscape:pagecheckerboard="true"
      inkscape:deskcolor="#d1d1d1"
      showborder="false"
-     inkscape:window-width="2235"
+     inkscape:window-width="2261"
      inkscape:window-height="1388"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -387,7 +387,7 @@
        inkscape:label="Shape Style:Rounded"
        style="display:inline;fill:#ffffff"><g
          id="g3"
-         inkscape:label="Foreground Color"
+         inkscape:label="Ternary Color"
          style="display:inline"><rect
            style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dashoffset:0.8;paint-order:stroke fill markers"
            id="rect5"
@@ -400,7 +400,7 @@
        inkscape:label="Shape Style:Square"
        style="display:none;fill:#ffffff"><g
          id="g4"
-         inkscape:label="Foreground Color"
+         inkscape:label="Ternary Color"
          style="display:inline"><rect
            style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dashoffset:0.8;paint-order:stroke fill markers"
            id="rect1"
