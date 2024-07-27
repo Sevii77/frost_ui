@@ -69,7 +69,7 @@ impl Roles {
 	}
 }
 
-fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, alpha_resolver: impl Fn(&image::Rgba<u8>) -> u8) {
+fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, mut alpha_resolver: impl FnMut(&image::Rgba<u8>) -> u8) {
 	let mut min = 255;
 	let mut max = 0;
 	for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
@@ -80,7 +80,7 @@ fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, alpha_r
 		pixel[0] = val;
 		pixel[1] = val;
 		pixel[2] = val;
-		pixel[3] = alpha_resolver(&pixel);
+		pixel[3] = alpha_resolver(pixel);
 		
 		min = min.min(val);
 		max = max.max(val);
@@ -534,6 +534,57 @@ pub fn shop_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 		// icon.save(files_root.join(format!("{local_path}.png")))?;
 		crate::save_tex(40, 40, icon.as_raw(), &path)?;
 		files.insert(local_path.clone(), local_path);
+	}
+	
+	Ok(files)
+}
+
+pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::Error> {
+	let mut bg: image::ImageBuffer<Rgba<u8>, _> = image::ImageBuffer::from_pixel(80, 80, [255, 255, 255, 255].into());
+	let z = || -> image::Rgba<u8> {[0, 0, 0, 0].into()};
+	let s = bg.width();
+	for x in 0..6 {
+		for y in 0..(6 - x) {
+			bg.put_pixel(x, y, z());
+			bg.put_pixel(s - 1 - x, y, z());
+			bg.put_pixel(x, s - 1 - y, z());
+			bg.put_pixel(s - 1 - x, s - 1 - y, z());
+		}
+	}
+	
+	let mut files = HashMap::new();
+	let files_root = target_root.join("files");
+	for id in 000001..=000099 {
+		let Ok(mut icon) = extract(id) else {continue};
+		
+		for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
+			if pixel[0] > 100 && pixel[1] > 70 /*|| pixel[2] == 24*/ {
+				pixel[0] = 255;
+				pixel[1] = 255;
+				pixel[2] = 255;
+				pixel[3] = 255;
+			} else {
+				pixel[3] = 0;
+			}
+		}
+		
+		// let mut icon = image::imageops::blur(&icon, 0.5);
+		add_border(&mut icon);
+		
+		let path = icon_path(id);
+		let dir = files_root.join(&path);
+		_ = std::fs::create_dir_all(&dir);
+		
+		crate::save_tex(80, 80, bg.as_raw(), &dir.join("0.tex"))?;
+		crate::save_tex(80, 80, icon.as_raw(), &dir.join("1.tex"))?;
+		write_comp(&dir, &path, vec![Some("Secondary Color"), Some("Foreground Color")])?;
+		files.insert(format!("{path}.comp"), format!("{path}/comp.tex.comp"));
+		
+		{
+			let dir = files_root.join("menu_icons");
+			_ = std::fs::create_dir_all(&dir);
+			crate::save_tex(80, 80, icon.as_raw(), &dir.join(format!("{id}.tex")))?;
+		}
 	}
 	
 	Ok(files)

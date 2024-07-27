@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs::File, io::{BufWriter, Cursor, Write}, path::Path};
+use std::{collections::{HashMap, HashSet}, fs::File, io::{BufWriter, Cursor, Write}, path::Path};
 
 mod meta;
 mod tex_composite;
@@ -24,11 +24,13 @@ fn main() -> Result<(), Error> {
 	font.load_font_data(include_bytes!("Axis Extrabold.otf").to_vec());
 	font.load_font_data(include_bytes!("Miedinger Bold.otf").to_vec());
 	
-	fn walk_dir(path: &Path, target: &Path, files: &mut HashMap<Option<(String, String)>, HashMap<String, String>>, font: &resvg::usvg::fontdb::Database) -> Result<(), Error> {
+	let mut color_paths: HashMap<String, HashSet<String>> = HashMap::new();
+	
+	fn walk_dir(path: &Path, target: &Path, files: &mut HashMap<Option<(String, String)>, HashMap<String, String>>, font: &resvg::usvg::fontdb::Database, color_paths: &mut HashMap<String, HashSet<String>>) -> Result<(), Error> {
 		for entry in std::fs::read_dir(path)? {
 			let entry_path = entry?.path();
 			if entry_path.is_dir() {
-				walk_dir(&entry_path, target, files, font)?;
+				walk_dir(&entry_path, target, files, font, color_paths)?;
 			} else if entry_path.extension().map(|v| v.to_str()) == Some(Some("svg")) {
 				let svgs = split_svgs(&std::fs::read_to_string(entry_path)?)?;
 				for svg in svgs {
@@ -41,11 +43,17 @@ fn main() -> Result<(), Error> {
 					let paths = files.entry(svg.option.clone()).or_insert_with(|| HashMap::new());
 					if svg.layers.len() > 1 || svg.layers[0].0 != None {
 						paths.insert(format!("{}.comp", &svg.path), format!("{local_dir}/comp.tex.comp"));
+						// if svg.path.starts_with("ui/uld/") {
+						// 	paths.insert(format!("{}.comp", &svg.path.replace("ui/uld/", "ui/uld/light/")), format!("{local_dir}/comp.tex.comp"));
+						// }
 					} else {
 						paths.insert(svg.path.clone(), format!("{local_dir}/0.tex"));
+						// if svg.path.starts_with("ui/uld/") {
+						// 	paths.insert(svg.path.replace("ui/uld/", "ui/uld/light/"), format!("{local_dir}/0.tex"));
+						// }
 					}
 					
-					render_svg(svg, target, font)?;
+					render_svg(svg, target, font, color_paths)?;
 				}
 			}
 		}
@@ -53,7 +61,7 @@ fn main() -> Result<(), Error> {
 		Ok(())
 	}
 	
-	walk_dir(svg_root, &target_root.join("files"), &mut files, &font)?;
+	walk_dir(svg_root, &target_root.join("files"), &mut files, &font, &mut color_paths)?;
 	
 	// icons
 	for ((o, so), f) in icons::job_icons(&target_root)? {
@@ -75,6 +83,11 @@ fn main() -> Result<(), Error> {
 	
 	let entry = files.entry(None).or_insert_with(|| HashMap::new());
 	for (a, b) in icons::shop_icons(&target_root)? {
+		entry.insert(a, b);
+	}
+	
+	let entry = files.entry(None).or_insert_with(|| HashMap::new());
+	for (a, b) in icons::menu_icons(&target_root)? {
 		entry.insert(a, b);
 	}
 	
@@ -272,6 +285,17 @@ fn main() -> Result<(), Error> {
 		}
 		
 		std::fs::write(Path::new(&args[3]).with_extension("json"), serde_json::to_vec(&meta)?)?;
+	}
+	
+	// color paths log
+	let mut f = BufWriter::new(File::create("color_paths.log")?);
+	for (color, paths) in color_paths {
+		writeln!(f, "\n{color}")?;
+		let mut paths = paths.into_iter().collect::<Vec<_>>();
+		paths.sort();
+		for p in paths {
+			writeln!(f, "\t{p}")?;
+		}
 	}
 	
 	Ok(())
@@ -599,11 +623,11 @@ fn split_svgs(data: &str) -> Result<Vec<SvgResult>, Error> {
 	}).collect())
 }
 
-fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Database) -> Result<(), Error> {
+fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Database, color_paths: &mut HashMap<String, HashSet<String>>) -> Result<(), Error> {
 	let local_dir = if let Some((o1, o2)) = &svg.option {
-		format!("{}/{o1}/{o2}", svg.path)
+		format!("{}/{o1}/{o2}", svg.path.clone())
 	} else {
-		svg.path
+		svg.path.clone()
 	};
 	
 	let dir = target_root.join(&local_dir);
@@ -619,6 +643,8 @@ fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Da
 				path: Path::Mod(format!("{local_dir}/{i}.tex")),
 				blend: Blend::Normal,
 				modifiers: if let Some(color_option) = color_option {
+					color_paths.entry(color_option.to_owned()).or_insert_with(|| HashSet::new()).insert(svg.path.clone());
+					
 					vec![
 						Modifier::Color {
 							value: OptionOrStatic::Option(ColorOption(color_option.to_owned()))
@@ -627,7 +653,7 @@ fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Da
 				} else {
 					Vec::new()
 				}
-			})
+			});
 		}
 		
 		std::fs::write(dir.join("comp.tex.comp"), serde_json::to_string(&Tex{layers: layers})?)?;
