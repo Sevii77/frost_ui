@@ -96,19 +96,19 @@ fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, mut alp
 }
 
 fn add_border(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>) {
-	let (w, h) = (icon.width(), icon.height());
-	let mut new = image::ImageBuffer::<image::Rgba<u8>, Vec<u8>>::new(w, h);
+	let (w, h) = (icon.width() as isize, icon.height() as isize);
+	let mut new = image::ImageBuffer::<image::Rgba<u8>, Vec<u8>>::new(w as u32, h as u32);
 	for x in 0..w {
 		for y in 0..h {
 			let mut max = 0;
 			for x2 in (x - 2).max(0)..=(x + 2).min(w - 1) {
 				for y2 in (y - 2).max(0)..=(y + 2).min(h - 1) {
 					let dist = ((x2 as f32 - x as f32).powi(2) + (y2 as f32 - y as f32).powi(2)).sqrt();
-					max = max.max((icon.get_pixel(x2, y2)[3] as f32 * (1.0 - (dist - 2.0).clamp(0.0, 1.0))) as u8)
+					max = max.max((icon.get_pixel(x2 as u32, y2 as u32)[3] as f32 * (1.0 - (dist - 2.0).clamp(0.0, 1.0))) as u8)
 				}
 			}
 			
-			let pixel = new.get_pixel_mut(x, y);
+			let pixel = new.get_pixel_mut(x as u32, y as u32);
 			pixel[0] = 12;
 			pixel[1] = 12;
 			pixel[2] = 12;
@@ -574,6 +574,7 @@ pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 		
 		for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
 			if pixel[0] > 100 && pixel[1] > 70 /*|| pixel[2] == 24*/ {
+				// pixel[3] = ((pixel[0] as f32 - 100.0) * 8.0).clamp(0.0, 255.0) as u8;
 				pixel[0] = 255;
 				pixel[1] = 255;
 				pixel[2] = 255;
@@ -583,8 +584,22 @@ pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 			}
 		}
 		
-		// let mut icon = image::imageops::blur(&icon, 0.5);
+		let mut icon = image::imageops::blur(&icon, 0.5);
+		let c = icon.clone();
+		image::imageops::overlay(&mut icon, &c, 0, 0);
+		// image::imageops::overlay(&mut icon, &c, 0, 0);
 		add_border(&mut icon);
+		
+		// needed since for some reason it shades red/brown? (premultied bs most likely idfk)
+		for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
+			let val = ((pixel.0[0] as f32 * 0.299) as u16 +
+			           (pixel.0[1] as f32 * 0.587) as u16 +
+			           (pixel.0[2] as f32 * 0.144) as u16).min(255) as u8;
+			
+			pixel[0] = val;
+			pixel[1] = val;
+			pixel[2] = val;
+		}
 		
 		let path = icon_path(id);
 		let dir = files_root.join(&path);
@@ -614,6 +629,7 @@ ranges:
 062401-062499 = job glow (only the jobs)
 062801-062899 = job macro
 
+000001-000099 = menu icons
 061751-061874 = silver bordered
 061901-061959 = beast tribe
 060101-060199 = shop icons
