@@ -214,6 +214,20 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		image::RgbaImage::from_vec(64, 64, pixmap.data().to_owned()).ok_or("Failed loading in square_64.svg")?
 	};
 	
+	let nameplate_rounded = {
+		let tree = resvg::usvg::Tree::from_data(&std::fs::read(asset_dir.join("nameplate_rounded.svg"))?, &opt, &font)?;
+		let mut pixmap = resvg::tiny_skia::Pixmap::new(64, 64).ok_or("Failed creating pixmap with specified size")?;
+		resvg::render(&tree, resvg::tiny_skia::Transform::default(), &mut pixmap.as_mut());
+		image::RgbaImage::from_vec(64, 64, pixmap.data().to_owned()).ok_or("Failed loading in nameplate_rounded.svg")?
+	};
+	
+	let nameplate_square = {
+		let tree = resvg::usvg::Tree::from_data(&std::fs::read(asset_dir.join("nameplate_square.svg"))?, &opt, &font)?;
+		let mut pixmap = resvg::tiny_skia::Pixmap::new(64, 64).ok_or("Failed creating pixmap with specified size")?;
+		resvg::render(&tree, resvg::tiny_skia::Transform::default(), &mut pixmap.as_mut());
+		image::RgbaImage::from_vec(64, 64, pixmap.data().to_owned()).ok_or("Failed loading in nameplate_square.svg")?
+	};
+	
 	let action_80 = image::open(asset_dir.join("action_80.png"))?.into_rgba8();
 	
 	// do the thing
@@ -248,6 +262,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		}
 		
 		//// save em all
+		// content icons
 		{
 			let mut icon_faded2_56 = icon_56.clone();
 			for pixel in icon_faded2_56.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
@@ -382,7 +397,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 			}
 		}
 		
-		// TODO: nameplate type 1 (use party)
+		// nameplate type 1
 		{
 			// let icon_64 = image::imageops::resize(&icon_56, 64, 64, image::imageops::FilterType::CatmullRom);
 			// let icon_border_64 = image::imageops::resize(&icon_border_56, 64, 64, image::imageops::FilterType::CatmullRom);
@@ -428,7 +443,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 				let dir = files_root.join(&local_dir);
 				_ = std::fs::create_dir_all(&dir);
 				
-				crate::save_tex(64, 64, square_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, nameplate_square.as_raw(), &dir.join("0.tex"))?;
 				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("1.tex"))?;
 				crate::save_tex(64, 64, icon_faded_64.as_raw(), &dir.join("2.tex"))?;
 				write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
@@ -440,7 +455,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 				let dir = files_root.join(&local_dir);
 				_ = std::fs::create_dir_all(&dir);
 				
-				crate::save_tex(64, 64, rounded_64.as_raw(), &dir.join("0.tex"))?;
+				crate::save_tex(64, 64, nameplate_rounded.as_raw(), &dir.join("0.tex"))?;
 				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("1.tex"))?;
 				crate::save_tex(64, 64, icon_faded_64.as_raw(), &dir.join("2.tex"))?;
 				write_comp(&dir, &local_dir, vec![Some(color), Some(color), None])?;
