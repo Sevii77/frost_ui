@@ -1,6 +1,5 @@
 use std::{collections::HashMap, io::Cursor, path::Path};
-
-use image::{GenericImage, Rgba};
+use image::{GenericImage, GenericImageView, Rgba};
 
 fn extract(id: usize) -> Result<image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, crate::Error> {
 	// aetherment -e --out - --outformat png ui/icon/062000/062040_hr1.tex
@@ -230,6 +229,34 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 	
 	let action_80 = image::open(asset_dir.join("action_80.png"))?.into_rgba8();
 	
+	// font icons
+	let mut font_icons_glow = HashMap::new();
+	let mut font_icons_border = HashMap::new();
+	let mut font_icons_square = HashMap::new();
+	let mut font_icons_rounded = HashMap::new();
+	
+	// let mut font_icons_glow = vec![
+	// 	image::ImageBuffer::new(512, 1024),
+	// 	image::ImageBuffer::new(512, 1024),
+	// ];
+	// 
+	// let mut font_icons_border = vec![
+	// 	image::ImageBuffer::new(512, 1024),
+	// 	image::ImageBuffer::new(512, 1024),
+	// ];
+	// 
+	// let mut font_icons_square = vec![
+	// 	image::ImageBuffer::new(512, 1024),
+	// 	image::ImageBuffer::new(512, 1024),
+	// 	image::ImageBuffer::new(512, 1024),
+	// ];
+	// 
+	// let mut font_icons_rounded = vec![
+	// 	image::ImageBuffer::new(512, 1024),
+	// 	image::ImageBuffer::new(512, 1024),
+	// 	image::ImageBuffer::new(512, 1024),
+	// ];
+	
 	// do the thing
 	let mut files = HashMap::new();
 	let files_root = target_root.join("files");
@@ -399,9 +426,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		
 		// nameplate type 1
 		{
-			// let icon_64 = image::imageops::resize(&icon_56, 64, 64, image::imageops::FilterType::CatmullRom);
-			// let icon_border_64 = image::imageops::resize(&icon_border_56, 64, 64, image::imageops::FilterType::CatmullRom);
-			// let icon_glow_64 = image::imageops::resize(&icon_glow_56, 64, 64, image::imageops::FilterType::CatmullRom);
 			let mut icon_64: image::ImageBuffer<Rgba<u8>, _> = image::ImageBuffer::new(64, 64);
 			let mut icon_border_64: image::ImageBuffer<Rgba<u8>, _> = image::ImageBuffer::new(64, 64);
 			let mut icon_glow_64: image::ImageBuffer<Rgba<u8>, _> = image::ImageBuffer::new(64, 64);
@@ -462,7 +486,188 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 				files.entry(("Job Icons Party List", "Rounded")).or_insert_with(|| HashMap::new()).insert(format!("{plate_path}.comp"), format!("{local_dir}/comp.tex.comp"));
 			}
 		}
+		
+		// font icons
+		if !matches!(icon_roles[&i], Roles::Other) {
+			let icon_36 = image::imageops::resize(&icon_56, 36, 36, image::imageops::FilterType::CatmullRom);
+			let icon_border_36 = image::imageops::resize(&icon_border_56, 36, 36, image::imageops::FilterType::CatmullRom);
+			let icon_glow_36 = image::imageops::resize(&icon_glow_56, 36, 36, image::imageops::FilterType::CatmullRom);
+			let square_36 = image::imageops::resize(&square_64, 36, 36, image::imageops::FilterType::CatmullRom);
+			let rounded_36 = image::imageops::resize(&rounded_64, 36, 36, image::imageops::FilterType::CatmullRom);
+			
+			let mut icon_faded_36 = icon_36.clone();
+			for pixel in icon_faded_36.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
+			let mut icon_faded2_36 = icon_36.clone();
+			for pixel in icon_faded2_36.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
+			
+			let x = (((i - 1) % 12) * 40 + 2) as i64;
+			let y = (700 + (i - 1) / 12 * 40 + 2) as i64;
+			
+			{ // party glow
+				let entry = font_icons_glow.entry(color).or_insert_with(|| vec![
+					(true, image::ImageBuffer::new(512, 1024)),
+					(false, image::ImageBuffer::new(512, 1024)),
+				]);
+				
+				image::imageops::overlay(&mut entry[0].1, &icon_glow_36, x, y);
+				image::imageops::overlay(&mut entry[1].1, &icon_36, x, y);
+			}
+			
+			{ // party border
+				let entry = font_icons_border.entry(color).or_insert_with(|| vec![
+					(true, image::ImageBuffer::new(512, 1024)),
+					(false, image::ImageBuffer::new(512, 1024)),
+				]);
+				
+				image::imageops::overlay(&mut entry[0].1, &icon_border_36, x, y);
+				image::imageops::overlay(&mut entry[1].1, &icon_faded2_36, x, y);
+			}
+			
+			{ // party square
+				let entry = font_icons_square.entry(color).or_insert_with(|| vec![
+					(true, image::ImageBuffer::new(512, 1024)),
+					(true, image::ImageBuffer::new(512, 1024)),
+					(false, image::ImageBuffer::new(512, 1024)),
+				]);
+				
+				image::imageops::overlay(&mut entry[0].1, &square_36, x, y);
+				image::imageops::overlay(&mut entry[1].1, &icon_border_36, x, y);
+				image::imageops::overlay(&mut entry[2].1, &icon_faded_36, x, y);
+			}
+			
+			{ // party rounded
+				let entry = font_icons_rounded.entry(color).or_insert_with(|| vec![
+					(true, image::ImageBuffer::new(512, 1024)),
+					(true, image::ImageBuffer::new(512, 1024)),
+					(false, image::ImageBuffer::new(512, 1024)),
+				]);
+				
+				image::imageops::overlay(&mut entry[0].1, &rounded_36, x, y);
+				image::imageops::overlay(&mut entry[1].1, &icon_border_36, x, y);
+				image::imageops::overlay(&mut entry[2].1, &icon_faded_36, x, y);
+			}
+			
+			// image::imageops::overlay(&mut font_icons_glow[0], &icon_glow_36, x, y);
+			// image::imageops::overlay(&mut font_icons_glow[1], &icon_36, x, y);
+			// 
+			// image::imageops::overlay(&mut font_icons_border[0], &icon_border_36, x, y);
+			// image::imageops::overlay(&mut font_icons_border[1], &icon_faded2_36, x, y);
+			// 
+			// image::imageops::overlay(&mut font_icons_square[0], &square_36, x, y);
+			// image::imageops::overlay(&mut font_icons_square[1], &icon_border_36, x, y);
+			// image::imageops::overlay(&mut font_icons_square[2], &icon_faded_36, x, y);
+			// 
+			// image::imageops::overlay(&mut font_icons_rounded[0], &rounded_36, x, y);
+			// image::imageops::overlay(&mut font_icons_rounded[1], &icon_border_36, x, y);
+			// image::imageops::overlay(&mut font_icons_rounded[2], &icon_faded_36, x, y);
+		}
 	}
+	
+	// font icons
+	fn make_smalls(full: &mut HashMap<&str, Vec<(bool, image::ImageBuffer<Rgba<u8>, Vec<u8>>)>>) {
+		for (_, layers) in full {
+			for (_, img) in layers.iter_mut() {
+				image::imageops::overlay(img, &image::imageops::resize(&img.view(0, 700, 512, 324).to_image(), 256, 162, image::imageops::FilterType::CatmullRom), 0, 180);
+			}
+		}
+	}
+	
+	fn write_icon_font(dir: &Path, local_dir: &str, game_path: &str, full: &HashMap<&str, Vec<(bool, image::ImageBuffer<Rgba<u8>, Vec<u8>>)>>) -> Result<(), crate::Error> {
+		use crate::tex_composite::*;
+		
+		let comp = Tex {
+			layers: {
+				// let mut layers = layers.into_iter().enumerate().map(|(i, color_option)| {
+				let mut layers = full.iter()
+					.flat_map(|(color, layers)| layers.iter().map(|v| (color.to_owned(), v)))
+					.enumerate()
+					.map(|(i, (color_option, (use_color, img)))| {
+						crate::save_tex(512, 1024, img.as_raw(), &dir.join(format!("{i}.tex"))).unwrap();
+						
+						Layer {
+							name: format!("Layer{i}"),
+							path: Path::Mod(format!("{local_dir}/{i}.tex")),
+							blend: Blend::Normal,
+							modifiers: if *use_color {
+								vec![
+									Modifier::Color {
+										value: OptionOrStatic::Option(ColorOption(color_option.to_string()))
+									}
+								]
+							} else {
+								Vec::new()
+							}
+						}
+					}).collect::<Vec<_>>();
+				
+				layers.push(Layer {
+					name: "Game".to_string(),
+					path: Path::Game(game_path.to_string()),
+					blend: Blend::Normal,
+					modifiers: vec![
+						Modifier::AlphaMask {
+							path: Path::Mod(format!("common/font/fonticon_mask.tex")),
+							cull_point: OptionOrStatic::Static(0.5),
+						},
+					]
+				});
+				
+				layers.reverse();
+				layers
+			}
+		};
+		
+		std::fs::write(dir.join("comp.tex.comp"), serde_json::to_string(&comp)?)?;
+		
+		Ok(())
+	}
+	
+	make_smalls(&mut font_icons_glow);
+	make_smalls(&mut font_icons_border);
+	make_smalls(&mut font_icons_square);
+	make_smalls(&mut font_icons_rounded);
+	
+	for sheet in ["ps3", "ps4", "ps5", "lys", "xinput"] {
+		let path = format!("common/font/fonticon_{sheet}.tex");
+		{ // party glow
+			let local_dir = format!("{path}/Job Icons Party List/Glow");
+			let dir = files_root.join(&local_dir);
+			_ = std::fs::create_dir_all(&dir);
+			
+			write_icon_font(&dir, &local_dir, &path, &font_icons_glow)?;
+			files.entry(("Job Icons Party List", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{path}.comp"), format!("{local_dir}/comp.tex.comp"));
+		}
+		
+		{ // party border
+			let local_dir = format!("{path}/Job Icons Party List/Border");
+			let dir = files_root.join(&local_dir);
+			_ = std::fs::create_dir_all(&dir);
+			
+			write_icon_font(&dir, &local_dir, &path, &font_icons_border)?;
+			files.entry(("Job Icons Party List", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{path}.comp"), format!("{local_dir}/comp.tex.comp"));
+		}
+		
+		{ // party square
+			let local_dir = format!("{path}/Job Icons Party List/Square");
+			let dir = files_root.join(&local_dir);
+			_ = std::fs::create_dir_all(&dir);
+			
+			write_icon_font(&dir, &local_dir, &path, &font_icons_square)?;
+			files.entry(("Job Icons Party List", "Square")).or_insert_with(|| HashMap::new()).insert(format!("{path}.comp"), format!("{local_dir}/comp.tex.comp"));
+		}
+		
+		{ // party rounded
+			let local_dir = format!("{path}/Job Icons Party List/Rounded");
+			let dir = files_root.join(&local_dir);
+			_ = std::fs::create_dir_all(&dir);
+			
+			write_icon_font(&dir, &local_dir, &path, &font_icons_rounded)?;
+			files.entry(("Job Icons Party List", "Rounded")).or_insert_with(|| HashMap::new()).insert(format!("{path}.comp"), format!("{local_dir}/comp.tex.comp"));
+		}
+	}
+	
+	let mask = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_fn(512, 1024, |_, y| if y < 180 || (y >= 342 && y < 700) {[255, 255, 255, 255]} else {[0, 0, 0, 255]}.into());
+	crate::save_tex(512, 1024, mask.as_raw(), &files_root.join("common/font/fonticon_mask.tex")).unwrap();
 	
 	Ok(files)
 }
@@ -610,11 +815,11 @@ pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 		write_comp(&dir, &path, vec![Some("Secondary Color"), Some("Foreground Color")])?;
 		files.insert(format!("{path}.comp"), format!("{path}/comp.tex.comp"));
 		
-		{
-			let dir = files_root.join("menu_icons");
-			_ = std::fs::create_dir_all(&dir);
-			crate::save_tex(80, 80, icon.as_raw(), &dir.join(format!("{id}.tex")))?;
-		}
+		// {
+		// 	let dir = files_root.join("menu_icons");
+		// 	_ = std::fs::create_dir_all(&dir);
+		// 	crate::save_tex(80, 80, icon.as_raw(), &dir.join(format!("{id}.tex")))?;
+		// }
 	}
 	
 	Ok(files)
