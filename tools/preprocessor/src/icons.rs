@@ -1,14 +1,20 @@
 use std::{collections::HashMap, io::Cursor, path::Path};
 use image::{GenericImage, GenericImageView, Rgba};
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 fn extract(id: usize) -> Result<image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, crate::Error> {
 	// aetherment -e --out - --outformat png ui/icon/062000/062040_hr1.tex
+	println!("{}", icon_path(id));
 	let data = std::process::Command::new("aetherment")
 		.args(["-e", "--out", "-", "--outformat", "png", &icon_path(id)])
 		.stdout(std::process::Stdio::piped())
-		.output()?;
+		.output();
 	
-	Ok(image::io::Reader::with_format(Cursor::new(data.stdout), image::ImageFormat::Png).decode()?.to_rgba8())
+	if let Err(err) = &data {
+		println!("error extracting: {err:?}");
+	}
+	
+	Ok(image::io::Reader::with_format(Cursor::new(data?.stdout), image::ImageFormat::Png).decode()?.to_rgba8())
 }
 
 fn icon_path(id: usize) -> String {
@@ -145,6 +151,7 @@ fn center(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>) {
 	*icon = new;
 }
 
+// TODO: probably multithread this
 pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<String, String>>, crate::Error> {
 	let icon_roles = HashMap::from([
 		(1, Roles::Tank), // gla
@@ -234,28 +241,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 	let mut font_icons_border = HashMap::new();
 	let mut font_icons_square = HashMap::new();
 	let mut font_icons_rounded = HashMap::new();
-	
-	// let mut font_icons_glow = vec![
-	// 	image::ImageBuffer::new(512, 1024),
-	// 	image::ImageBuffer::new(512, 1024),
-	// ];
-	// 
-	// let mut font_icons_border = vec![
-	// 	image::ImageBuffer::new(512, 1024),
-	// 	image::ImageBuffer::new(512, 1024),
-	// ];
-	// 
-	// let mut font_icons_square = vec![
-	// 	image::ImageBuffer::new(512, 1024),
-	// 	image::ImageBuffer::new(512, 1024),
-	// 	image::ImageBuffer::new(512, 1024),
-	// ];
-	// 
-	// let mut font_icons_rounded = vec![
-	// 	image::ImageBuffer::new(512, 1024),
-	// 	image::ImageBuffer::new(512, 1024),
-	// 	image::ImageBuffer::new(512, 1024),
-	// ];
 	
 	// do the thing
 	let mut files = HashMap::new();
@@ -546,20 +531,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 				image::imageops::overlay(&mut entry[1].1, &icon_border_36, x, y);
 				image::imageops::overlay(&mut entry[2].1, &icon_faded_36, x, y);
 			}
-			
-			// image::imageops::overlay(&mut font_icons_glow[0], &icon_glow_36, x, y);
-			// image::imageops::overlay(&mut font_icons_glow[1], &icon_36, x, y);
-			// 
-			// image::imageops::overlay(&mut font_icons_border[0], &icon_border_36, x, y);
-			// image::imageops::overlay(&mut font_icons_border[1], &icon_faded2_36, x, y);
-			// 
-			// image::imageops::overlay(&mut font_icons_square[0], &square_36, x, y);
-			// image::imageops::overlay(&mut font_icons_square[1], &icon_border_36, x, y);
-			// image::imageops::overlay(&mut font_icons_square[2], &icon_faded_36, x, y);
-			// 
-			// image::imageops::overlay(&mut font_icons_rounded[0], &rounded_36, x, y);
-			// image::imageops::overlay(&mut font_icons_rounded[1], &icon_border_36, x, y);
-			// image::imageops::overlay(&mut font_icons_rounded[2], &icon_faded_36, x, y);
 		}
 	}
 	
@@ -673,10 +644,10 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 }
 
 pub fn tribe_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::Error> {
-	let mut files = HashMap::new();
 	let files_root = target_root.join("files");
-	for id in 061901..=061959 {
-		let Ok(mut icon) = extract(id) else {break};
+	// let files = (061901..=061959).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
+	let files = (061901..=061919).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
+		let Ok(mut icon) = extract(id) else {return Ok(None)};
 		
 		prepare_icon(&mut icon, |pixel| if pixel[3] > 200 {((pixel[0] as f32 * 4.0) - 512.0).clamp(0.0, 255.0) as u8} else {0});
 		add_border(&mut icon);
@@ -687,18 +658,17 @@ pub fn tribe_icons(target_root: &Path) -> Result<HashMap<String, String>, crate:
 		
 		crate::save_tex(64, 64, icon.as_raw(), &dir.join("0.tex"))?;
 		write_comp(&dir, &local_path, vec![Some("Foreground Color")])?;
-		files.insert(format!("{local_path}.comp"), format!("{local_path}/comp.tex.comp"));
-	}
+		Ok(Some((format!("{local_path}.comp"), format!("{local_path}/comp.tex.comp"))))
+	})().unwrap()}).collect();
 	
 	Ok(files)
 }
 
 pub fn silver_bordered(target_root: &Path) -> Result<HashMap<String, String>, crate::Error> {
-	let mut files = HashMap::new();
 	let files_root = target_root.join("files");
-	for id in 061751..=061874 {
-		if id == 061800 {continue};
-		let Ok(mut icon) = extract(id) else {continue};
+	let files = (061751..=061874).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
+		if id == 061800 {return Ok(None)};
+		let Ok(mut icon) = extract(id) else {return Ok(None)};
 		
 		let z = || -> image::Rgba<u8> {[0, 0, 0, 0].into()};
 		let s = icon.width();
@@ -727,18 +697,17 @@ pub fn silver_bordered(target_root: &Path) -> Result<HashMap<String, String>, cr
 		_ = std::fs::create_dir_all(&path.parent().unwrap());
 		
 		crate::save_tex(64, 64, icon.as_raw(), &path)?;
-		files.insert(local_path.clone(), local_path);
-	}
+		Ok(Some((local_path.clone(), local_path)))
+	})().unwrap()}).collect();
 	
 	Ok(files)
 }
 
 pub fn shop_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::Error> {
-	let mut files = HashMap::new();
 	let files_root = target_root.join("files");
-	for id in 060101..=060199 {
-		if id == 060158 {continue}; // some quest marker icon, why??
-		let Ok(mut icon) = extract(id) else {continue};
+	let files = (060101..=060199).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
+		if id == 060158 {return Ok(None)}; // some quest marker icon, why??
+		let Ok(mut icon) = extract(id) else {return Ok(None)};
 		
 		let mut new = image::ImageBuffer::<image::Rgba<u8>, Vec<u8>>::new(40, 40);
 		image::imageops::overlay(&mut new, &icon.sub_image(4, 4, 32, 32).to_image(), 4, 4);
@@ -751,10 +720,9 @@ pub fn shop_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 		let path = files_root.join(&local_path);
 		_ = std::fs::create_dir_all(&path.parent().unwrap());
 		
-		// icon.save(files_root.join(format!("{local_path}.png")))?;
 		crate::save_tex(40, 40, icon.as_raw(), &path)?;
-		files.insert(local_path.clone(), local_path);
-	}
+		Ok(Some((local_path.clone(), local_path)))
+	})().unwrap()}).collect();
 	
 	Ok(files)
 }
@@ -772,10 +740,9 @@ pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 		}
 	}
 	
-	let mut files = HashMap::new();
 	let files_root = target_root.join("files");
-	for id in 000001..=000099 {
-		let Ok(mut icon) = extract(id) else {continue};
+	let files = (000001..=000099).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
+		let Ok(mut icon) = extract(id) else {return Ok(None)};
 		
 		for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
 			if pixel[0] > 100 && pixel[1] > 70 /*|| pixel[2] == 24*/ {
@@ -813,14 +780,8 @@ pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 		crate::save_tex(80, 80, bg.as_raw(), &dir.join("0.tex"))?;
 		crate::save_tex(80, 80, icon.as_raw(), &dir.join("1.tex"))?;
 		write_comp(&dir, &path, vec![Some("Secondary Color"), Some("Foreground Color")])?;
-		files.insert(format!("{path}.comp"), format!("{path}/comp.tex.comp"));
-		
-		// {
-		// 	let dir = files_root.join("menu_icons");
-		// 	_ = std::fs::create_dir_all(&dir);
-		// 	crate::save_tex(80, 80, icon.as_raw(), &dir.join(format!("{id}.tex")))?;
-		// }
-	}
+		Ok(Some((format!("{path}.comp"), format!("{path}/comp.tex.comp"))))
+	})().unwrap()}).collect();
 	
 	Ok(files)
 }

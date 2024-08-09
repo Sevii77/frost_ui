@@ -1,4 +1,5 @@
-use std::{collections::{HashMap, HashSet}, fs::File, io::{BufWriter, Cursor, Write}, path::Path};
+use std::{collections::HashMap, fs::File, io::{BufWriter, Cursor, Write}, path::{Path, PathBuf}};
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 mod meta;
 mod tex_composite;
@@ -13,55 +14,107 @@ fn main() -> Result<(), Error> {
 		return Ok(());
 	}
 	
-	let mut files = HashMap::new();
+	let mut files = HashMap::<Option<(String, String)>, HashMap<String, String>>::new();
 	
 	// svg renderer
 	let svg_root = Path::new(&args[1]);
 	let target_root = Path::new(&args[2]);
+	println!("{:?}", target_root);
 	
 	let mut font = resvg::usvg::fontdb::Database::new();
 	font.load_system_fonts();
 	font.load_font_data(include_bytes!("Axis Extrabold.otf").to_vec());
 	font.load_font_data(include_bytes!("Miedinger Bold.otf").to_vec());
 	
-	let mut color_paths: HashMap<String, HashSet<String>> = HashMap::new();
+	// let mut color_paths: HashMap<String, HashSet<String>> = HashMap::new();
 	
-	fn walk_dir(path: &Path, target: &Path, files: &mut HashMap<Option<(String, String)>, HashMap<String, String>>, font: &resvg::usvg::fontdb::Database, color_paths: &mut HashMap<String, HashSet<String>>) -> Result<(), Error> {
+	// fn walk_dir(path: &Path, target: &Path, files: &mut HashMap<Option<(String, String)>, HashMap<String, String>>, font: &resvg::usvg::fontdb::Database, color_paths: &mut HashMap<String, HashSet<String>>) -> Result<(), Error> {
+	// 	for entry in std::fs::read_dir(path)? {
+	// 		let entry_path = entry?.path();
+	// 		if entry_path.is_dir() {
+	// 			walk_dir(&entry_path, target, files, font, color_paths)?;
+	// 		} else if entry_path.extension().map(|v| v.to_str()) == Some(Some("svg")) {
+	// 			let svgs = split_svgs(&std::fs::read_to_string(entry_path)?)?;
+	// 			for svg in svgs {
+	// 				let local_dir = if let Some((o1, o2)) = &svg.option {
+	// 					format!("{}/{o1}/{o2}", svg.path.clone())
+	// 				} else {
+	// 					svg.path.clone()
+	// 				};
+	// 				
+	// 				let paths = files.entry(svg.option.clone()).or_insert_with(|| HashMap::new());
+	// 				if svg.layers.len() > 1 || svg.layers[0].0 != None {
+	// 					paths.insert(format!("{}.comp", &svg.path), format!("{local_dir}/comp.tex.comp"));
+	// 					// if svg.path.starts_with("ui/uld/") {
+	// 					// 	paths.insert(format!("{}.comp", &svg.path.replace("ui/uld/", "ui/uld/light/")), format!("{local_dir}/comp.tex.comp"));
+	// 					// }
+	// 				} else {
+	// 					paths.insert(svg.path.clone(), format!("{local_dir}/0.tex"));
+	// 					// if svg.path.starts_with("ui/uld/") {
+	// 					// 	paths.insert(svg.path.replace("ui/uld/", "ui/uld/light/"), format!("{local_dir}/0.tex"));
+	// 					// }
+	// 				}
+	// 				
+	// 				render_svg(svg, target, font, color_paths)?;
+	// 			}
+	// 		}
+	// 	}
+	// 	
+	// 	Ok(())
+	// }
+	
+	// walk_dir(svg_root, &target_root.join("files"), &mut files, &font, &mut color_paths)?;
+	
+	fn get_svgs(path: &Path) -> Result<Vec<PathBuf>, Error> {
+		let mut files = Vec::new();
 		for entry in std::fs::read_dir(path)? {
 			let entry_path = entry?.path();
 			if entry_path.is_dir() {
-				walk_dir(&entry_path, target, files, font, color_paths)?;
+				files.append(&mut get_svgs(&entry_path)?);
 			} else if entry_path.extension().map(|v| v.to_str()) == Some(Some("svg")) {
-				let svgs = split_svgs(&std::fs::read_to_string(entry_path)?)?;
-				for svg in svgs {
-					let local_dir = if let Some((o1, o2)) = &svg.option {
-						format!("{}/{o1}/{o2}", svg.path.clone())
-					} else {
-						svg.path.clone()
-					};
-					
-					let paths = files.entry(svg.option.clone()).or_insert_with(|| HashMap::new());
-					if svg.layers.len() > 1 || svg.layers[0].0 != None {
-						paths.insert(format!("{}.comp", &svg.path), format!("{local_dir}/comp.tex.comp"));
-						// if svg.path.starts_with("ui/uld/") {
-						// 	paths.insert(format!("{}.comp", &svg.path.replace("ui/uld/", "ui/uld/light/")), format!("{local_dir}/comp.tex.comp"));
-						// }
-					} else {
-						paths.insert(svg.path.clone(), format!("{local_dir}/0.tex"));
-						// if svg.path.starts_with("ui/uld/") {
-						// 	paths.insert(svg.path.replace("ui/uld/", "ui/uld/light/"), format!("{local_dir}/0.tex"));
-						// }
-					}
-					
-					render_svg(svg, target, font, color_paths)?;
-				}
+				files.push(entry_path);
 			}
 		}
 		
-		Ok(())
+		Ok(files)
 	}
 	
-	walk_dir(svg_root, &target_root.join("files"), &mut files, &font, &mut color_paths)?;
+	for a in get_svgs(svg_root)?.into_par_iter().map(|path| {
+		let mut files = HashMap::new();
+		let svgs = split_svgs(&std::fs::read_to_string(path).unwrap()).unwrap();
+		for svg in svgs {
+			let local_dir = if let Some((o1, o2)) = &svg.option {
+				format!("{}/{o1}/{o2}", svg.path.clone())
+			} else {
+				svg.path.clone()
+			};
+			
+			let paths = files.entry(svg.option.clone()).or_insert_with(|| HashMap::new());
+			if svg.layers.len() > 1 || svg.layers[0].0 != None {
+				paths.insert(format!("{}.comp", &svg.path), format!("{local_dir}/comp.tex.comp"));
+				if svg.path.starts_with("ui/uld/") {
+					paths.insert(format!("{}.comp", &svg.path.replace("ui/uld/", "ui/uld/fourth/")), format!("{local_dir}/comp.tex.comp"));
+				}
+			} else {
+				paths.insert(svg.path.clone(), format!("{local_dir}/0.tex"));
+				if svg.path.starts_with("ui/uld/") {
+					paths.insert(svg.path.replace("ui/uld/", "ui/uld/fourth/"), format!("{local_dir}/0.tex"));
+				}
+			}
+			
+			render_svg(svg, &target_root.join("files"), &font).unwrap();
+			// render_svg(svg, &target_root.join("files"), &font, &mut color_paths).unwrap();
+		}
+		
+		files
+	}).collect::<Vec<_>>() {
+		for (k, v) in a {
+			let b = files.entry(k).or_insert_with(|| HashMap::new());
+			for (g, r) in v {
+				b.insert(g, r);
+			}
+		}
+	}
 	
 	// icons
 	for ((o, so), f) in icons::job_icons(&target_root)? {
@@ -98,8 +151,31 @@ fn main() -> Result<(), Error> {
 				let entry_path = entry?.path();
 				let filename = entry_path.file_name().unwrap().to_string_lossy().to_string();
 				if entry_path.is_dir() {
-					walk_dir2(&entry_path, format!("{path_rel}{}/", filename), target, files)?;
+					if filename.contains(".") {
+						for opt_entry in std::fs::read_dir(entry_path)? {
+							let opt_entry_path = opt_entry?.path();
+							let opt_name = opt_entry_path.file_name().unwrap().to_string_lossy().to_string();
+							for sub_entry in std::fs::read_dir(opt_entry_path)? {
+								let sub_entry_path = sub_entry?.path();
+								let sub_name = sub_entry_path.file_name().unwrap().to_string_lossy().to_string();
+								let paths = files.entry(Some((opt_name.to_string(), sub_name.to_string()))).or_insert_with(|| HashMap::new());
+								
+								for file_entry in std::fs::read_dir(sub_entry_path)? {
+									let file_entry_path = file_entry?.path();
+									let filename = file_entry_path.file_name().unwrap().to_string_lossy().to_string();
+									
+									let new_dir = target.join(&path_rel).join(&filename).join(&opt_name).join(&sub_name);
+									_ = std::fs::create_dir_all(&new_dir);
+									std::fs::copy(file_entry_path, new_dir.join(&filename))?;
+									paths.insert(format!("{path_rel}{filename}"), format!("{path_rel}{filename}/{opt_name}/{sub_name}/{filename}"));
+								}
+							}
+						}
+					} else {
+						walk_dir2(&entry_path, format!("{path_rel}{}/", filename), target, files)?;
+					}
 				} else {
+					_ = std::fs::create_dir_all(&target.join(&path_rel));
 					std::fs::copy(entry_path, target.join(&path_rel).join(&filename))?;
 					let paths = files.entry(None).or_insert_with(|| HashMap::new());
 					let path = format!("{path_rel}{filename}");
@@ -288,15 +364,15 @@ fn main() -> Result<(), Error> {
 	}
 	
 	// color paths log
-	let mut f = BufWriter::new(File::create("color_paths.log")?);
-	for (color, paths) in color_paths {
-		writeln!(f, "\n{color}")?;
-		let mut paths = paths.into_iter().collect::<Vec<_>>();
-		paths.sort();
-		for p in paths {
-			writeln!(f, "\t{p}")?;
-		}
-	}
+	// let mut f = BufWriter::new(File::create("color_paths.log")?);
+	// for (color, paths) in color_paths {
+	// 	writeln!(f, "\n{color}")?;
+	// 	let mut paths = paths.into_iter().collect::<Vec<_>>();
+	// 	paths.sort();
+	// 	for p in paths {
+	// 		writeln!(f, "\t{p}")?;
+	// 	}
+	// }
 	
 	Ok(())
 }
@@ -623,7 +699,7 @@ fn split_svgs(data: &str) -> Result<Vec<SvgResult>, Error> {
 	}).collect())
 }
 
-fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Database, color_paths: &mut HashMap<String, HashSet<String>>) -> Result<(), Error> {
+fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Database/*, color_paths: &mut HashMap<String, HashSet<String>>*/) -> Result<(), Error> {
 	let local_dir = if let Some((o1, o2)) = &svg.option {
 		format!("{}/{o1}/{o2}", svg.path.clone())
 	} else {
@@ -643,7 +719,7 @@ fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Da
 				path: Path::Mod(format!("{local_dir}/{i}.tex")),
 				blend: Blend::Normal,
 				modifiers: if let Some(color_option) = color_option {
-					color_paths.entry(color_option.to_owned()).or_insert_with(|| HashSet::new()).insert(svg.path.clone());
+					// color_paths.entry(color_option.to_owned()).or_insert_with(|| HashSet::new()).insert(svg.path.clone());
 					
 					vec![
 						Modifier::Color {
@@ -736,6 +812,10 @@ pub fn save_tex(width: u16, height: u16, data: &[u8], path: &Path) -> Result<(),
 	// png for debugging
 	let img = image::RgbaImage::from_vec(width as _, height as _, data.to_vec()).unwrap();
 	img.save(path.with_extension("png"))?;
+	// match image::RgbaImage::from_vec(width as _, height as _, data.to_vec()) {
+	// 	Some(img) => img.save(path.with_extension("png"))?,
+	// 	None => println!("failed png {path:?}"),
+	// }
 	
 	Ok(())
 }
