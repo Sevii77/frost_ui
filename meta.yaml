@@ -1,6 +1,6 @@
 name: Frost UI
-description: For Foreground Color to work you need to enable the mod in default aswell, and be on the 'Clear Blue' theme!
-version: 0.1.58
+description: a highly customizable UI
+version: 0.1.59
 author: Sevii
 website:
 tags:
@@ -183,6 +183,31 @@ presets:
       Shape Style: Square
       Gauge: Square
       Minimap: Square
+
+colors:
+  1: Foreground Color
+  2: [Foreground Color, Secondary Foreground Color, [0.1666, 0.1666, 0.1666]]
+  3: [Foreground Color, Secondary Foreground Color, [0.3333, 0.3333, 0.3333]]
+  4: [Foreground Color, Secondary Foreground Color, [0.5, 0.5, 0.5]]
+  5: [Foreground Color, Secondary Foreground Color, [0.6666, 0.6666, 0.6666]]
+  6: [Foreground Color, Secondary Foreground Color, [0.8333, 0.8333, 0.8333]]
+  7: Secondary Foreground Color
+  8: Foreground Color
+  22: Foreground Color
+  # 50: Foreground Color
+  # 51: Secondary Foreground Color
+  # 55: [Foreground Color, Secondary Foreground Color, [0.8333, 0.8333, 0.8333]]
+  64: Foreground Color
+  
+  # custom ids only frost uses, for uld's that dont use the theme and got themes light>dark
+  # TODO: look into setting a flag in the uld or smth
+  7001: Foreground Color
+  7002: [Foreground Color, Secondary Foreground Color, [0.1666, 0.1666, 0.1666]]
+  7003: [Foreground Color, Secondary Foreground Color, [0.3333, 0.3333, 0.3333]]
+  7004: [Foreground Color, Secondary Foreground Color, [0.5, 0.5, 0.5]]
+  7005: [Foreground Color, Secondary Foreground Color, [0.6666, 0.6666, 0.6666]]
+  7006: [Foreground Color, Secondary Foreground Color, [0.8333, 0.8333, 0.8333]]
+  7007: Secondary Foreground Color
 
 style:
   variables:

@@ -1,9 +1,11 @@
 use std::{collections::HashMap, fs::File, io::{BufWriter, Cursor, Write}, path::{Path, PathBuf}};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
-mod meta;
-mod tex_composite;
+// mod meta;
+// mod tex_composite;
+mod metabase;
 mod icons;
+mod uld;
 
 type Error = Box<dyn std::error::Error>;
 
@@ -92,14 +94,14 @@ fn main() -> Result<(), Error> {
 			let paths = files.entry(svg.option.clone()).or_insert_with(|| HashMap::new());
 			if svg.layers.len() > 1 || svg.layers[0].0 != None {
 				paths.insert(format!("{}.comp", &svg.path), format!("{local_dir}/comp.tex.comp"));
-				if svg.path.starts_with("ui/uld/") {
-					paths.insert(format!("{}.comp", &svg.path.replace("ui/uld/", "ui/uld/fourth/")), format!("{local_dir}/comp.tex.comp"));
-				}
+				// if svg.path.starts_with("ui/uld/") {
+				// 	paths.insert(format!("{}.comp", &svg.path.replace("ui/uld/", "ui/uld/fourth/")), format!("{local_dir}/comp.tex.comp"));
+				// }
 			} else {
 				paths.insert(svg.path.clone(), format!("{local_dir}/0.tex"));
-				if svg.path.starts_with("ui/uld/") {
-					paths.insert(svg.path.replace("ui/uld/", "ui/uld/fourth/"), format!("{local_dir}/0.tex"));
-				}
+				// if svg.path.starts_with("ui/uld/") {
+				// 	paths.insert(svg.path.replace("ui/uld/", "ui/uld/fourth/"), format!("{local_dir}/0.tex"));
+				// }
 			}
 			
 			render_svg(svg, &target_root.join("files"), &font).unwrap();
@@ -115,6 +117,14 @@ fn main() -> Result<(), Error> {
 			}
 		}
 	}
+	
+	// uld
+	let entry = files.entry(None).or_insert_with(|| HashMap::new());
+	for a in uld::ulds(&target_root)? {
+		entry.insert(a.clone(), a);
+	}
+	
+	// std::process::exit(0);
 	
 	// icons
 	for ((o, so), f) in icons::job_icons(&target_root)? {
@@ -190,8 +200,10 @@ fn main() -> Result<(), Error> {
 	}
 	
 	// meta file creation
+	use aetherment::modman::{meta, issue::Issue, settings::*};
+	
 	if args.len() >= 4 {
-		let meta_base = serde_yaml::from_slice::<meta::MetaBase>(&std::fs::read(&args[3])?)?;
+		let meta_base = serde_yaml::from_slice::<metabase::MetaBase>(&std::fs::read(&args[3])?)?;
 		
 		let mut option_indexes = HashMap::new();
 		let options = meta_base.options.into_iter().map(|o| {
@@ -201,9 +213,9 @@ fn main() -> Result<(), Error> {
 			let value = o.values().next().unwrap();
 			
 			match value {
-				meta::OptionBase::Category(_) => meta::OptionType::Category(name.to_owned()),
+				metabase::OptionBase::Category(_) => meta::OptionType::Category(name.to_owned()),
 				
-				meta::OptionBase::Files(sub_options) => {
+				metabase::OptionBase::Files(sub_options) => {
 					option_indexes.insert(name.to_owned(), sub_options.iter().enumerate().map(|(i, v)| (v.split(";").next().unwrap().to_owned(), i)).collect::<HashMap<_, _>>());
 					
 					meta::OptionType::Option(meta::Option {
@@ -235,7 +247,7 @@ fn main() -> Result<(), Error> {
 					})
 				}
 				
-				meta::OptionBase::Color(color) => {
+				metabase::OptionBase::Color(color) => {
 					let default = &color["default"];
 					let min = &color["min"];
 					let max = &color["max"];
@@ -279,22 +291,33 @@ fn main() -> Result<(), Error> {
 			dependencies: meta_base.dependencies,
 			
 			presets: meta_base.presets.into_iter().map(|p| {
-				meta::Preset {
+				Preset {
 					name: p.keys().next().unwrap().to_owned(),
 					settings: p.values().next().unwrap().into_iter().map(|(o, v)| (o.to_owned(), match v {
-						meta::ValueBase::Files(v) => meta::Value::SingleFiles(option_indexes[o][v] as u32),
-						meta::ValueBase::Color(v) => match v.len() {
-							4 => meta::Value::Rgba(v[..].try_into().unwrap()),
-							3 => meta::Value::Rgb(v[..].try_into().unwrap()),
+						metabase::ValueBase::Files(v) => Value::SingleFiles(option_indexes[o][v] as u32),
+						metabase::ValueBase::Color(v) => match v.len() {
+							4 => Value::Rgba(v[..].try_into().unwrap()),
+							3 => Value::Rgb(v[..].try_into().unwrap()),
 							_ => panic!("Unsupported color type")
 						},
 					})).collect(),
 				}
 			}).collect(),
 			
-			options,
+			options: meta::Options(options),
 			
 			files: files.get(&None).map_or_else(|| HashMap::new(), |v| v.clone()),
+			
+			// ui_colors: meta_base.colors.into_iter().map(|p| meta::UiColor {
+			// 	use_theme: true,
+			// 	index: *p.keys().next().unwrap(),
+			// 	color: p.values().next().unwrap().to_owned().convert(),
+			// }).collect::<Vec<_>>(),
+			ui_colors: meta_base.colors.into_iter().map(|(index, color)| meta::UiColor {
+				use_theme: index < 1000,
+				index,
+				color: color.convert(),
+			}).collect::<Vec<_>>(),
 			
 			plugin_settings: meta::PluginSettings {
 				dalamud: Some({
@@ -333,12 +356,18 @@ fn main() -> Result<(), Error> {
 				})
 			},
 			
+			issues: vec![
+				Issue::UiTheme("Dark".to_string()),
+				Issue::UiResolution("High".to_string()),
+				Issue::Collection("Interface".to_string()),
+			],
+			
 			..Default::default()
 		};
 		
 		for (option, paths) in &files {
 			if let Some((main, sub)) = option {
-				let Some(opt) = meta.options.iter().find(|v| if let meta::OptionType::Option(v) = v {v.name == *main} else {false}) else {
+				let Some(opt) = meta.options.0.iter().find(|v| if let meta::OptionType::Option(v) = v {v.name == *main} else {false}) else {
 					println!("No option exists with name {main}");
 					for (p, _) in paths {
 						println!("\t - {p}");
@@ -710,7 +739,7 @@ fn render_svg(svg: SvgResult, target_root: &Path, font: &resvg::usvg::fontdb::Da
 	_ = std::fs::create_dir_all(&dir);
 	
 	if svg.layers.len() > 1 || svg.layers[0].0 != None { // composite info
-		use tex_composite::*;
+		use aetherment::modman::{Path, composite::tex::*};
 		
 		let mut layers = Vec::new();
 		for (i, (color_option, _layer)) in svg.layers.iter().enumerate().rev() {

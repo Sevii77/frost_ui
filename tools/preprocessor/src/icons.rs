@@ -1,20 +1,12 @@
-use std::{collections::HashMap, io::Cursor, path::Path};
+use std::{collections::HashMap, path::Path};
 use image::{GenericImage, GenericImageView, Rgba};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 fn extract(id: usize) -> Result<image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, crate::Error> {
-	// aetherment -e --out - --outformat png ui/icon/062000/062040_hr1.tex
 	println!("{}", icon_path(id));
-	let data = std::process::Command::new("aetherment")
-		.args(["-e", "--out", "-", "--outformat", "png", &icon_path(id)])
-		.stdout(std::process::Stdio::piped())
-		.output();
 	
-	if let Err(err) = &data {
-		println!("error extracting: {err:?}");
-	}
-	
-	Ok(image::io::Reader::with_format(Cursor::new(data?.stdout), image::ImageFormat::Png).decode()?.to_rgba8())
+	let img = aetherment::noumenon().ok_or("Invalid Noumenon")?.file::<aetherment::noumenon_::format::game::Tex>(&icon_path(id))?;
+	Ok(image::ImageBuffer::from_vec(img.header.width as u32, img.header.height as u32, img.data).ok_or("Failed creating image")?)
 }
 
 fn icon_path(id: usize) -> String {
@@ -22,7 +14,7 @@ fn icon_path(id: usize) -> String {
 }
 
 fn write_comp(dir: &Path, local_dir: &str, layers: Vec<Option<&str>>) -> Result<(), crate::Error> {
-	use crate::tex_composite::*;
+	use aetherment::modman::{Path, composite::tex::*};
 	
 	let comp = Tex {
 		layers: layers.into_iter().enumerate().map(|(i, color_option)| {
@@ -544,7 +536,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 	}
 	
 	fn write_icon_font(dir: &Path, local_dir: &str, game_path: &str, full: &HashMap<&str, Vec<(bool, image::ImageBuffer<Rgba<u8>, Vec<u8>>)>>) -> Result<(), crate::Error> {
-		use crate::tex_composite::*;
+		use aetherment::modman::{Path, composite::tex::*};
 		
 		let comp = Tex {
 			layers: {

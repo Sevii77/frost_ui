@@ -68,9 +68,9 @@
      borderopacity="0.3"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.4573374"
-     inkscape:cx="54.180328"
-     inkscape:cy="168.26189"
+     inkscape:zoom="6.303627"
+     inkscape:cx="98.435393"
+     inkscape:cy="164.6671"
      inkscape:document-units="px"
      inkscape:showpageshadow="2"
      inkscape:pagecheckerboard="true"
@@ -78,10 +78,10 @@
      showborder="false"
      inkscape:window-width="2596"
      inkscape:window-height="1368"
-     inkscape:window-x="1918"
-     inkscape:window-y="1115"
+     inkscape:window-x="1920"
+     inkscape:window-y="1113"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g27"
+     inkscape:current-layer="g2"
      showgrid="true"><inkscape:grid
        id="grid1"
        units="px"
@@ -146,7 +146,7 @@
            height="72"
            x="166"
            y="254"
-           ry="10"
+           ry="12"
            inkscape:label="select hover" /><rect
            style="display:inline;fill:#ffffff;fill-opacity:0.4;stroke:none;stroke-width:4;stroke-dashoffset:0.8;stroke-opacity:1"
            id="rect5"
@@ -154,7 +154,7 @@
            height="72"
            x="166"
            y="162"
-           ry="10"
+           ry="12"
            inkscape:label="hover" /><rect
            style="display:inline;fill:#ffffff;fill-opacity:0.4;stroke:#ffffff;stroke-width:4;stroke-dashoffset:0.8;stroke-opacity:1"
            id="rect4"
@@ -162,7 +162,7 @@
            height="72"
            x="74"
            y="254"
-           ry="10"
+           ry="12"
            inkscape:label="selected" /><use
            x="0"
            y="0"
@@ -186,7 +186,7 @@
            height="50"
            x="172"
            y="-14"
-           ry="10" /><g
+           ry="11" /><g
            id="g24"
            style="opacity:0.7"><rect
              style="display:inline;fill:url(#linearGradient14);fill-opacity:0.7;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
@@ -196,7 +196,7 @@
              x="-13"
              y="-321"
              transform="rotate(90)"
-             ry="9" /><rect
+             ry="10" /><rect
              style="display:inline;fill:url(#linearGradient20);fill-opacity:0.7;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
              id="rect20"
              width="148"
@@ -204,7 +204,7 @@
              x="-321"
              y="-35"
              transform="scale(-1)"
-             ry="9" /></g></g></g><g
+             ry="10" /></g></g></g><g
        id="g36"
        inkscape:label="Shape Style:Square"
        style="display:none;fill:#ffffff"><g
