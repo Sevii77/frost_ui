@@ -200,7 +200,7 @@ fn main() -> Result<(), Error> {
 	}
 	
 	// meta file creation
-	use aetherment::modman::{meta, issue::Issue, settings::*};
+	use aetherment::modman::{meta, requirement::Requirement, settings::*};
 	
 	if args.len() >= 4 {
 		let meta_base = serde_yaml::from_slice::<metabase::MetaBase>(&std::fs::read(&args[3])?)?;
@@ -356,10 +356,10 @@ fn main() -> Result<(), Error> {
 				})
 			},
 			
-			issues: vec![
-				Issue::UiTheme("Dark".to_string()),
-				Issue::UiResolution("High".to_string()),
-				Issue::Collection("Interface".to_string()),
+			requirements: vec![
+				Requirement::UiTheme("Dark".to_string()),
+				Requirement::UiResolution("High".to_string()),
+				Requirement::Collection("Interface".to_string()),
 			],
 			
 			..Default::default()

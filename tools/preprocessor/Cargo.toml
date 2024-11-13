@@ -10,7 +10,7 @@ strip = true
 
 [dependencies]
 # aetherment = {path = "../../../../../code/aetherment/aetherment"}
-aetherment = {git = "git@github.com:Sevii77/aetherment.git", rev = "a967108590c49f9fbfbdde34587a9a66bbf4418a"}
+aetherment = {git = "https://github.com/Sevii77/aetherment"}
 xml-rs = "0.8.20"
 resvg = "0.41.0"
 image = "0.25.1"
