@@ -278,6 +278,33 @@ fn main() -> Result<(), Error> {
 						}
 					})
 				}
+				
+				metabase::OptionBase::Grouped(group) => {
+					meta::OptionType::Option(meta::Option {
+						name: name.to_owned(),
+						description: String::new(),
+						settings: meta::OptionSettings::Grouped(meta::ValueGrouped {
+							default: default.map_or(0, |v| group.iter().position(|v2| v2.keys().next().unwrap() == v).map_or(0, |v| v as u32)),
+							options: group.into_iter().map(|v| {
+								meta::ValueGroupedOption {
+									name: v.keys().next().unwrap().to_owned(),
+									description: String::new(),
+									options: v.values().next().unwrap().into_iter().map(|v| {
+										let name = v.keys().next().unwrap().to_owned();
+										match v.values().next().unwrap().to_owned() {
+											metabase::GroupedTypeBase::Category(_) => meta::ValueGroupedOptionEntryType::Category(name),
+											metabase::GroupedTypeBase::Option(options) => meta::ValueGroupedOptionEntryType::Option(meta::ValueGroupedOptionEntry {
+												name,
+												description: String::new(),
+												options,
+											}),
+										}
+									}).collect(),
+								}
+							}).collect(),
+						})
+					})
+				}
 			}
 		}).collect();
 		

@@ -1,6 +1,6 @@
 name: Frost UI
 description: A highly customizable UI
-version: 0.1.59
+version: 0.1.61
 author: Sevii
 website:
 tags:
@@ -133,37 +133,167 @@ options:
     - Border
     - Full
   
-  - Tank Color:
+  - Pld Color:
       default: [0.231, 0.290, 0.647]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Healer Color:
+  - War Color:
+      default: [0.231, 0.290, 0.647]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Drk Color:
+      default: [0.231, 0.290, 0.647]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Gnb Color:
+      default: [0.231, 0.290, 0.647]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Whm Color:
       default: [0.231, 0.450, 0.180]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Melee Color:
+  - Sch Color:
+      default: [0.231, 0.450, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Ast Color:
+      default: [0.231, 0.450, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Sge Color:
+      default: [0.231, 0.450, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Mnk Color:
       default: [0.512, 0.188, 0.180]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Ranged Color:
+  - Drg Color:
+      default: [0.512, 0.188, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Nin Color:
+      default: [0.512, 0.188, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Sam Color:
+      default: [0.512, 0.188, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Rpr Color:
+      default: [0.512, 0.188, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Vpr Color:
+      default: [0.512, 0.188, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Brd Color:
       default: [0.651, 0.537, 0.173]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Caster Color:
+  - Mch Color:
+      default: [0.651, 0.537, 0.173]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Dnc Color:
+      default: [0.651, 0.537, 0.173]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Blm Color:
       default: [0.453, 0.265, 0.755]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Crafter Color:
+  - Smn Color:
       default: [0.453, 0.265, 0.755]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Gatherer Color:
+  - Rdm Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Pct Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Blu Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Crp Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Bsm Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Arm Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Gsm Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Ltw Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Wvr Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Alc Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Cul Color:
+      default: [0.453, 0.265, 0.755]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Min Color:
+      default: [0.651, 0.537, 0.173]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Bot Color:
+      default: [0.651, 0.537, 0.173]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
+  - Fsh Color:
       default: [0.651, 0.537, 0.173]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
@@ -172,6 +302,215 @@ options:
       default: [0.651, 0.537, 0.173]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
+  
+  - Job Colors;Grouped:
+    - Merged:
+      - All:
+        - Pld Color
+        - War Color
+        - Drk Color
+        - Gnb Color
+        - Whm Color
+        - Sch Color
+        - Ast Color
+        - Sge Color
+        - Mnk Color
+        - Drg Color
+        - Nin Color
+        - Sam Color
+        - Rpr Color
+        - Vpr Color
+        - Brd Color
+        - Mch Color
+        - Dnc Color
+        - Blm Color
+        - Smn Color
+        - Rdm Color
+        - Pct Color
+        - Blu Color
+        - Crp Color
+        - Bsm Color
+        - Arm Color
+        - Gsm Color
+        - Ltw Color
+        - Wvr Color
+        - Alc Color
+        - Cul Color
+        - Min Color
+        - Bot Color
+        - Fsh Color
+        - No Job Color
+    
+    - Basic:
+      - Tank Color:
+        - Pld Color
+        - War Color
+        - Drk Color
+        - Gnb Color
+      - Healer Color:
+        - Whm Color
+        - Sch Color
+        - Ast Color
+        - Sge Color
+      - Dps Color:
+        - Mnk Color
+        - Drg Color
+        - Nin Color
+        - Sam Color
+        - Rpr Color
+        - Vpr Color
+        - Brd Color
+        - Mch Color
+        - Dnc Color
+        - Blm Color
+        - Smn Color
+        - Rdm Color
+        - Pct Color
+        - Blu Color
+      - Crafter Color:
+        - Crp Color
+        - Bsm Color
+        - Arm Color
+        - Gsm Color
+        - Ltw Color
+        - Wvr Color
+        - Alc Color
+        - Cul Color
+      - Gatherer Color:
+        - Min Color
+        - Bot Color
+        - Fsh Color
+      - No Job Color:
+        - No Job Color
+    
+    - Grouped:
+      - Tank Color:
+        - Pld Color
+        - War Color
+        - Drk Color
+        - Gnb Color
+      - Healer Color:
+        - Whm Color
+        - Sch Color
+        - Ast Color
+        - Sge Color
+      - Melee Color:
+        - Mnk Color
+        - Drg Color
+        - Nin Color
+        - Sam Color
+        - Rpr Color
+        - Vpr Color
+      - Ranged Color:
+        - Brd Color
+        - Mch Color
+        - Dnc Color
+      - Caster Color:
+        - Blm Color
+        - Smn Color
+        - Rdm Color
+        - Pct Color
+        - Blu Color
+      - Crafter Color:
+        - Crp Color
+        - Bsm Color
+        - Arm Color
+        - Gsm Color
+        - Ltw Color
+        - Wvr Color
+        - Alc Color
+        - Cul Color
+      - Gatherer Color:
+        - Min Color
+        - Bot Color
+        - Fsh Color
+      - No Job Color:
+        - No Job Color
+    
+    - Individual:
+      - Tank: 0
+      - Pld Color:
+        - Pld Color
+      - War Color:
+        - War Color
+      - Drk Color:
+        - Drk Color
+      - Gnb Color:
+        - Gnb Color
+      
+      - Healer: 0
+      - Whm Color:
+        - Whm Color
+      - Sch Color:
+        - Sch Color
+      - Ast Color:
+        - Ast Color
+      - Sge Color:
+        - Sge Color
+      
+      - Melee: 0
+      - Mnk Color:
+        - Mnk Color
+      - Drg Color:
+        - Drg Color
+      - Nin Color:
+        - Nin Color
+      - Sam Color:
+        - Sam Color
+      - Rpr Color:
+        - Rpr Color
+      - Vpr Color:
+        - Vpr Color
+      
+      - Ranged: 0
+      - Brd Color:
+        - Brd Color
+      - Mch Color:
+        - Mch Color
+      - Dnc Color:
+        - Dnc Color
+      
+      - Caster: 0
+      - Blm Color:
+        - Blm Color
+      - Smn Color:
+        - Smn Color
+      - Rdm Color:
+        - Rdm Color
+      - Pct Color:
+        - Pct Color
+      - Blu Color:
+        - Blu Color
+      
+      - Crafter: 0
+      - Crp Color:
+        - Crp Color
+      - Bsm Color:
+        - Bsm Color
+      - Arm Color:
+        - Arm Color
+      - Gsm Color:
+        - Gsm Color
+      - Ltw Color:
+        - Ltw Color
+      - Wvr Color:
+        - Wvr Color
+      - Alc Color:
+        - Alc Color
+      - Cul Color:
+        - Cul Color
+      
+      - Gatherer: 0
+      - Min Color:
+        - Min Color
+      - Bot Color:
+        - Bot Color
+      - Fsh Color:
+        - Fsh Color
+      
+      - Other: 0
+      - No Job Color:
+        - No Job Color
 
 presets:
   - Frosted:

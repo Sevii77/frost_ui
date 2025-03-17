@@ -40,32 +40,6 @@ fn write_comp(dir: &Path, local_dir: &str, layers: Vec<Option<&str>>) -> Result<
 	Ok(())
 }
 
-enum Roles {
-	Tank,
-	Healer,
-	Melee,
-	Ranged,
-	Caster,
-	Crafter,
-	Gatherer,
-	Other,
-}
-
-impl Roles {
-	pub fn option(&self) -> &'static str {
-		match self {
-			Roles::Tank => "Tank Color",
-			Roles::Healer => "Healer Color",
-			Roles::Melee => "Melee Color",
-			Roles::Ranged => "Ranged Color",
-			Roles::Caster => "Caster Color",
-			Roles::Crafter => "Crafter Color",
-			Roles::Gatherer => "Gatherer Color",
-			Roles::Other => "No Job Color",
-		}
-	}
-}
-
 fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, mut alpha_resolver: impl FnMut(&image::Rgba<u8>) -> u8) {
 	let mut min = 255;
 	let mut max = 0;
@@ -117,7 +91,7 @@ fn add_border(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>) {
 	*icon = new;
 }
 
-fn center(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>) {
+fn center(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, vertical_only: bool) {
 	let (mut min_x, mut min_y, mut max_x, mut max_y) = (9999, 9999, 0, 0);
 	let (w, h) = (icon.width(), icon.height());
 	for x in 0..w {
@@ -131,7 +105,7 @@ fn center(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>) {
 		}
 	}
 	
-	let offset_x = (w as i32 - (max_x + min_x) as i32) / 2;
+	let offset_x = if vertical_only {0} else {(w as i32 - (max_x + min_x) as i32) / 2};
 	let offset_y = (h as i32 - (max_y + min_y) as i32) / 2;
 	let mut new = image::ImageBuffer::<image::Rgba<u8>, Vec<u8>>::new(w, h);
 	for x in offset_x.abs().max(0)..(w as i32 - offset_x.abs()) {
@@ -143,54 +117,53 @@ fn center(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>) {
 	*icon = new;
 }
 
-// TODO: probably multithread this
 pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<String, String>>, crate::Error> {
 	let icon_roles = HashMap::from([
-		(1, Roles::Tank), // gla
-		(2, Roles::Melee), // pgl
-		(3, Roles::Tank), // mrd
-		(4, Roles::Melee), // lnc
-		(5, Roles::Ranged), // arc
-		(6, Roles::Healer), // cnj
-		(7, Roles::Caster), // thm
-		(8, Roles::Crafter), // crp
-		(9, Roles::Crafter), // bsm
-		(10, Roles::Crafter), // arm
-		(11, Roles::Crafter), // gsm
-		(12, Roles::Crafter), // ltw
-		(13, Roles::Crafter), // wvr
-		(14, Roles::Crafter), // alc
-		(15, Roles::Crafter), // cul
-		(16, Roles::Gatherer), // min
-		(17, Roles::Gatherer), // bot
-		(18, Roles::Gatherer), // fsh
-		(19, Roles::Tank), // pld
-		(20, Roles::Melee), // mnk
-		(21, Roles::Tank), // war
-		(22, Roles::Melee), // drg
-		(23, Roles::Ranged), // brd
-		(24, Roles::Healer), // whm
-		(25, Roles::Caster), // blm
-		(26, Roles::Caster), // acn
-		(27, Roles::Caster), // smn
-		(28, Roles::Healer), // sch
-		(29, Roles::Melee), // rog
-		(30, Roles::Melee), // nin
-		(31, Roles::Ranged), // mch
-		(32, Roles::Tank), // drk
-		(33, Roles::Healer), // ast
-		(34, Roles::Melee), // sam
-		(35, Roles::Caster), // rdm
-		(36, Roles::Caster), // blu
-		(37, Roles::Tank), // gnb
-		(38, Roles::Ranged), // dnc
-		(39, Roles::Melee), // rpr
-		(40, Roles::Healer), // sge
-		(41, Roles::Melee), // vpr
-		(42, Roles::Caster), // pct
-		(43, Roles::Other), // chocobo
-		(44, Roles::Other), // carbuncle
-		(45, Roles::Other), // free slot
+		(1, "Pld Color"), // gla
+		(2, "Mnk Color"), // pgl
+		(3, "War Color"), // mrd
+		(4, "Drg Color"), // lnc
+		(5, "Brd Color"), // arc
+		(6, "Whm Color"), // cnj
+		(7, "Blm Color"), // thm
+		(8, "Crp Color"), // crp
+		(9, "Bsm Color"), // bsm
+		(10, "Arm Color"), // arm
+		(11, "Gsm Color"), // gsm
+		(12, "Ltw Color"), // ltw
+		(13, "Wvr Color"), // wvr
+		(14, "Alc Color"), // alc
+		(15, "Cul Color"), // cul
+		(16, "Min Color"), // min
+		(17, "Bot Color"), // bot
+		(18, "Fsh Color"), // fsh
+		(19, "Pld Color"), // pld
+		(20, "Mnk Color"), // mnk
+		(21, "War Color"), // war
+		(22, "Drg Color"), // drg
+		(23, "Brd Color"), // brd
+		(24, "Whm Color"), // whm
+		(25, "Blm Color"), // blm
+		(26, "Smn Color"), // acn
+		(27, "Smn Color"), // smn
+		(28, "Sch Color"), // sch
+		(29, "Nin Color"), // rog
+		(30, "Nin Color"), // nin
+		(31, "Mch Color"), // mch
+		(32, "Drk Color"), // drk
+		(33, "Ast Color"), // ast
+		(34, "Sam Color"), // sam
+		(35, "Rdm Color"), // rdm
+		(36, "Blu Color"), // blu
+		(37, "Gnb Color"), // gnb
+		(38, "Dnc Color"), // dnc
+		(39, "Rpr Color"), // rpr
+		(40, "Sge Color"), // sge
+		(41, "Vpr Color"), // vpr
+		(42, "Pct Color"), // pct
+		(43, "No Job Color"), // chocobo
+		(44, "No Job Color"), // carbuncle
+		(45, "No Job Color"), // free slot
 	]);
 	
 	// load in extra assets
@@ -243,11 +216,12 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		let macro_id   = 062800 + i;
 		let plate_id   = 062225 + i;
 		let Ok(mut icon_56) = extract(content_id) else {break};
-		let color = icon_roles[&i].option();
+		// let color = icon_roles[&i].option();
+		let color = icon_roles[&i];
 		
 		// greyscale, shove it into the 191-255 range, and do some alpha stuff
 		prepare_icon(&mut icon_56, |pixel| (((pixel[3] as f32 / 255.0).max(0.75) - 0.75) * 4.0 * 255.0) as u8);
-		center(&mut icon_56);
+		center(&mut icon_56, true);
 		
 		// (nearly)black border
 		let mut icon_border_56 = icon_56.clone();
@@ -268,9 +242,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		//// save em all
 		// content icons
 		{
-			let mut icon_faded2_56 = icon_56.clone();
-			for pixel in icon_faded2_56.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
-			
 			let content_path = icon_path(content_id);
 			{ // content glow
 				let local_dir = format!("{}/Job Icons Content/Glow", content_path);
@@ -289,8 +260,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 				_ = std::fs::create_dir_all(&dir);
 				
 				crate::save_tex(56, 56, icon_border_56.as_raw(), &dir.join("0.tex"))?;
-				crate::save_tex(56, 56, icon_faded2_56.as_raw(), &dir.join("1.tex"))?;
-				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				write_comp(&dir, &local_dir, vec![Some(color)])?;
 				files.entry(("Job Icons Content", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{content_path}.comp"), format!("{local_dir}/comp.tex.comp"));
 			}
 		}
@@ -303,8 +273,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 			
 			let mut icon_faded_64 = icon_64.clone();
 			for pixel in icon_faded_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
-			let mut icon_faded2_64 = icon_64.clone();
-			for pixel in icon_faded2_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
 			
 			let party_path = icon_path(party_id);
 			{ // party glow
@@ -324,8 +292,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 				_ = std::fs::create_dir_all(&dir);
 				
 				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("0.tex"))?;
-				crate::save_tex(64, 64, icon_faded2_64.as_raw(), &dir.join("1.tex"))?;
-				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				write_comp(&dir, &local_dir, vec![Some(color)])?;
 				files.entry(("Job Icons Party List", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{party_path}.comp"), format!("{local_dir}/comp.tex.comp"));
 			}
 			
@@ -362,8 +329,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 			
 			let mut icon_faded_80 = icon_80.clone();
 			for pixel in icon_faded_80.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
-			let mut icon_faded2_80 = icon_80.clone();
-			for pixel in icon_faded2_80.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
 			
 			let macro_path = icon_path(macro_id);
 			{ // macro glow
@@ -383,8 +348,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 				_ = std::fs::create_dir_all(&dir);
 				
 				crate::save_tex(80, 80, icon_border_80.as_raw(), &dir.join("0.tex"))?;
-				crate::save_tex(80, 80, icon_faded2_80.as_raw(), &dir.join("1.tex"))?;
-				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				write_comp(&dir, &local_dir, vec![Some(color)])?;
 				files.entry(("Job Icons Macro", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{macro_path}.comp"), format!("{local_dir}/comp.tex.comp"));
 			}
 			
@@ -413,8 +377,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 			
 			let mut icon_faded_64 = icon_64.clone();
 			for pixel in icon_faded_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
-			let mut icon_faded2_64 = icon_64.clone();
-			for pixel in icon_faded2_64.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
 			
 			let plate_path = icon_path(plate_id);
 			{ // party glow
@@ -434,8 +396,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 				_ = std::fs::create_dir_all(&dir);
 				
 				crate::save_tex(64, 64, icon_border_64.as_raw(), &dir.join("0.tex"))?;
-				crate::save_tex(64, 64, icon_faded2_64.as_raw(), &dir.join("1.tex"))?;
-				write_comp(&dir, &local_dir, vec![Some(color), None])?;
+				write_comp(&dir, &local_dir, vec![Some(color)])?;
 				files.entry(("Job Icons Party List", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{plate_path}.comp"), format!("{local_dir}/comp.tex.comp"));
 			}
 			
@@ -465,7 +426,8 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		}
 		
 		// font icons
-		if !matches!(icon_roles[&i], Roles::Other) {
+		// if !matches!(icon_roles[&i], Roles::Other) {
+		if color != "No Color Color" {
 			let icon_36 = image::imageops::resize(&icon_56, 36, 36, image::imageops::FilterType::CatmullRom);
 			let icon_border_36 = image::imageops::resize(&icon_border_56, 36, 36, image::imageops::FilterType::CatmullRom);
 			let icon_glow_36 = image::imageops::resize(&icon_glow_56, 36, 36, image::imageops::FilterType::CatmullRom);
@@ -474,8 +436,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 			
 			let mut icon_faded_36 = icon_36.clone();
 			for pixel in icon_faded_36.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.8) as u8;}
-			let mut icon_faded2_36 = icon_36.clone();
-			for pixel in icon_faded2_36.pixels_mut() {pixel[3] = (pixel[3] as f32 * 0.3) as u8;}
 			
 			let x = (((i - 1) % 12) * 40 + 2) as i64;
 			let y = (700 + (i - 1) / 12 * 40 + 2) as i64;
@@ -493,11 +453,9 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 			{ // party border
 				let entry = font_icons_border.entry(color).or_insert_with(|| vec![
 					(true, image::ImageBuffer::new(512, 1024)),
-					(false, image::ImageBuffer::new(512, 1024)),
 				]);
 				
 				image::imageops::overlay(&mut entry[0].1, &icon_border_36, x, y);
-				image::imageops::overlay(&mut entry[1].1, &icon_faded2_36, x, y);
 			}
 			
 			{ // party square

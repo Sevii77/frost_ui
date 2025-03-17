@@ -1,7 +1,3 @@
-// Stripped down version of https://github.com/Sevii77/ffxiv_materialui_accent/blob/aetherment/aetherment/src/modman/meta.rs
-// only used for the json structure
-// TODO: the v1.5 will use a version of the above anyways, use it as a dependency at that point
-
 use std::collections::HashMap;
 use aetherment::modman::{OptionOrStatic, OptionValue};
 use serde::{Deserialize, Serialize};
@@ -23,24 +19,13 @@ pub struct MetaBase {
 	pub style: StyleBase,
 }
 
-// #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-// #[serde(untagged)]
-// pub enum OptionBaseType {
-// 	Category(String),
-// 	Option(HashMap<String, OptionBase>),
-// }
-
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum OptionBase {
 	Category(i32),
 	Files(Vec<String>),
 	Color(HashMap<String, Vec<f32>>),
-	// Color {
-	// 	default: Vec<f32>,
-	// 	min: Vec<f32>,
-	// 	max: Vec<f32>,
-	// },
+	Grouped(Vec<HashMap<String, Vec<HashMap<String, GroupedTypeBase>>>>),
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -48,6 +33,13 @@ pub enum OptionBase {
 pub enum ValueBase {
 	Files(String),
 	Color(Vec<f32>),
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum GroupedTypeBase {
+	Category(i32),
+	Option(Vec<String>),
 }
 
 // ----------
