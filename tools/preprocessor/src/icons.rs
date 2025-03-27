@@ -427,7 +427,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		
 		// font icons
 		// if !matches!(icon_roles[&i], Roles::Other) {
-		if color != "No Color Color" {
+		if color != "No Job Color" {
 			let icon_36 = image::imageops::resize(&icon_56, 36, 36, image::imageops::FilterType::CatmullRom);
 			let icon_border_36 = image::imageops::resize(&icon_border_56, 36, 36, image::imageops::FilterType::CatmullRom);
 			let icon_glow_36 = image::imageops::resize(&icon_glow_56, 36, 36, image::imageops::FilterType::CatmullRom);
@@ -587,7 +587,8 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		}
 	}
 	
-	let mask = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_fn(512, 1024, |_, y| if y < 180 || (y >= 342 && y < 700) {[255, 255, 255, 255]} else {[0, 0, 0, 255]}.into());
+	// let mask = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_fn(512, 1024, |_, y| if y < 180 || (y >= 342 && y < 700) {[255, 255, 255, 255]} else {[0, 0, 0, 255]}.into());
+	let mask = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_fn(512, 1024, |_, y| if (y >= 180 && y < 180 + 20 * 4) || (y >= 700 && y < 700 + 40 * 4) {[0, 0, 0, 255]} else {[255, 255, 255, 255]}.into());
 	crate::save_tex(512, 1024, mask.as_raw(), &files_root.join("common/font/fonticon_mask.tex")).unwrap();
 	
 	Ok(files)

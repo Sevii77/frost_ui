@@ -1,72 +1,476 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg width="112" height="32" viewBox="0 0 112 32" version="1.1" id="svg1" xml:space="preserve" inkscape:version="1.4-beta (62f545b, 2024-04-22)" sodipodi:docname="sliderguagehorizontala.svg"
-  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:svg="http://www.w3.org/2000/svg"
-  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  xmlns:cc="http://creativecommons.org/ns#"
-  xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <defs id="defs1">
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect1" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,20,0,1 @ F,0,1,1,0,20,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect24" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,8,0,1 @ F,0,1,1,0,8,0,1 @ F,0,1,1,0,8,0,1 @ F,0,0,1,0,8,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect23" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect19" is_visible="true" lpeversion="1" nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,20,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect17" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect14" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect12" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect20" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect18" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect16" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect11" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,20,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect9" is_visible="true" lpeversion="1" nodesatellites_param="F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,20,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="fillet_chamfer" id="path-effect8" is_visible="true" lpeversion="1" nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1" radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false" use_knot_distance="true" apply_no_radius="true" apply_with_radius="true" only_selected="false" hide_knots="false" />
-    <inkscape:path-effect effect="bspline" id="path-effect7" is_visible="true" lpeversion="1.3" weight="33.333333" steps="2" helper_size="0" apply_no_weight="true" apply_with_weight="true" only_selected="false" uniform="false" />
-    <clipPath clipPathUnits="userSpaceOnUse" id="clipPath8">
-      <rect style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1" id="rect9" width="63" height="36" x="57" y="1.2463016e-07" />
+<svg
+   width="112"
+   height="32"
+   viewBox="0 0 112 32"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="sliderguagehorizontala.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+   id="defs1">
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect1"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,20,0,1 @ F,0,1,1,0,20,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect24"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,8,0,1 @ F,0,1,1,0,8,0,1 @ F,0,1,1,0,8,0,1 @ F,0,0,1,0,8,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect23"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect19"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,20,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect17"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect14"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect12"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect20"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect18"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect16"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,1,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect11"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,20,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect9"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,1,1,0,20,0,1 @ F,0,0,1,0,20,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect8"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+    <inkscape:path-effect
+   effect="bspline"
+   id="path-effect7"
+   is_visible="true"
+   lpeversion="1.3"
+   weight="33.333333"
+   steps="2"
+   helper_size="0"
+   apply_no_weight="true"
+   apply_with_weight="true"
+   only_selected="false"
+   uniform="false" />
+    <clipPath
+   clipPathUnits="userSpaceOnUse"
+   id="clipPath8">
+      <rect
+   style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+   id="rect9"
+   width="63"
+   height="36"
+   x="57"
+   y="1.2463016e-07" />
     </clipPath>
   </defs>
-  <sodipodi:namedview id="base" pagecolor="#733e3e" bordercolor="#000000" borderopacity="0.3" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="2.2286688" inkscape:cx="73.586528" inkscape:cy="184.41502" inkscape:document-units="px" inkscape:showpageshadow="2" inkscape:pagecheckerboard="true" inkscape:deskcolor="#d1d1d1" showborder="false" inkscape:window-width="2596" inkscape:window-height="1368" inkscape:window-x="1920" inkscape:window-y="1113" inkscape:window-maximized="0" inkscape:current-layer="g604" showgrid="true">
-    <inkscape:grid id="grid1" units="px" originx="0" originy="0" spacingx="1" spacingy="1" empcolor="#0099e5" empopacity="0.30196078" color="#0099e5" opacity="0.14901961" empspacing="5" enabled="true" visible="false" snapvisiblegridlinesonly="false" dotted="false" />
-    <inkscape:grid id="grid2" units="px" originx="0" originy="0" spacingx="2" spacingy="2" empcolor="#005fe5" empopacity="0.30196078" color="#0060e5" opacity="0.14901961" empspacing="5" enabled="true" visible="true" snapvisiblegridlinesonly="false" />
+  <sodipodi:namedview
+   id="base"
+   pagecolor="#733e3e"
+   bordercolor="#000000"
+   borderopacity="0.3"
+   inkscape:pageopacity="0.0"
+   inkscape:pageshadow="2"
+   inkscape:zoom="12.607255"
+   inkscape:cx="38.945831"
+   inkscape:cy="13.40498"
+   inkscape:document-units="px"
+   inkscape:showpageshadow="2"
+   inkscape:pagecheckerboard="true"
+   inkscape:deskcolor="#d1d1d1"
+   showborder="false"
+   inkscape:window-width="2607"
+   inkscape:window-height="1368"
+   inkscape:window-x="-3"
+   inkscape:window-y="1116"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="g18"
+   showgrid="true">
+    <inkscape:grid
+   id="grid1"
+   units="px"
+   originx="0"
+   originy="0"
+   spacingx="1"
+   spacingy="1"
+   empcolor="#0099e5"
+   empopacity="0.30196078"
+   color="#0099e5"
+   opacity="0.14901961"
+   empspacing="5"
+   enabled="true"
+   visible="false"
+   snapvisiblegridlinesonly="false"
+   dotted="false" />
+    <inkscape:grid
+   id="grid2"
+   units="px"
+   originx="0"
+   originy="0"
+   spacingx="2"
+   spacingy="2"
+   empcolor="#005fe5"
+   empopacity="0.30196078"
+   color="#0060e5"
+   opacity="0.14901961"
+   empspacing="5"
+   enabled="true"
+   visible="true"
+   snapvisiblegridlinesonly="false" />
   </sodipodi:namedview>
-  <metadata id="metadata1">
+  <metadata
+   id="metadata1">
     <rdf:RDF>
-      <cc:Work rdf:about="">
+      <cc:Work
+   rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:type
+   rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <image width="112" height="32" preserveAspectRatio="none" style="display:none;fill:#ffffff;image-rendering:optimizeSpeed" xlink:href="data:image/png;base64,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&#10;" id="image1" x="0" y="0" inkscape:label="_game" />
-  <g id="g2" inkscape:label="ui/uld/SliderGaugeHorizontalA_hr1.tex" style="display:inline;fill:#ffffff" transform="rotate(45,-4.597365,30.023642)">
-    <g id="g15" inkscape:label="Shape Style:Rounded" style="display:inline">
-      <g id="g13" inkscape:label="Secondary Color" style="display:inline;fill:#ffffff">
-        <circle style="display:inline;fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" id="path9" cx="-3.8833838" cy="3.9554508" r="12" transform="rotate(-45)" inkscape:label="button" />
-        <rect style="fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:6;stroke-dasharray:none;stroke-opacity:1" id="rect11" width="70" height="8" x="17.116615" y="-9.044549" transform="rotate(-45)" inkscape:label="bar" ry="3.9249341" />
+  <image
+   width="112"
+   height="32"
+   preserveAspectRatio="none"
+   style="display:none;fill:#ffffff;image-rendering:optimizeSpeed"
+   xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHAAAAAgCAYAAADKbvy8AAAKBElEQVR4Ae3gAZAkSZIkSRKLqpm7&#10;R0REZmZmVlVVVVV3d3d3d/fMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM&#10;zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMdHd3d3dXV1VVVVVm&#10;ZkZGRIS7m5kKz0xmV3d1d3dPz8zMzMxMYrWNJP67HD9+nBfgi4CXAF4CuIX/n+4Engr8KPCjwFke&#10;4OLFi8g2kvjvMueK+fHjPNO7Al8M3MxVD3QB+EzgG3imixcvIttI4kV0DfBQ4CRwCtgADBwC54Bz&#10;wO3AfbyI5sD8+HGe6UOAbwTouo6+6wHo+57/j4ZhAGAYB8Zx5JneFvgpgIsXLyLbSOJf8PLALcBx&#10;oOM5mefUgF3gb4En8y+YA/PjxwFOAE/ruu543/X0fc9Vz+ng8IBxHAEeBTzp4sWLVF64nsqbAQ8F&#10;eIs3ewve6u3e+TUe+eAHvxSwdfrEidOt6wDuOX/+/MH58+f/5ru/7Zt/++d+7ucWwPXAw4Bf5oWp&#10;QBsBPnO+2Dy+2Njkqudva3OL5cES4D2AzwCQbSTxfDwGeGMq8RZv9hZ86zd/64cAD7t47iLnLl7k&#10;/O4u53d3OXH8OKdOneJRj3wUl00rgCd+4Ad+4Nf/3M/9HEABfhF4Ms/HvMJ8sQnwNydOXfOSXPVC&#10;LQ+WAE8CHgUQPH+PAd4Y4Fu/6Vvf8Fu/+Vu/HHgYwLmLFzm/u8tzO3f+HA/wqG/91m/9mm/91m99&#10;OFe8KfAIXoD5YpP5YvPFuepF9UggAILn9RjgjQH+8Pf+8I3f4s3f4g15gNMnTnDq+HEe6NSpU5w+&#10;dZrnEm/xFm/xUT/wgz/wplzxprwAi41NFhubXPWv8xZv+RYEz2U+n7/YfD7vvv3bv/1NHvLwh7zh&#10;8ePHOX78OLPFDIdpAYfrFed3dwE4Pp/TR+F+U5rlaslytWS5WvKmb/Cmb/hd3/5djwQK8FY8l+PH&#10;r2N5sGR5sPzT5cGSq164E9ed4MR1J4a7z96db/uOb0vwnF4CeOibvumb8mZv9mZvALBcL7nffDbn&#10;fjdefx3PzziseG5v/VZv/aFv9ZZvBfAw4LE8lzd4gzcA+HuuelF9O8Abv9EbEzynRwF8wzd8wwfy&#10;TKv1iuV6yWK2AOCmG67nphuu5347x4+zc+IEAHsXL3K/rp+zuX2c+333d3z3h3DFzTyXN3iDN+BL&#10;v/RLPx045Kp/yfBGb/hG3/7Lv/LLAATP9hLA6Td90zd9KPAwnmk1rFitVyzXSxazBS+Krp/Tz+b0&#10;swUP8PC3esu3ArgZuIkHeIM3eAPe4A3egDd4gzf4NKBx1QvzoV/1FV/1V1xBAFCBymkq3du9+ds9&#10;8u477ubuO+7m7jvuph02Di8eolGsDlbM53Me/tCHUEoB4NQ1p3E2Lp67m64vzDd22No5QT9bcFkF&#10;KlDhA9//A98AmAMneabd3Xu47qbruO6m6+773h/83h9907d40w+hMlCBylXPtn7TN33TD3zc3z3u&#10;F4F44zd6YwCqOvFM1wDceMuNLw2wd2kPgGEYeKB2ER50803cctON3HbHncwXm+xeuI/jJ69hsbHJ&#10;Ay2PDln0hfudOn3qEVzxGOBveU4Gzn391379d/7iL/3iX334R374+wIvA5wEHsn/T08CLgB/9fVf&#10;//Xf+aZv9qZ/DcyA5Aoqz3YNV5zYu7TH/c6fP8+pU6c4f/48AHvrFQAPuvkmfv+P/5TdC/dx/U0P&#10;AWB5dAjAannI/Q4vDdzv1OlTN/B8LDqxHA0wAuVN3+RN/+ppT37aR3DFcZ7TjP/b1jynSzynQ4AT&#10;J05w8eJFKs9l79IeO8d22Lu0B0DpCufPn+d+3dYmt91xJ7fdcSev/sqvSLaRu+94Oi9IVzoeYDGv&#10;c1bT6gzPZdGJ5WiAxhWFqx5o4plOnDjBM1GZuF8ByAq7h3tQuazUOQ80rhrb25vs7Gzy1KfcxjXX&#10;HOfUqRPcb7Va8UBjG3mg1bQaeKCJy5Y2z6VxxXmueg4XL17kmQie18Rz2VzM2VzM2VzM2d7eZGdn&#10;k52dTQCe9KRbOX/+Ivebz+d0XUdEEBE80Lmz5y5yxSFX/Ueg8mz3Atfed9/5O6655tSDAa655jTD&#10;ygBsbswB6OY9OzubPND587sAnDp1AoBSCqUUAFarFfc7f+78XVxxlv8g3/BbJ/jf7MNe5yL/DlTb&#10;SAK4D7j2vrPnn3DNNacefM01pwHY3JgDsLmxAGC+Nee5nT+/y/2OH9+hlMLzc/7c+SdyxTn+Bd/w&#10;Wyf4/+AbfusEL4oPe52LPB8Ez/Y4YPi1X/nFP9nePs1yCcsllBDzeU/LRnQBEzDB3sVDAJbTiuW0&#10;YhiTvb01h4crXoD8sZ/4sb8GBuAZvGi2gW8BzgMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMG&#10;DBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwsAt8Ly8cwbPdDZz9nd/5zdt+&#10;57d/8zd4pq7vAOhmHS/M4fKQw6ND9vYO2ds75Ln98i//8m//yq/8yjO44jwvmq8EPhA4yf8/x4D3&#10;AL4Z4Bt+6wTPB8FzOgfwO7/zm78PrHmmbtYB0M96ntvmYhOAw+UhAPv7h+ztHbK3d8je3iHPlL/y&#10;y7/y2wABTwxeZO/FVR/IC0bwnH4f4Hd+5zdv+53f/s0f5AH6Wc+/5HB5yP329g7Z2zsEyI/56I/5&#10;7l/5lV95BkCBP+Kq/ygEz2mcw+/Oof/Sz/30P/2jP/7NnyhRyDFZHaxYHaxYTbCa4L4LF+n6jhwb&#10;izpnUefk2FitVpw9e56zZ89z9ux5f8e3fsd3/s6v/Mpvz8Fz+J0GFF5kX8pV38ALRuV5PR14GvDQ&#10;z//UT//1jX7j8I3f6I3fk389f+3XfPnn/cnv/NZTuOIZwDMKMPIi+1yueFfgIfz/chvw48CnA3zY&#10;61zk+UC2kcT95lxWgA8AWMH4Rm/4Rg96ozd8o9d84zd649eizrnjzju439n7znLHXXdwv/P33Wfg&#10;d772a7/i+wBYrW4AngF8H0ADRp5tzhVLmwf6ht86wVXP9mGvc5HnA9lGEveb8ywF+IAV3AA8A+CN&#10;3vCNHvQar/0Gj7rxxhtfhiseet/Z+4Y77rrjInDxzrvv/Itf/Kmf/B2e7UGsVr8B/C7PtOI5zbli&#10;aXPVvxqyjSRegK05vBzwKlxx+wqC53ScB5jDOeAmrviTFfwZsOQFmHPF0uaqfzVkG0m8IHMueyjw&#10;KsCrDlCAcwAJ54AWcJorzvQwAn8M/AnwtBUv3JwrljZX/ash20jiBZnzHB7a4DTwKOAUVzSuOAs8&#10;ocDjgTXPtOKFm3PF0uaqfzVkm3/JQuJ+jReu8GxLm6v+U/GPWSdJ+0xAcIQAAAAASUVORK5CYII=&#10;"
+   id="image1"
+   x="0"
+   y="0"
+   inkscape:label="_game" />
+  <g
+   id="g2"
+   inkscape:label="ui/uld/SliderGaugeHorizontalA_hr1.tex"
+   style="display:inline;fill:#ffffff"
+   transform="rotate(45,-4.597365,30.023642)">
+    <g
+   id="g15"
+   inkscape:label="Shape Style:Rounded"
+   style="display:inline">
+      <g
+   id="g13"
+   inkscape:label="Secondary Color"
+   style="display:inline;fill:#ffffff">
+        <circle
+   style="display:inline;fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:4;stroke-dasharray:none;stroke-opacity:1"
+   id="path9"
+   cx="-3.8833838"
+   cy="3.9554508"
+   r="12"
+   transform="rotate(-45)"
+   inkscape:label="button" />
+        <rect
+   style="fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:6;stroke-dasharray:none;stroke-opacity:1"
+   id="rect11"
+   width="70"
+   height="8"
+   x="17.116615"
+   y="-9.044549"
+   transform="rotate(-45)"
+   inkscape:label="bar"
+   ry="3.9249341" />
       </g>
-      <g id="g9" inkscape:label="Ternary Color" style="display:inline">
-        <circle style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1" id="circle9" cx="-3.8833838" cy="3.9554508" r="12" transform="rotate(-45)" inkscape:label="button" />
-        <rect style="display:inline;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-dasharray:none;stroke-opacity:1" id="rect10" width="70" height="8" x="17.116615" y="-9.044549" transform="rotate(-45)" inkscape:label="bar" ry="4" />
+      <g
+   id="g9"
+   inkscape:label="Foreground Color"
+   style="display:inline">
+        <circle
+   style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+   id="circle9"
+   cx="-3.8833838"
+   cy="3.9554508"
+   r="12"
+   transform="rotate(-45)"
+   inkscape:label="button" />
+        <rect
+   style="display:inline;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+   id="rect10"
+   width="70"
+   height="8"
+   x="17.116615"
+   y="-9.044549"
+   transform="rotate(-45)"
+   inkscape:label="bar"
+   ry="4" />
       </g>
-      <g id="g3" inkscape:label="Accent" style="display:inline;fill:#ffffff">
-        <rect style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1" id="rect12" width="68" height="6" x="18.116615" y="7.955451" transform="rotate(-45)" inkscape:label="inner" ry="3" />
+      <g
+   id="g3"
+   inkscape:label="Accent"
+   style="display:inline;fill:#ffffff">
+        <rect
+   style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+   id="rect12"
+   width="68"
+   height="6"
+   x="18.116615"
+   y="7.955451"
+   transform="rotate(-45)"
+   inkscape:label="inner"
+   ry="3" />
       </g>
     </g>
-    <g id="g18" inkscape:label="Shape Style:Square" style="display:none">
-      <g id="g14" inkscape:label="Secondary Color" style="display:inline;fill:#ffffff">
-        <circle style="display:inline;fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" id="circle12" cx="-3.8833838" cy="3.9554508" r="12" transform="rotate(-45)" inkscape:label="button" />
-        <rect style="fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:6;stroke-dasharray:none;stroke-opacity:1" id="rect13" width="70" height="8" x="17.116615" y="-9.044549" transform="rotate(-45)" inkscape:label="bar" />
+    <g
+   id="g18"
+   inkscape:label="Shape Style:Square"
+   style="display:none">
+      <g
+   id="g14"
+   inkscape:label="Secondary Color"
+   style="display:inline;fill:#ffffff">
+        <circle
+   style="display:inline;fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:4;stroke-dasharray:none;stroke-opacity:1"
+   id="circle12"
+   cx="-3.8833838"
+   cy="3.9554508"
+   r="12"
+   transform="rotate(-45)"
+   inkscape:label="button" />
+        <rect
+   style="fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:6;stroke-dasharray:none;stroke-opacity:1"
+   id="rect13"
+   width="70"
+   height="8"
+   x="17.116615"
+   y="-9.044549"
+   transform="rotate(-45)"
+   inkscape:label="bar" />
       </g>
-      <g id="g16" inkscape:label="Ternary Color">
-        <circle style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1" id="circle14" cx="-3.8833838" cy="3.9554508" r="12" transform="rotate(-45)" inkscape:label="button" />
-        <rect style="display:inline;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-dasharray:none;stroke-opacity:1" id="rect14" width="70" height="8" x="17.116615" y="-9.044549" transform="rotate(-45)" inkscape:label="bar" />
+      <g
+   id="g16"
+   inkscape:label="Foreground Color">
+        <circle
+   style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+   id="circle14"
+   cx="-3.8833838"
+   cy="3.9554508"
+   r="12"
+   transform="rotate(-45)"
+   inkscape:label="button" />
+        <rect
+   style="display:inline;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+   id="rect14"
+   width="70"
+   height="8"
+   x="17.116615"
+   y="-9.044549"
+   transform="rotate(-45)"
+   inkscape:label="bar" />
       </g>
-      <g id="g17" inkscape:label="Accent" style="display:inline;fill:#ffffff">
-        <rect style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1" id="rect16" width="68" height="6" x="18.116615" y="7.955451" transform="rotate(-45)" inkscape:label="inner" />
+      <g
+   id="g17"
+   inkscape:label="Accent"
+   style="display:inline;fill:#ffffff">
+        <rect
+   style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+   id="rect16"
+   width="68"
+   height="6"
+   x="18.116615"
+   y="7.955451"
+   transform="rotate(-45)"
+   inkscape:label="inner" />
       </g>
     </g>
   </g>
