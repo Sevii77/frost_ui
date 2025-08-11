@@ -19,13 +19,41 @@ pub struct MetaBase {
 	pub style: StyleBase,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 #[serde(untagged)]
 pub enum OptionBase {
 	Category(i32),
-	Files(Vec<String>),
-	Color(HashMap<String, Vec<f32>>),
-	Grouped(Vec<HashMap<String, Vec<HashMap<String, GroupedTypeBase>>>>),
+	Color(OptionValueColorBase),
+	Files(OptionValueFilesBase),
+	Grouped(OptionValueGroupedBase),
+}
+
+#[derive(Debug, Clone, Default, serde::Deserialize, serde::Serialize)]
+pub struct OptionValueColorBase {
+	#[serde(default)] pub description: String,
+	pub default: Vec<f32>,
+	pub min: Vec<f32>,
+	pub max: Vec<f32>,
+}
+
+#[derive(Debug, Clone, Default, serde::Deserialize, serde::Serialize)]
+pub struct OptionValueFilesBase {
+	#[serde(default)] pub description: String,
+	pub default: Option<String>,
+	pub options: Vec<HashMap<String, OptionValueFilesSubBase>>,
+}
+
+#[derive(Debug, Clone, Default, serde::Deserialize, serde::Serialize)]
+pub struct OptionValueFilesSubBase {
+	#[serde(default)] pub description: String,
+	pub inherit: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, serde::Deserialize, serde::Serialize)]
+pub struct OptionValueGroupedBase {
+	#[serde(default)] pub description: String,
+	pub default: Option<String>,
+	pub options: Vec<HashMap<String, Vec<HashMap<String, GroupedTypeBase>>>>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

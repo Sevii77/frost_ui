@@ -5,8 +5,8 @@ use rayon::iter::{IntoParallelIterator, ParallelIterator};
 fn extract(id: usize) -> Result<image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, crate::Error> {
 	println!("{}", icon_path(id));
 	
-	let img = aetherment::noumenon().ok_or("Invalid Noumenon")?.file::<aetherment::noumenon_::format::game::Tex>(&icon_path(id))?;
-	Ok(image::ImageBuffer::from_vec(img.header.width as u32, img.header.height as u32, img.data).ok_or("Failed creating image")?)
+	let img = aetherment::noumenon_instance().ok_or("Invalid Noumenon")?.file::<aetherment::noumenon::format::game::Tex>(&icon_path(id))?;
+	Ok(image::ImageBuffer::from_vec(img.width as u32, img.height as u32, img.pixels).ok_or("Failed creating image")?)
 }
 
 fn icon_path(id: usize) -> String {
@@ -167,7 +167,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 	]);
 	
 	// load in extra assets
-	let asset_dir = target_root.join("assets").join("job icon backgrounds");
+	let asset_dir = target_root.join("vector_assets").join("job icon backgrounds");
 	let opt = resvg::usvg::Options::default();
 	let font = resvg::usvg::fontdb::Database::new();
 	

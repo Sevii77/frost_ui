@@ -1,8 +1,10 @@
 name: Frost UI
-description: A highly customizable UI
-version: 7.20.0
+description: "[md]![Banner](banner.png)
+  
+  ## A highly customizable UI"
+version: 7.30.0
 author: Sevii
-website:
+website: https://github.com/Sevii77/frost_ui
 tags:
   - Ui
 dependencies: []
@@ -11,127 +13,193 @@ options:
   - Generic: 0
   
   - Foreground Color:
+      description: The text and icon color
       default: [0.95, 0.95, 0.96]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Secondary Foreground Color:
+      description: The opposite text color, if your text color is white, this should be black
       default: [0.0, 0.0, 0.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Accent:
+      description: The pretty color used everywhere
       default: [0, 0.5, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Background Color:
+      description: The color of every window
       default: [0.2, 0.2, 0.23, 0.9]
       min: [0.0, 0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0, 1.0]
   
   - Secondary Color:
+      description: The color of things like buttons
       default: [0.24, 0.24, 0.27]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Ternary Color:
+      description: Used for rare cases like the checkbox and slider
       default: [0.7, 0.7, 0.71]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Window Style;Rounded Top Border:
-    - Rounded
-    - Rounded Top Border;Rounded
-    - Rounded Full Border;Rounded
-    - Rounded Edge Border;Rounded
-    - Square;Rounded
-    - Square Top Border;Square
-    - Square Full Border;Square
-    - Square Edge Border;Square
-    - Sharp;Square Edge Border
+  - Window Style:
+      description: The shape of all windows
+      default: Rounded Top Border
+      options:
+        - Rounded:
+            description: "[md]![Image](window/rounded.png)"
+        - Rounded Top Border:
+            inherit: Rounded
+            description: "[md]![Image](window/rounded_top.png)"
+        - Rounded Full Border:
+            inherit: Rounded
+            description: "[md]![Image](window/rounded_full.png)"
+        - Rounded Edge Border:
+            inherit: Rounded
+            description: "[md]![Image](window/rounded_edge.png)"
+        - Square:
+            inherit: Rounded
+            description: "[md]![Image](window/square.png)"
+        - Square Top Border:
+            inherit: Square
+            description: "[md]![Image](window/square_top.png)"
+        - Square Full Border:
+            inherit: Square
+            description: "[md]![Image](window/square_full.png)"
+        - Square Edge Border:
+            inherit: Square
+            description: "[md]![Image](window/square_edge.png)"
+        - Sharp:
+            inherit: Square Edge Border
+            description: "[md]![Image](window/sharp.png)"
     
-  - Shape Style;Rounded:
-    - Rounded
-    - Square
+  - Shape Style:
+      description: The shape of all other things (buttons and such)
+      default: Rounded
+      options:
+        - Rounded:
+            description: "[md]![Image](shape/rounded.png)"
+        - Square:
+            description: "[md]![Image](shape/square.png)"
   
-  - Minimap;Rounded:
-    - Rounded
-    - Square
-    - Circle
+  - Minimap:
+      default: Rounded
+      options:
+        - Rounded:
+            description: "[md]![Image](minimap/rounded.png)"
+        - Square:
+            description: "[md]![Image](minimap/square.png)"
+        - Circle:
+            description: "[md]![Image](minimap/circle.png)"
   
   - Combat: 0
   
   - Party List Background Color:
+      description: "[md]Background fade color of the partylist and alliances\n\n![Image](partylist.png)"
       default: [0.0, 0.0, 0.0, 0.0]
       min: [0.0, 0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0, 1.0]
   
   - Proc Color:
+      description: "[md]The dots around actions that light up\n\n![Image](proc.png)"
       default: [1.0, 0.68, 0.22]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Shield Color:
+      description: "[md]Partylist shield\n\n![Image](partyshield.png)"
       default: [0, 0.5, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Castbar Color:
+      description: "[md]Castbar for enemies, those you target, and partylist.\n\n![Image](castbar.png)"
       default: [0.969, 0.604, 0.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Castbar Interruptable Color:
+      description: "[md]Castbar for enemies, those you target, and partylist. But whenever you can interrupt it\n\n![Image](castbar_interruptable.png)"
       default: [0.9, 0.2, 0.1]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Limit Break Charging Color:
+      description: Bar color when it isn't full yet
       default: [0, 0.25, 0.5]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Limit Break Full Color:
+      description: Bar color when it is full
       default: [0, 0.5, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Gauge;Rounded:
-    - Rounded
-    - Square
+  - Gauge:
+      description: The shape of hp/mp/job gauges
+      default: Rounded
+      options:
+        - Rounded:
+            description: "[md]![Image](gauge/rounded.png)"
+        - Square:
+            description: "[md]![Image](gauge/square.png)"
   
   - Gauge Background Color:
+      description: The background color of hp/mp/job gauges
       default: [0.1, 0.1, 0.1, 0.6]
       min: [0.0, 0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0, 1.0]
   
   - Gauge Border Color:
+      description: The border color of hp/mp/job gauges
       default: [0.15, 0.15, 0.16, 1.0]
       min: [0.0, 0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0, 1.0]
   
   - Gauge Saturation:
+      description: How light or dark hp/mp/job gauges are
       default: [0.8]
       min: [0.0]
       max: [1.0]
   
   - Job icons: 0
   
-  - Job Icons Content;Glow:
-    - Glow
-    - Border
+  - Job Icons Content:
+      default: Glow
+      options:
+        - Glow:
+            description: "[md]![Image](job_party/glow.png)"
+        - Border:
+            description: "[md]![Image](job_party/border.png)"
   
-  - Job Icons Party List;Glow:
-    - Glow
-    - Border
-    - Square
-    - Rounded
+  - Job Icons Party List:
+      default: Glow
+      options:
+        - Glow:
+            description: "[md]![Image](job_party/glow.png)"
+        - Border:
+            description: "[md]![Image](job_party/border.png)"
+        - Square:
+            description: "[md]![Image](job_party/square.png)"
+        - Rounded:
+            description: "[md]![Image](job_party/rounded.png)"
   
-  - Job Icons Macro;Full:
-    - Glow
-    - Border
-    - Full
+  - Job Icons Macro:
+      default: Full
+      options:
+        - Glow:
+            description: "[md]![Image](job_macro/glow.png)"
+        - Border:
+            description: "[md]![Image](job_macro/border.png)"
+        - Full:
+            description: "[md]![Image](job_macro/full.png)"
   
   - Pld Color:
       default: [0.231, 0.290, 0.647]
@@ -303,214 +371,216 @@ options:
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
-  - Job Colors;Grouped:
-    - Merged:
-      - All:
-        - Pld Color
-        - War Color
-        - Drk Color
-        - Gnb Color
-        - Whm Color
-        - Sch Color
-        - Ast Color
-        - Sge Color
-        - Mnk Color
-        - Drg Color
-        - Nin Color
-        - Sam Color
-        - Rpr Color
-        - Vpr Color
-        - Brd Color
-        - Mch Color
-        - Dnc Color
-        - Blm Color
-        - Smn Color
-        - Rdm Color
-        - Pct Color
-        - Blu Color
-        - Crp Color
-        - Bsm Color
-        - Arm Color
-        - Gsm Color
-        - Ltw Color
-        - Wvr Color
-        - Alc Color
-        - Cul Color
-        - Min Color
-        - Bot Color
-        - Fsh Color
-        - No Job Color
-    
-    - Basic:
-      - Tank Color:
-        - Pld Color
-        - War Color
-        - Drk Color
-        - Gnb Color
-      - Healer Color:
-        - Whm Color
-        - Sch Color
-        - Ast Color
-        - Sge Color
-      - Dps Color:
-        - Mnk Color
-        - Drg Color
-        - Nin Color
-        - Sam Color
-        - Rpr Color
-        - Vpr Color
-        - Brd Color
-        - Mch Color
-        - Dnc Color
-        - Blm Color
-        - Smn Color
-        - Rdm Color
-        - Pct Color
-        - Blu Color
-      - Crafter Color:
-        - Crp Color
-        - Bsm Color
-        - Arm Color
-        - Gsm Color
-        - Ltw Color
-        - Wvr Color
-        - Alc Color
-        - Cul Color
-      - Gatherer Color:
-        - Min Color
-        - Bot Color
-        - Fsh Color
-      - No Job Color:
-        - No Job Color
-    
-    - Grouped:
-      - Tank Color:
-        - Pld Color
-        - War Color
-        - Drk Color
-        - Gnb Color
-      - Healer Color:
-        - Whm Color
-        - Sch Color
-        - Ast Color
-        - Sge Color
-      - Melee Color:
-        - Mnk Color
-        - Drg Color
-        - Nin Color
-        - Sam Color
-        - Rpr Color
-        - Vpr Color
-      - Ranged Color:
-        - Brd Color
-        - Mch Color
-        - Dnc Color
-      - Caster Color:
-        - Blm Color
-        - Smn Color
-        - Rdm Color
-        - Pct Color
-        - Blu Color
-      - Crafter Color:
-        - Crp Color
-        - Bsm Color
-        - Arm Color
-        - Gsm Color
-        - Ltw Color
-        - Wvr Color
-        - Alc Color
-        - Cul Color
-      - Gatherer Color:
-        - Min Color
-        - Bot Color
-        - Fsh Color
-      - No Job Color:
-        - No Job Color
-    
-    - Individual:
-      - Tank: 0
-      - Pld Color:
-        - Pld Color
-      - War Color:
-        - War Color
-      - Drk Color:
-        - Drk Color
-      - Gnb Color:
-        - Gnb Color
-      
-      - Healer: 0
-      - Whm Color:
-        - Whm Color
-      - Sch Color:
-        - Sch Color
-      - Ast Color:
-        - Ast Color
-      - Sge Color:
-        - Sge Color
-      
-      - Melee: 0
-      - Mnk Color:
-        - Mnk Color
-      - Drg Color:
-        - Drg Color
-      - Nin Color:
-        - Nin Color
-      - Sam Color:
-        - Sam Color
-      - Rpr Color:
-        - Rpr Color
-      - Vpr Color:
-        - Vpr Color
-      
-      - Ranged: 0
-      - Brd Color:
-        - Brd Color
-      - Mch Color:
-        - Mch Color
-      - Dnc Color:
-        - Dnc Color
-      
-      - Caster: 0
-      - Blm Color:
-        - Blm Color
-      - Smn Color:
-        - Smn Color
-      - Rdm Color:
-        - Rdm Color
-      - Pct Color:
-        - Pct Color
-      - Blu Color:
-        - Blu Color
-      
-      - Crafter: 0
-      - Crp Color:
-        - Crp Color
-      - Bsm Color:
-        - Bsm Color
-      - Arm Color:
-        - Arm Color
-      - Gsm Color:
-        - Gsm Color
-      - Ltw Color:
-        - Ltw Color
-      - Wvr Color:
-        - Wvr Color
-      - Alc Color:
-        - Alc Color
-      - Cul Color:
-        - Cul Color
-      
-      - Gatherer: 0
-      - Min Color:
-        - Min Color
-      - Bot Color:
-        - Bot Color
-      - Fsh Color:
-        - Fsh Color
-      
-      - Other: 0
-      - No Job Color:
-        - No Job Color
+  - Job Colors:
+      default: Grouped
+      options:
+        - Merged:
+          - All:
+            - Pld Color
+            - War Color
+            - Drk Color
+            - Gnb Color
+            - Whm Color
+            - Sch Color
+            - Ast Color
+            - Sge Color
+            - Mnk Color
+            - Drg Color
+            - Nin Color
+            - Sam Color
+            - Rpr Color
+            - Vpr Color
+            - Brd Color
+            - Mch Color
+            - Dnc Color
+            - Blm Color
+            - Smn Color
+            - Rdm Color
+            - Pct Color
+            - Blu Color
+            - Crp Color
+            - Bsm Color
+            - Arm Color
+            - Gsm Color
+            - Ltw Color
+            - Wvr Color
+            - Alc Color
+            - Cul Color
+            - Min Color
+            - Bot Color
+            - Fsh Color
+            - No Job Color
+        
+        - Basic:
+          - Tank Color:
+            - Pld Color
+            - War Color
+            - Drk Color
+            - Gnb Color
+          - Healer Color:
+            - Whm Color
+            - Sch Color
+            - Ast Color
+            - Sge Color
+          - Dps Color:
+            - Mnk Color
+            - Drg Color
+            - Nin Color
+            - Sam Color
+            - Rpr Color
+            - Vpr Color
+            - Brd Color
+            - Mch Color
+            - Dnc Color
+            - Blm Color
+            - Smn Color
+            - Rdm Color
+            - Pct Color
+            - Blu Color
+          - Crafter Color:
+            - Crp Color
+            - Bsm Color
+            - Arm Color
+            - Gsm Color
+            - Ltw Color
+            - Wvr Color
+            - Alc Color
+            - Cul Color
+          - Gatherer Color:
+            - Min Color
+            - Bot Color
+            - Fsh Color
+          - No Job Color:
+            - No Job Color
+        
+        - Grouped:
+          - Tank Color:
+            - Pld Color
+            - War Color
+            - Drk Color
+            - Gnb Color
+          - Healer Color:
+            - Whm Color
+            - Sch Color
+            - Ast Color
+            - Sge Color
+          - Melee Color:
+            - Mnk Color
+            - Drg Color
+            - Nin Color
+            - Sam Color
+            - Rpr Color
+            - Vpr Color
+          - Ranged Color:
+            - Brd Color
+            - Mch Color
+            - Dnc Color
+          - Caster Color:
+            - Blm Color
+            - Smn Color
+            - Rdm Color
+            - Pct Color
+            - Blu Color
+          - Crafter Color:
+            - Crp Color
+            - Bsm Color
+            - Arm Color
+            - Gsm Color
+            - Ltw Color
+            - Wvr Color
+            - Alc Color
+            - Cul Color
+          - Gatherer Color:
+            - Min Color
+            - Bot Color
+            - Fsh Color
+          - No Job Color:
+            - No Job Color
+        
+        - Individual:
+          - Tank: 0
+          - Pld Color:
+            - Pld Color
+          - War Color:
+            - War Color
+          - Drk Color:
+            - Drk Color
+          - Gnb Color:
+            - Gnb Color
+          
+          - Healer: 0
+          - Whm Color:
+            - Whm Color
+          - Sch Color:
+            - Sch Color
+          - Ast Color:
+            - Ast Color
+          - Sge Color:
+            - Sge Color
+          
+          - Melee: 0
+          - Mnk Color:
+            - Mnk Color
+          - Drg Color:
+            - Drg Color
+          - Nin Color:
+            - Nin Color
+          - Sam Color:
+            - Sam Color
+          - Rpr Color:
+            - Rpr Color
+          - Vpr Color:
+            - Vpr Color
+          
+          - Ranged: 0
+          - Brd Color:
+            - Brd Color
+          - Mch Color:
+            - Mch Color
+          - Dnc Color:
+            - Dnc Color
+          
+          - Caster: 0
+          - Blm Color:
+            - Blm Color
+          - Smn Color:
+            - Smn Color
+          - Rdm Color:
+            - Rdm Color
+          - Pct Color:
+            - Pct Color
+          - Blu Color:
+            - Blu Color
+          
+          - Crafter: 0
+          - Crp Color:
+            - Crp Color
+          - Bsm Color:
+            - Bsm Color
+          - Arm Color:
+            - Arm Color
+          - Gsm Color:
+            - Gsm Color
+          - Ltw Color:
+            - Ltw Color
+          - Wvr Color:
+            - Wvr Color
+          - Alc Color:
+            - Alc Color
+          - Cul Color:
+            - Cul Color
+          
+          - Gatherer: 0
+          - Min Color:
+            - Min Color
+          - Bot Color:
+            - Bot Color
+          - Fsh Color:
+            - Fsh Color
+          
+          - Other: 0
+          - No Job Color:
+            - No Job Color
 
 presets:
   - Frosted:
@@ -532,13 +602,15 @@ colors:
   6: [Foreground Color, Secondary Foreground Color, [0.8333, 0.8333, 0.8333]]
   7: Secondary Foreground Color
   8: Foreground Color
+  21: [Foreground Color, Secondary Foreground Color, [0.1666, 0.1666, 0.1666]]
   22: Foreground Color
   # 50: Foreground Color
   # 51: Secondary Foreground Color
   # 55: [Foreground Color, Secondary Foreground Color, [0.8333, 0.8333, 0.8333]]
   64: Foreground Color
+  65: Secondary Foreground Color
   
-  # custom ids only frost uses, for uld's that dont use the theme and got themes light>dark
+  # custom ids only frost uses, for uld's that dont use the theme and got themed light>dark
   # TODO: look into setting a flag in the uld or smth
   7001: Foreground Color
   7002: [Foreground Color, Secondary Foreground Color, [0.1666, 0.1666, 0.1666]]

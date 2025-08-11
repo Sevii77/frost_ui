@@ -28,45 +28,6 @@ fn main() -> Result<(), Error> {
 	font.load_font_data(include_bytes!("Axis Extrabold.otf").to_vec());
 	font.load_font_data(include_bytes!("Miedinger Bold.otf").to_vec());
 	
-	// let mut color_paths: HashMap<String, HashSet<String>> = HashMap::new();
-	
-	// fn walk_dir(path: &Path, target: &Path, files: &mut HashMap<Option<(String, String)>, HashMap<String, String>>, font: &resvg::usvg::fontdb::Database, color_paths: &mut HashMap<String, HashSet<String>>) -> Result<(), Error> {
-	// 	for entry in std::fs::read_dir(path)? {
-	// 		let entry_path = entry?.path();
-	// 		if entry_path.is_dir() {
-	// 			walk_dir(&entry_path, target, files, font, color_paths)?;
-	// 		} else if entry_path.extension().map(|v| v.to_str()) == Some(Some("svg")) {
-	// 			let svgs = split_svgs(&std::fs::read_to_string(entry_path)?)?;
-	// 			for svg in svgs {
-	// 				let local_dir = if let Some((o1, o2)) = &svg.option {
-	// 					format!("{}/{o1}/{o2}", svg.path.clone())
-	// 				} else {
-	// 					svg.path.clone()
-	// 				};
-	// 				
-	// 				let paths = files.entry(svg.option.clone()).or_insert_with(|| HashMap::new());
-	// 				if svg.layers.len() > 1 || svg.layers[0].0 != None {
-	// 					paths.insert(format!("{}.comp", &svg.path), format!("{local_dir}/comp.tex.comp"));
-	// 					// if svg.path.starts_with("ui/uld/") {
-	// 					// 	paths.insert(format!("{}.comp", &svg.path.replace("ui/uld/", "ui/uld/light/")), format!("{local_dir}/comp.tex.comp"));
-	// 					// }
-	// 				} else {
-	// 					paths.insert(svg.path.clone(), format!("{local_dir}/0.tex"));
-	// 					// if svg.path.starts_with("ui/uld/") {
-	// 					// 	paths.insert(svg.path.replace("ui/uld/", "ui/uld/light/"), format!("{local_dir}/0.tex"));
-	// 					// }
-	// 				}
-	// 				
-	// 				render_svg(svg, target, font, color_paths)?;
-	// 			}
-	// 		}
-	// 	}
-	// 	
-	// 	Ok(())
-	// }
-	
-	// walk_dir(svg_root, &target_root.join("files"), &mut files, &font, &mut color_paths)?;
-	
 	fn get_svgs(path: &Path) -> Result<Vec<PathBuf>, Error> {
 		let mut files = Vec::new();
 		for entry in std::fs::read_dir(path)? {
@@ -207,37 +168,34 @@ fn main() -> Result<(), Error> {
 		
 		let mut option_indexes = HashMap::new();
 		let options = meta_base.options.into_iter().map(|o| {
-			let mut key = o.keys().next().unwrap().split(";");
-			let name = key.next().unwrap();
-			let default = key.next();
-			let value = o.values().next().unwrap();
+			let name = o.keys().next().unwrap().to_owned();
+			let value = o.values().next().unwrap().to_owned();
 			
 			match value {
 				metabase::OptionBase::Category(_) => meta::OptionType::Category(name.to_owned()),
 				
-				metabase::OptionBase::Files(sub_options) => {
-					option_indexes.insert(name.to_owned(), sub_options.iter().enumerate().map(|(i, v)| (v.split(";").next().unwrap().to_owned(), i)).collect::<HashMap<_, _>>());
+				metabase::OptionBase::Files(value) => {
+					option_indexes.insert(name.to_owned(), value.options.iter().enumerate().map(|(i, v)| (v.keys().next().unwrap().to_owned(), i)).collect::<HashMap<_, _>>());
 					
 					meta::OptionType::Option(meta::Option {
 						name: name.to_owned(),
-						description: String::new(),
+						description: value.description.to_owned(),
 						settings: meta::OptionSettings::SingleFiles(meta::ValueFiles {
-							default: default.map_or(0, |v| sub_options.iter().position(|v2| v2.split(";").next().unwrap() == v).map_or(0, |v| v as u32)),
-							options: sub_options.into_iter().map(|sub_option| {
-								let mut sub_option_segs = sub_option.split(";");
-								let sub_option = sub_option_segs.next().unwrap();
-								let inherit = sub_option_segs.next();
+							default: value.default.as_ref().map_or(0, |v| value.options.iter().position(|v2| v2.keys().next().unwrap() == v).map_or(0, |v| v as u32)),
+							options: value.options.iter().map(|sub_value| {
+								let sub_name = sub_value.keys().next().unwrap();
+								let sub_value = sub_value.values().next().unwrap();
 								
-								let key = Some((name.to_owned(), sub_option.to_owned()));
+								let key = Some((name.to_owned(), sub_name.to_owned()));
 								if !files.contains_key(&key) {
-									println!("No files exist with option {name}:{sub_option}");
+									println!("No files exist with option {name}:{sub_name}");
 									std::process::exit(0);
 								}
 								
 								meta::ValueFilesOption {
-									name: sub_option.to_owned(),
-									description: String::new(),
-									inherit: inherit.map(|v| v.to_owned()),
+									name: sub_name.to_owned(),
+									description: sub_value.description.to_owned(),
+									inherit: sub_value.inherit.as_ref().map(|v| v.to_owned()),
 									files: files[&key].clone(),
 									
 									..Default::default()
@@ -248,13 +206,13 @@ fn main() -> Result<(), Error> {
 				}
 				
 				metabase::OptionBase::Color(color) => {
-					let default = &color["default"];
-					let min = &color["min"];
-					let max = &color["max"];
+					let default = &color.default;
+					let min = &color.min;
+					let max = &color.max;
 					
 					meta::OptionType::Option(meta::Option {
 						name: name.to_owned(),
-						description: String::new(),
+						description: color.description,
 						settings: match default.len() {
 							4 => meta::OptionSettings::Rgba(meta::ValueRgba {
 								default: default[..].try_into().unwrap(),
@@ -284,8 +242,8 @@ fn main() -> Result<(), Error> {
 						name: name.to_owned(),
 						description: String::new(),
 						settings: meta::OptionSettings::Grouped(meta::ValueGrouped {
-							default: default.map_or(0, |v| group.iter().position(|v2| v2.keys().next().unwrap() == v).map_or(0, |v| v as u32)),
-							options: group.into_iter().map(|v| {
+							default: group.default.as_ref().map_or(0, |v| group.options.iter().position(|v2| v2.keys().next().unwrap() == v).map_or(0, |v| v as u32)),
+							options: group.options.iter().map(|v| {
 								meta::ValueGroupedOption {
 									name: v.keys().next().unwrap().to_owned(),
 									description: String::new(),
