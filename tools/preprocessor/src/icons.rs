@@ -161,9 +161,11 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		(40, "Sge Color"), // sge
 		(41, "Vpr Color"), // vpr
 		(42, "Pct Color"), // pct
-		(43, "No Job Color"), // chocobo
-		(44, "No Job Color"), // carbuncle
-		(45, "No Job Color"), // free slot
+		(43, "Bst Color"), // pct
+		(44, "No Job Color"), // chocobo
+		(45, "No Job Color"), // carbuncle
+		(46, "No Job Color"), // free slot
+		(47, "No Job Color"), // bst beast
 	]);
 	
 	// load in extra assets
@@ -588,7 +590,8 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 	}
 	
 	// let mask = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_fn(512, 1024, |_, y| if y < 180 || (y >= 342 && y < 700) {[255, 255, 255, 255]} else {[0, 0, 0, 255]}.into());
-	let mask = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_fn(512, 1024, |_, y| if (y >= 180 && y < 180 + 20 * 4) || (y >= 700 && y < 700 + 40 * 4) {[0, 0, 0, 255]} else {[255, 255, 255, 255]}.into());
+	let rows = (icon_roles.len() as u32 - 3 - 1) / 12 + 1;
+	let mask = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_fn(512, 1024, |_, y| if (y >= 180 && y < 180 + 20 * rows) || (y >= 700 && y < 700 + 40 * rows) {[0, 0, 0, 255]} else {[255, 255, 255, 255]}.into());
 	crate::save_tex(512, 1024, mask.as_raw(), &files_root.join("common/font/fonticon_mask.tex")).unwrap();
 	
 	Ok(files)

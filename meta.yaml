@@ -2,7 +2,7 @@ name: Frost UI
 description: "[md]![Banner](banner.png)
   
   ## A highly customizable UI"
-version: 7.30.0
+version: 7.50.0
 author: Sevii
 website: https://github.com/Sevii77/frost_ui
 tags:
@@ -271,6 +271,11 @@ options:
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
+  - Bst Color:
+      default: [0.512, 0.188, 0.180]
+      min: [0.0, 0.0, 0.0]
+      max: [1.0, 1.0, 1.0]
+  
   - Brd Color:
       default: [0.651, 0.537, 0.173]
       min: [0.0, 0.0, 0.0]
@@ -395,6 +400,7 @@ options:
             - Dnc Color
             - Blm Color
             - Smn Color
+            - Bst Color
             - Rdm Color
             - Pct Color
             - Blu Color
@@ -434,6 +440,7 @@ options:
             - Dnc Color
             - Blm Color
             - Smn Color
+            - Bst Color
             - Rdm Color
             - Pct Color
             - Blu Color
@@ -471,6 +478,7 @@ options:
             - Sam Color
             - Rpr Color
             - Vpr Color
+            - Bst Color
           - Ranged Color:
             - Brd Color
             - Mch Color
@@ -531,6 +539,8 @@ options:
             - Rpr Color
           - Vpr Color:
             - Vpr Color
+          - Bst Color:
+            - Bst Color
           
           - Ranged: 0
           - Brd Color:
