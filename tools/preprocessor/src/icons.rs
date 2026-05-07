@@ -2,11 +2,14 @@ use std::{collections::HashMap, path::Path};
 use image::{GenericImage, GenericImageView, Rgba};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
-fn extract(id: usize) -> Result<image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, crate::Error> {
-	println!("{}", icon_path(id));
-	
-	let img = aetherment::noumenon_instance().ok_or("Invalid Noumenon")?.file::<aetherment::noumenon::format::game::Tex>(&icon_path(id))?;
+fn extract_path(path: &str) -> Result<image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, crate::Error> {
+	println!("{path}");
+	let img = aetherment::noumenon_instance().ok_or("Invalid Noumenon")?.file::<aetherment::noumenon::format::game::Tex>(path)?;
 	Ok(image::ImageBuffer::from_vec(img.width as u32, img.height as u32, img.pixels).ok_or("Failed creating image")?)
+}
+
+fn extract(id: usize) -> Result<image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, crate::Error> {
+	extract_path(&icon_path(id))
 }
 
 fn icon_path(id: usize) -> String {
@@ -228,8 +231,6 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		// (nearly)black border
 		let mut icon_border_56 = icon_56.clone();
 		add_border(&mut icon_border_56);
-		
-		// icon_border_80 = image::imageops::blur(&icon_border_80, 2.0);
 		image::imageops::overlay(&mut icon_border_56, &icon_56, 0, 0);
 		
 		// glow
@@ -486,6 +487,54 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		}
 	}
 	
+	// occult jobs in the social list
+	let mut jobs = extract_path("ui/uld/MKDSupportJobIcon_hr1.tex").unwrap();
+	for i in 1..=24 {
+		// let Ok(mut icon_56) = extract(082270 + i) else {break};
+		let mut icon_56 = jobs.sub_image(((i - 1) % 5) * 56, (i - 1) / 5 * 56, 56, 56).to_image();
+		let color = "No Job Color";
+		
+		// greyscale, shove it into the 191-255 range, and do some alpha stuff
+		prepare_icon(&mut icon_56, |pixel| (((pixel[3] as f32 / 255.0).max(0.75) - 0.75) * 4.0 * 255.0) as u8);
+		center(&mut icon_56, true);
+		
+		// (nearly)black border
+		let mut icon_border_56 = icon_56.clone();
+		add_border(&mut icon_border_56);
+		image::imageops::overlay(&mut icon_border_56, &icon_56, 0, 0);
+		
+		// glow
+		let mut icon_glow_56 = image::imageops::blur(&icon_56, 4.0);
+		for pixel in icon_glow_56.pixels_mut() {
+			pixel[0] = 255;
+			pixel[1] = 255;
+			pixel[2] = 255;
+			pixel[3] = (pixel[3] as u16 * 4).min(255) as u8;
+		}
+		
+		let icon_path = icon_path(082270 + i as usize);
+		{ // content glow
+			let local_dir = format!("{}/Job Icons Content/Glow", icon_path);
+			let dir = files_root.join(&local_dir);
+			_ = std::fs::create_dir_all(&dir);
+			
+			crate::save_tex(56, 56, icon_glow_56.as_raw(), &dir.join("0.tex"))?;
+			crate::save_tex(56, 56, icon_56.as_raw(), &dir.join("1.tex"))?;
+			write_comp(&dir, &local_dir, vec![Some(color), None])?;
+			files.entry(("Job Icons Content", "Glow")).or_insert_with(|| HashMap::new()).insert(format!("{icon_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+		}
+		
+		{ // content border
+			let local_dir = format!("{}/Job Icons Content/Border", icon_path);
+			let dir = files_root.join(&local_dir);
+			_ = std::fs::create_dir_all(&dir);
+			
+			crate::save_tex(56, 56, icon_border_56.as_raw(), &dir.join("0.tex"))?;
+			write_comp(&dir, &local_dir, vec![Some(color)])?;
+			files.entry(("Job Icons Content", "Border")).or_insert_with(|| HashMap::new()).insert(format!("{icon_path}.comp"), format!("{local_dir}/comp.tex.comp"));
+		}
+	}
+	
 	// font icons
 	fn make_smalls(full: &mut HashMap<&str, Vec<(bool, image::ImageBuffer<Rgba<u8>, Vec<u8>>)>>) {
 		for (_, layers) in full {
@@ -598,22 +647,24 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 }
 
 pub fn tribe_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::Error> {
+	let mut files = HashMap::new();
 	let files_root = target_root.join("files");
-	// let files = (061901..=061959).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
-	let files = (061901..=061919).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
-		let Ok(mut icon) = extract(id) else {return Ok(None)};
-		
-		prepare_icon(&mut icon, |pixel| if pixel[3] > 200 {((pixel[0] as f32 * 4.0) - 512.0).clamp(0.0, 255.0) as u8} else {0});
-		add_border(&mut icon);
-		
-		let local_path = icon_path(id);
-		let dir = files_root.join(&local_path);
-		_ = std::fs::create_dir_all(&dir);
-		
-		crate::save_tex(64, 64, icon.as_raw(), &dir.join("0.tex"))?;
-		write_comp(&dir, &local_path, vec![Some("Foreground Color")])?;
-		Ok(Some((format!("{local_path}.comp"), format!("{local_path}/comp.tex.comp"))))
-	})().unwrap()}).collect();
+	for range in [061901..=061919, 061990..=061999] {
+		for id in range {
+			let Ok(mut icon) = extract(id) else {continue};
+			
+			prepare_icon(&mut icon, |pixel| if pixel[3] > 200 {((pixel[0] as f32 * 4.0) - 512.0).clamp(0.0, 255.0) as u8} else {0});
+			add_border(&mut icon);
+			
+			let local_path = icon_path(id);
+			let dir = files_root.join(&local_path);
+			_ = std::fs::create_dir_all(&dir);
+			
+			crate::save_tex(64, 64, icon.as_raw(), &dir.join("0.tex"))?;
+			write_comp(&dir, &local_path, vec![Some("Foreground Color")])?;
+			files.insert(format!("{local_path}.comp"), format!("{local_path}/comp.tex.comp"));
+		}
+	}
 	
 	Ok(files)
 }
@@ -751,6 +802,8 @@ ranges:
 
 000001-000099 = menu icons
 061751-061874 = silver bordered
-061901-061959 = beast tribe
+061901-061919 = beast tribe
+061990-061999 = beast tribe continued
 060101-060199 = shop icons
+082271-082299 = occult jobs in social list
 */

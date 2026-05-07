@@ -299,7 +299,7 @@ fn main() -> Result<(), Error> {
 			// 	color: p.values().next().unwrap().to_owned().convert(),
 			// }).collect::<Vec<_>>(),
 			ui_colors: meta_base.colors.into_iter().map(|(index, color)| meta::UiColor {
-				use_theme: index < 1000,
+				use_theme: true,
 				index,
 				color: color.convert(),
 			}).collect::<Vec<_>>(),
@@ -516,7 +516,11 @@ fn split_svgs(data: &str) -> Result<Vec<SvgResult>, Error> {
 						(_, "use") => {
 							let href = &attributes.iter().find(|&v| v.name.local_name == "href").unwrap().value[1..];
 							if let Some(add) = use_adds.get(href) {
-								let layers = svgs.get_mut(&path).unwrap().get_mut(&option).unwrap();
+								let layers = svgs
+									.get_mut(&path)
+									.ok_or(format!("svg list does not contain {path}"))?
+									.get_mut(&option)
+									.ok_or(format!("{path} does not contain option {option}"))?;
 								let len = layers.len();
 								let layer = &mut layers[len - 1].1;
 								
