@@ -43,9 +43,7 @@ fn write_comp(dir: &Path, local_dir: &str, layers: Vec<Option<&str>>) -> Result<
 	Ok(())
 }
 
-fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, mut alpha_resolver: impl FnMut(&image::Rgba<u8>) -> u8) {
-	let mut min = 255;
-	let mut max = 0;
+fn desaturate_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>) {
 	for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
 		let val = ((pixel.0[0] as f32 * 0.299) as u16 +
 		           (pixel.0[1] as f32 * 0.587) as u16 +
@@ -54,10 +52,19 @@ fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, mut alp
 		pixel[0] = val;
 		pixel[1] = val;
 		pixel[2] = val;
+	}
+}
+
+fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, mut alpha_resolver: impl FnMut(&image::Rgba<u8>) -> u8) {
+	desaturate_icon(icon);
+	
+	let mut min = 255;
+	let mut max = 0;
+	for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
 		pixel[3] = alpha_resolver(pixel);
 		
-		min = min.min(val);
-		max = max.max(val);
+		min = min.min(pixel[0]);
+		max = max.max(pixel[0]);
 	}
 	
 	let scale = (max - min) as f32;
@@ -68,6 +75,64 @@ fn prepare_icon(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>, mut alp
 		pixel[2] = val;
 	}
 }
+
+fn rgb_to_hsv((r, g, b): (u8, u8, u8)) -> (f32, f32, f32) {
+	let r = r as f32 / 255.0;
+	let g = g as f32 / 255.0;
+	let b = b as f32 / 255.0;
+	
+	let min = r.min(g.min(b));
+	let max = r.max(g.max(b));
+	let delta = max - min;
+	
+	let mut h = if delta == 0.0 {
+		0.0
+	} else if max == r {
+		60.0 * (((g - b) / delta) % 6.0)
+	} else if max == g {
+		60.0 * (((b - r) / delta) + 2.0)
+	} else {
+		60.0 * (((r - g) / delta) + 4.0)
+	};
+	
+	if h < 0.0 {
+		h += 360.0;
+	}
+	
+	let s = if max == 0.0 {
+		0.0
+	} else {
+		delta / max
+	};
+	
+	(h, s, max)
+}
+
+// fn hsv_to_rgb((h, s, v): (f32, f32, f32)) -> (u8, u8, u8) {
+// 	let c = v * s;
+// 	let x = c * (1.0 - (((h / 60.0) % 2.0) - 1.0).abs());
+// 	let m = v - c;
+// 	
+// 	let (r, g, b) = if h >= 0.0 && h < 60.0 {
+// 		(c, x, 0.0)
+// 	} else if h >= 60.0 && h < 120.0 {
+// 		(x, c, 0.0)
+// 	} else if h >= 120.0 && h < 180.0 {
+// 		(0.0, c, x)
+// 	} else if h >= 180.0 && h < 240.0 {
+// 		(0.0, x, c)
+// 	} else if h >= 240.0 && h < 300.0 {
+// 		(x, 0.0, c)
+// 	} else {
+// 		(c, 0.0, x)
+// 	};
+// 	
+// 	(
+// 		((r + m) * 255.0) as u8,
+// 		((g + m) * 255.0) as u8,
+// 		((b + m) * 255.0) as u8,
+// 	)
+// }
 
 fn add_border(icon: &mut image::ImageBuffer<image::Rgba<u8>, Vec<u8>>) {
 	let (w, h) = (icon.width() as isize, icon.height() as isize);
@@ -733,57 +798,42 @@ pub fn shop_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 }
 
 pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::Error> {
-	let mut bg: image::ImageBuffer<Rgba<u8>, _> = image::ImageBuffer::from_pixel(80, 80, [255, 255, 255, 255].into());
-	let z = || -> image::Rgba<u8> {[0, 0, 0, 0].into()};
-	let s = bg.width();
-	for x in 0..6 {
-		for y in 0..(6 - x) {
-			bg.put_pixel(x, y, z());
-			bg.put_pixel(s - 1 - x, y, z());
-			bg.put_pixel(x, s - 1 - y, z());
-			bg.put_pixel(s - 1 - x, s - 1 - y, z());
-		}
-	}
-	
 	let files_root = target_root.join("files");
 	let files = (000001..=000099).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
-		let Ok(mut icon) = extract(id) else {return Ok(None)};
+		let Ok(icon) = extract(id) else {return Ok(None)};
 		
-		for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
-			if pixel[0] > 100 && pixel[1] > 70 /*|| pixel[2] == 24*/ {
-				// pixel[3] = ((pixel[0] as f32 - 100.0) * 8.0).clamp(0.0, 255.0) as u8;
-				pixel[0] = 255;
-				pixel[1] = 255;
-				pixel[2] = 255;
-				pixel[3] = 255;
-			} else {
-				pixel[3] = 0;
-			}
+		let mut bg = icon.clone();
+		for pixel in bg.pixels_mut() {
+			let (_h, _s, v) = rgb_to_hsv((pixel[0], pixel[1], pixel[2]));
+			let v = ((1.0 - (0.4 - v).max(0.0) * 3.0) * 255.0) as u8;
+			pixel[0] = v;
+			pixel[1] = v;
+			pixel[2] = v;
 		}
 		
-		let mut icon = image::imageops::blur(&icon, 0.5);
-		let c = icon.clone();
-		image::imageops::overlay(&mut icon, &c, 0, 0);
-		// image::imageops::overlay(&mut icon, &c, 0, 0);
-		add_border(&mut icon);
-		
-		// needed since for some reason it shades red/brown? (premultied bs most likely idfk)
-		for pixel in icon.pixels_mut().filter(|v| v[3] > 0) {
-			let val = ((pixel.0[0] as f32 * 0.299) as u16 +
-			           (pixel.0[1] as f32 * 0.587) as u16 +
-			           (pixel.0[2] as f32 * 0.144) as u16).min(255) as u8;
+		let mut shape = icon.clone();
+		for pixel in shape.pixels_mut() {
+			let (mut h, _s, v) = rgb_to_hsv((pixel[0], pixel[1], pixel[2]));
+			pixel[0] = 255;
+			pixel[1] = 255;
+			pixel[2] = 255;
 			
-			pixel[0] = val;
-			pixel[1] = val;
-			pixel[2] = val;
+			if v == 1.0 {
+				h = 30.0;
+			}
+			
+			let diff = ((30.0 - h).max(0.0) * 0.15).powi(3);
+			pixel[3] = ((1.0 - diff).clamp(0.0, 1.0) * 255.0) as u8;
 		}
+		shape = image::imageops::blur(&shape, 0.5);
+		add_border(&mut shape);
 		
 		let path = icon_path(id);
 		let dir = files_root.join(&path);
 		_ = std::fs::create_dir_all(&dir);
 		
 		crate::save_tex(80, 80, bg.as_raw(), &dir.join("0.tex"))?;
-		crate::save_tex(80, 80, icon.as_raw(), &dir.join("1.tex"))?;
+		crate::save_tex(80, 80, shape.as_raw(), &dir.join("1.tex"))?;
 		write_comp(&dir, &path, vec![Some("Secondary Color"), Some("Foreground Color")])?;
 		Ok(Some((format!("{path}.comp"), format!("{path}/comp.tex.comp"))))
 	})().unwrap()}).collect();

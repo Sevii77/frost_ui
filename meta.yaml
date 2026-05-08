@@ -103,6 +103,14 @@ options:
         - Circle:
             description: "[md]![Image](minimap/circle.png)"
   
+  - Menu Icons:
+      default: Enabled
+      options:
+        - Enabled:
+            description: ""
+        - Disabled:
+            description: ""
+  
   - Combat: 0
   
   - Party List Background Color:

@@ -110,7 +110,8 @@ fn main() -> Result<(), Error> {
 		entry.insert(a, b);
 	}
 	
-	let entry = files.entry(None).or_insert_with(|| HashMap::new());
+	files.insert(Some(("Menu Icons".to_owned(), "Disabled".to_owned())), HashMap::new());
+	let entry = files.entry(Some(("Menu Icons".to_owned(), "Enabled".to_owned()))).or_insert_with(|| HashMap::new());
 	for (a, b) in icons::menu_icons(&target_root)? {
 		entry.insert(a, b);
 	}
