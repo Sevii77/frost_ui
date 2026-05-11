@@ -229,7 +229,7 @@ pub fn job_icons(target_root: &Path) -> Result<HashMap<(&str, &str), HashMap<Str
 		(40, "Sge Color"), // sge
 		(41, "Vpr Color"), // vpr
 		(42, "Pct Color"), // pct
-		(43, "Bst Color"), // pct
+		(43, "Bst Color"), // bst
 		(44, "No Job Color"), // chocobo
 		(45, "No Job Color"), // carbuncle
 		(46, "No Job Color"), // free slot
@@ -774,10 +774,32 @@ pub fn silver_bordered(target_root: &Path) -> Result<HashMap<String, String>, cr
 }
 
 pub fn shop_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::Error> {
+	let class_to_job = HashMap::from([
+		(1, 20), // pgl
+		(2, 19), // gla
+		(3, 21), // mrd
+		(4, 22), // lnc
+		(5, 23), // arc
+		(6, 30), // rog
+		(7, 24), // cnj
+		(8, 25), // thm
+		(9, 27), // acn
+	]);
+	
 	let files_root = target_root.join("files");
 	let files = (060101..=060199).into_par_iter().filter_map(|id| {(|| -> Result<Option<(String, String)>, crate::Error> {
 		if id == 060158 {return Ok(None)}; // some quest marker icon, why??
 		let Ok(mut icon) = extract(id) else {return Ok(None)};
+		
+		if let Some(remap) = class_to_job.get(&(id - 060100)) {
+			let Ok(i) = extract(062800 + remap) else {return Ok(None)};
+			icon = image::imageops::resize(&i, 40, 40, image::imageops::FilterType::Nearest);
+			for p in icon.pixels_mut() {
+				p[0] -= 32.min(p[0]);
+				p[1] -= 32.min(p[1]);
+				p[2] -= 32.min(p[2]);
+			}
+		}
 		
 		let mut new = image::ImageBuffer::<image::Rgba<u8>, Vec<u8>>::new(40, 40);
 		image::imageops::overlay(&mut new, &icon.sub_image(4, 4, 32, 32).to_image(), 4, 4);
@@ -811,6 +833,7 @@ pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 			pixel[2] = v;
 		}
 		
+		let mut bg_is_accent = false;
 		let mut shape = icon.clone();
 		for pixel in shape.pixels_mut() {
 			let (mut h, _s, v) = rgb_to_hsv((pixel[0], pixel[1], pixel[2]));
@@ -818,15 +841,35 @@ pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 			pixel[1] = 255;
 			pixel[2] = 255;
 			
-			if v == 1.0 {
-				h = 30.0;
+			if h < 200.0 {
+				if v == 1.0 {
+					h = 30.0;
+				}
+				
+				let diff = ((30.0 - h).max(0.0) * 0.15).powi(3);
+				pixel[3] = ((1.0 - diff).clamp(0.0, 1.0) * 255.0) as u8;
+			} else {
+				bg_is_accent = true;
+				pixel[3] = 0;
 			}
-			
-			let diff = ((30.0 - h).max(0.0) * 0.15).powi(3);
-			pixel[3] = ((1.0 - diff).clamp(0.0, 1.0) * 255.0) as u8;
 		}
 		shape = image::imageops::blur(&shape, 0.5);
 		add_border(&mut shape);
+		
+		let s = bg.width();
+		for x in 0..6 {
+			for y in 0..(6 - x) {
+				bg.put_pixel(x, y, [0, 0, 0, 0].into());
+				bg.put_pixel(s - 1 - x, y, [0, 0, 0, 0].into());
+				bg.put_pixel(x, s - 1 - y, [0, 0, 0, 0].into());
+				bg.put_pixel(s - 1 - x, s - 1 - y, [0, 0, 0, 0].into());
+				
+				shape.put_pixel(x, y, [0, 0, 0, 0].into());
+				shape.put_pixel(s - 1 - x, y, [0, 0, 0, 0].into());
+				shape.put_pixel(x, s - 1 - y, [0, 0, 0, 0].into());
+				shape.put_pixel(s - 1 - x, s - 1 - y, [0, 0, 0, 0].into());
+			}
+		}
 		
 		let path = icon_path(id);
 		let dir = files_root.join(&path);
@@ -834,7 +877,7 @@ pub fn menu_icons(target_root: &Path) -> Result<HashMap<String, String>, crate::
 		
 		crate::save_tex(80, 80, bg.as_raw(), &dir.join("0.tex"))?;
 		crate::save_tex(80, 80, shape.as_raw(), &dir.join("1.tex"))?;
-		write_comp(&dir, &path, vec![Some("Secondary Color"), Some("Foreground Color")])?;
+		write_comp(&dir, &path, vec![if bg_is_accent {Some("Accent")} else {Some("Secondary Color")}, Some("Foreground Color")])?;
 		Ok(Some((format!("{path}.comp"), format!("{path}/comp.tex.comp"))))
 	})().unwrap()}).collect();
 	
