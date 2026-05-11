@@ -38,7 +38,7 @@ options:
   
   - Secondary Color:
       description: The color of things like buttons
-      default: [0.24, 0.24, 0.27]
+      default: [0.25, 0.25, 0.28]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
@@ -107,7 +107,6 @@ options:
             description: ""
   
   - Notification Style:
-      description: The shape the notification
       default: Rounded
       options:
         - Rounded:
@@ -146,7 +145,7 @@ options:
   
   - Castbar Color:
       description: "[md]Castbar for enemies, those you target, and partylist.\n\n![Image](castbar.png)"
-      default: [0.969, 0.604, 0.0]
+      default: [1.0, 1.0, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
@@ -158,7 +157,7 @@ options:
   
   - Limit Break Charging Color:
       description: Bar color when it isn't full yet
-      default: [0, 0.25, 0.5]
+      default: [0.75, 0.875, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
@@ -228,177 +227,177 @@ options:
             description: "[md]![Image](job_macro/full.png)"
   
   - Pld Color:
-      default: [0.231, 0.290, 0.647]
+      default: [0.0, 0.586, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - War Color:
-      default: [0.231, 0.290, 0.647]
+      default: [0.0, 0.586, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Drk Color:
-      default: [0.231, 0.290, 0.647]
+      default: [0.0, 0.586, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Gnb Color:
-      default: [0.231, 0.290, 0.647]
+      default: [0.0, 0.586, 1.0]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Whm Color:
-      default: [0.231, 0.450, 0.180]
+      default: [0.153, 0.8, 0.325]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Sch Color:
-      default: [0.231, 0.450, 0.180]
+      default: [0.153, 0.8, 0.325]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Ast Color:
-      default: [0.231, 0.450, 0.180]
+      default: [0.153, 0.8, 0.325]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Sge Color:
-      default: [0.231, 0.450, 0.180]
+      default: [0.153, 0.8, 0.325]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Mnk Color:
-      default: [0.512, 0.188, 0.180]
+      default: [0.8, 0.18, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Drg Color:
-      default: [0.512, 0.188, 0.180]
+      default: [0.8, 0.18, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Nin Color:
-      default: [0.512, 0.188, 0.180]
+      default: [0.8, 0.18, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Sam Color:
-      default: [0.512, 0.188, 0.180]
+      default: [0.8, 0.18, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Rpr Color:
-      default: [0.512, 0.188, 0.180]
+      default: [0.8, 0.18, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Vpr Color:
-      default: [0.512, 0.188, 0.180]
+      default: [0.8, 0.18, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Bst Color:
-      default: [0.512, 0.188, 0.180]
+      default: [0.8, 0.18, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Brd Color:
-      default: [0.651, 0.537, 0.173]
+      default: [0.8, 0.651, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Mch Color:
-      default: [0.651, 0.537, 0.173]
+      default: [0.8, 0.651, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Dnc Color:
-      default: [0.651, 0.537, 0.173]
+      default: [0.8, 0.651, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Blm Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.594, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Smn Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.594, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Rdm Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.594, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Pct Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.594, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Blu Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.594, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Crp Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.674, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Bsm Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.674, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Arm Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.674, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Gsm Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.674, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Ltw Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.674, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Wvr Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.674, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Alc Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.674, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Cul Color:
-      default: [0.453, 0.265, 0.755]
+      default: [0.674, 0.153, 0.8]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Min Color:
-      default: [0.651, 0.537, 0.173]
+      default: [0.8, 0.575, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Bot Color:
-      default: [0.651, 0.537, 0.173]
+      default: [0.8, 0.575, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Fsh Color:
-      default: [0.651, 0.537, 0.173]
+      default: [0.8, 0.575, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - No Job Color:
-      default: [0.651, 0.537, 0.173]
+      default: [0.8, 0.467, 0.153]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
@@ -621,6 +620,46 @@ options:
 presets:
   - Frosted:
   
+  - Frosted (Legacy):
+      Secondary Color: [0.24, 0.24, 0.27]
+      Castbar Color: [0.969, 0.604, 0.0]
+      Limit Break Charging Color: [0, 0.25, 0.5]
+      Pld Color: [0.231, 0.290, 0.647]
+      War Color: [0.231, 0.290, 0.647]
+      Drk Color: [0.231, 0.290, 0.647]
+      Gnb Color: [0.231, 0.290, 0.647]
+      Whm Color: [0.231, 0.450, 0.180]
+      Sch Color: [0.231, 0.450, 0.180]
+      Ast Color: [0.231, 0.450, 0.180]
+      Sge Color: [0.231, 0.450, 0.180]
+      Mnk Color: [0.512, 0.188, 0.180]
+      Drg Color: [0.512, 0.188, 0.180]
+      Nin Color: [0.512, 0.188, 0.180]
+      Sam Color: [0.512, 0.188, 0.180]
+      Rpr Color: [0.512, 0.188, 0.180]
+      Vpr Color: [0.512, 0.188, 0.180]
+      Bst Color: [0.512, 0.188, 0.180]
+      Brd Color: [0.651, 0.537, 0.173]
+      Mch Color: [0.651, 0.537, 0.173]
+      Dnc Color: [0.651, 0.537, 0.173]
+      Blm Color: [0.453, 0.265, 0.755]
+      Smn Color: [0.453, 0.265, 0.755]
+      Rdm Color: [0.453, 0.265, 0.755]
+      Pct Color: [0.453, 0.265, 0.755]
+      Blu Color: [0.453, 0.265, 0.755]
+      Crp Color: [0.453, 0.265, 0.755]
+      Bsm Color: [0.453, 0.265, 0.755]
+      Arm Color: [0.453, 0.265, 0.755]
+      Gsm Color: [0.453, 0.265, 0.755]
+      Ltw Color: [0.453, 0.265, 0.755]
+      Wvr Color: [0.453, 0.265, 0.755]
+      Alc Color: [0.453, 0.265, 0.755]
+      Cul Color: [0.453, 0.265, 0.755]
+      Min Color: [0.651, 0.537, 0.173]
+      Bot Color: [0.651, 0.537, 0.173]
+      Fsh Color: [0.651, 0.537, 0.173]
+      No Job Color: [0.651, 0.537, 0.173]
+  
   - Material UI:
       Background Color: [0.1294, 0.1294, 0.1294, 1.0]
       Secondary Color: [0.188, 0.188, 0.188]
@@ -628,6 +667,43 @@ presets:
       Shape Style: Square
       Gauge: Square
       Minimap: Square
+      Castbar Color: [0.969, 0.604, 0.0]
+      Limit Break Charging Color: [0, 0.25, 0.5]
+      Pld Color: [0.231, 0.290, 0.647]
+      War Color: [0.231, 0.290, 0.647]
+      Drk Color: [0.231, 0.290, 0.647]
+      Gnb Color: [0.231, 0.290, 0.647]
+      Whm Color: [0.231, 0.450, 0.180]
+      Sch Color: [0.231, 0.450, 0.180]
+      Ast Color: [0.231, 0.450, 0.180]
+      Sge Color: [0.231, 0.450, 0.180]
+      Mnk Color: [0.512, 0.188, 0.180]
+      Drg Color: [0.512, 0.188, 0.180]
+      Nin Color: [0.512, 0.188, 0.180]
+      Sam Color: [0.512, 0.188, 0.180]
+      Rpr Color: [0.512, 0.188, 0.180]
+      Vpr Color: [0.512, 0.188, 0.180]
+      Bst Color: [0.512, 0.188, 0.180]
+      Brd Color: [0.651, 0.537, 0.173]
+      Mch Color: [0.651, 0.537, 0.173]
+      Dnc Color: [0.651, 0.537, 0.173]
+      Blm Color: [0.453, 0.265, 0.755]
+      Smn Color: [0.453, 0.265, 0.755]
+      Rdm Color: [0.453, 0.265, 0.755]
+      Pct Color: [0.453, 0.265, 0.755]
+      Blu Color: [0.453, 0.265, 0.755]
+      Crp Color: [0.453, 0.265, 0.755]
+      Bsm Color: [0.453, 0.265, 0.755]
+      Arm Color: [0.453, 0.265, 0.755]
+      Gsm Color: [0.453, 0.265, 0.755]
+      Ltw Color: [0.453, 0.265, 0.755]
+      Wvr Color: [0.453, 0.265, 0.755]
+      Alc Color: [0.453, 0.265, 0.755]
+      Cul Color: [0.453, 0.265, 0.755]
+      Min Color: [0.651, 0.537, 0.173]
+      Bot Color: [0.651, 0.537, 0.173]
+      Fsh Color: [0.651, 0.537, 0.173]
+      No Job Color: [0.651, 0.537, 0.173]
 
 colors:
   1: Foreground Color
