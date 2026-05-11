@@ -2,7 +2,7 @@ name: Frost UI
 description: "[md]![Banner](banner.png)
   
   ## A highly customizable UI"
-version: 7.50.1
+version: 7.50.2
 author: Sevii
 website: https://github.com/Sevii77/frost_ui
 tags:
@@ -227,177 +227,177 @@ options:
             description: "[md]![Image](job_macro/full.png)"
   
   - Pld Color:
-      default: [0.0, 0.586, 1.0]
+      default: [0.318, 0.408, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - War Color:
-      default: [0.0, 0.586, 1.0]
+      default: [0.318, 0.408, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Drk Color:
-      default: [0.0, 0.586, 1.0]
+      default: [0.318, 0.408, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Gnb Color:
-      default: [0.0, 0.586, 1.0]
+      default: [0.318, 0.408, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Whm Color:
-      default: [0.153, 0.8, 0.325]
+      default: [0.532, 0.80, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Sch Color:
-      default: [0.153, 0.8, 0.325]
+      default: [0.532, 0.80, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Ast Color:
-      default: [0.153, 0.8, 0.325]
+      default: [0.532, 0.80, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Sge Color:
-      default: [0.153, 0.8, 0.325]
+      default: [0.532, 0.80, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Mnk Color:
-      default: [0.8, 0.18, 0.153]
+      default: [0.80, 0.318, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Drg Color:
-      default: [0.8, 0.18, 0.153]
+      default: [0.80, 0.318, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Nin Color:
-      default: [0.8, 0.18, 0.153]
+      default: [0.80, 0.318, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Sam Color:
-      default: [0.8, 0.18, 0.153]
+      default: [0.80, 0.318, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Rpr Color:
-      default: [0.8, 0.18, 0.153]
+      default: [0.80, 0.318, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Vpr Color:
-      default: [0.8, 0.18, 0.153]
+      default: [0.80, 0.318, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Bst Color:
-      default: [0.8, 0.18, 0.153]
+      default: [0.80, 0.318, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Brd Color:
-      default: [0.8, 0.651, 0.153]
+      default: [0.80, 0.637, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Mch Color:
-      default: [0.8, 0.651, 0.153]
+      default: [0.80, 0.637, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Dnc Color:
-      default: [0.8, 0.651, 0.153]
+      default: [0.80, 0.637, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Blm Color:
-      default: [0.594, 0.153, 0.8]
+      default: [0.648, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Smn Color:
-      default: [0.594, 0.153, 0.8]
+      default: [0.648, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Rdm Color:
-      default: [0.594, 0.153, 0.8]
+      default: [0.648, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Pct Color:
-      default: [0.594, 0.153, 0.8]
+      default: [0.648, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Blu Color:
-      default: [0.594, 0.153, 0.8]
+      default: [0.648, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Crp Color:
-      default: [0.674, 0.153, 0.8]
+      default: [0.788, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Bsm Color:
-      default: [0.674, 0.153, 0.8]
+      default: [0.788, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Arm Color:
-      default: [0.674, 0.153, 0.8]
+      default: [0.788, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Gsm Color:
-      default: [0.674, 0.153, 0.8]
+      default: [0.788, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Ltw Color:
-      default: [0.674, 0.153, 0.8]
+      default: [0.788, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Wvr Color:
-      default: [0.674, 0.153, 0.8]
+      default: [0.788, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Alc Color:
-      default: [0.674, 0.153, 0.8]
+      default: [0.788, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Cul Color:
-      default: [0.674, 0.153, 0.8]
+      default: [0.788, 0.318, 0.80]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Min Color:
-      default: [0.8, 0.575, 0.153]
+      default: [0.80, 0.565, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Bot Color:
-      default: [0.8, 0.575, 0.153]
+      default: [0.80, 0.565, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - Fsh Color:
-      default: [0.8, 0.575, 0.153]
+      default: [0.80, 0.565, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
   - No Job Color:
-      default: [0.8, 0.467, 0.153]
+      default: [0.80, 0.572, 0.318]
       min: [0.0, 0.0, 0.0]
       max: [1.0, 1.0, 1.0]
   
